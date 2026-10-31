@@ -40,5 +40,22 @@ window.MW_GAMES = [
       de: 'Ein klassisches Versteckspiel mit etwas Spannung beim Gesucht-Werden.',
       en: 'A classic hide-and-seek game with a little tension while being searched for.'
     }
+  },
+  {
+    slug: 'kuerbisnacht',
+    fsk: 6,
+    added: '2026-10-31',
+    cover: 'games/kuerbisnacht/cover.svg',
+    title: { de: 'Kürbisnacht', en: 'Pumpkin Night' },
+    tagline: { de: 'Süßes oder Saures – bis Mitternacht!', en: 'Trick or treat – until midnight!' },
+    desc: {
+      de: 'Zieh im Kostüm durch die Nachbarschaft, klingel an beleuchteten Türen und sammle Süßigkeiten, bevor es Mitternacht schlägt. Geister geistern durch die Straßen, nur unter den Laternen bist du sicher.',
+      en: 'Roam the neighbourhood in costume, ring at lit doors and collect candy before the clock strikes midnight. Ghosts haunt the streets, and you are only safe under the street lamps.'
+    },
+    tags: { de: ['3D', 'Halloween', 'Ton an'], en: ['3D', 'Halloween', 'Sound on'] },
+    fskReason: {
+      de: 'Freundliche Geister und kleine Schreckmomente (Spinne, Glibber). Nichts Gruseliges im Detail.',
+      en: 'Friendly ghosts and small scares (a spider, slime). Nothing frightening in detail.'
+    }
   }
 ];

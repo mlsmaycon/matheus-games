@@ -3,7 +3,7 @@
 (function () {
   var CONSENT_VERSION = 1;
   var PARENT_AGE = 16; // below this, a parent must confirm
-  var KEYS = ['mw-consent', 'mw-lang', 'brainrot-raub-v1', 'brainrot-raub-v2', 'versteck-alarm-v1'];
+  var KEYS = ['mw-consent', 'mw-lang', 'brainrot-raub-v1', 'brainrot-raub-v2', 'versteck-alarm-v1', 'kuerbisnacht-v1'];
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var store = null;
   try { store = window.localStorage; store.getItem('x'); } catch (e) { store = null; }
