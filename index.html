@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Matheus World</title>
+<meta name="description" content="Kostenlose 3D-Browserspiele von Matheus – auf Deutsch und Englisch. Free 3D browser games in German and English.">
+<meta name="theme-color" content="#0e1430">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/games.js"></script>
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="index.html" aria-label="Matheus World">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="14" fill="#46e0b4"/>
+        <path d="M14 20c4-2 6 2 10 0s5-5 9-3c1 4-1 6-4 7s-4 5-9 4-6-3-6-8z" fill="#2aa483"/>
+        <ellipse cx="24" cy="25" rx="22" ry="7" fill="none" stroke="#ff9d3c" stroke-width="3" transform="rotate(-18 24 25)"/>
+        <path d="M10 18a14 14 0 0 1 28 0" fill="none" stroke="#46e0b4" stroke-width="0"/>
+        <circle cx="40" cy="12" r="3" fill="#f6f2e8"/>
+      </svg>
+      <b>Matheus <span>World</span></b>
+    </a>
+    <div class="top-right">
+      <div class="lang" role="group" aria-label="Sprache / Language">
+        <button type="button" data-lang="de" aria-pressed="true">DE</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="chip" id="ageChip" type="button">Alter angeben</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1 data-i18n-html="hero.title">Willkommen in <em>Matheus World</em></h1>
+        <p data-i18n="hero.text">Kostenlose 3D-Spiele direkt im Browser. Auf Deutsch und Englisch, für Handy und PC.</p>
+        <ul class="facts">
+          <li data-i18n="fact.1">Keine Anmeldung</li>
+          <li data-i18n="fact.2">Keine Werbung</li>
+          <li data-i18n="fact.3">Kein Download</li>
+          <li data-i18n="fact.4">Kein Tracking</li>
+        </ul>
+      </div>
+      <div class="orbit" aria-hidden="true">
+        <svg viewBox="0 0 340 340">
+          <defs>
+            <radialGradient id="pl" cx="38%" cy="34%" r="70%">
+              <stop offset="0" stop-color="#7cf0cf"/><stop offset=".6" stop-color="#46e0b4"/><stop offset="1" stop-color="#1f8f73"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="170" cy="182" rx="160" ry="44" fill="none" stroke="#2f3a72" stroke-width="2" stroke-dasharray="4 8" transform="rotate(-14 170 182)"/>
+          <circle cx="170" cy="170" r="96" fill="url(#pl)"/>
+          <path d="M98 140c22-14 38 8 60-4s28-30 54-18c8 22-4 40-24 44s-22 30-52 24-40-18-38-46z" fill="#2aa483"/>
+          <path d="M190 220c18-6 34 4 44-8 4 16-8 30-26 32-12 1-20-10-18-24z" fill="#2aa483"/>
+          <path d="M20 205C60 250 280 230 322 160" fill="none" stroke="#ff9d3c" stroke-width="10" stroke-linecap="round"/>
+          <path d="M74 110C120 92 220 96 300 128" fill="none" stroke="#ff9d3c" stroke-width="10" stroke-linecap="round" opacity=".35"/>
+          <!-- kleine Brainrot-Figur -->
+          <g transform="translate(262 76)">
+            <circle r="22" fill="#ff8fb1" stroke="#141020" stroke-width="4"/>
+            <circle cx="-7" cy="-4" r="6" fill="#fff" stroke="#141020" stroke-width="2.5"/><circle cx="-6" cy="-3" r="2.5" fill="#141020"/>
+            <circle cx="8" cy="-4" r="5" fill="#fff" stroke="#141020" stroke-width="2.5"/><circle cx="9" cy="-3" r="2.2" fill="#141020"/>
+            <path d="M-7 8q7 7 14 0" fill="none" stroke="#141020" stroke-width="3" stroke-linecap="round"/>
+            <path d="M-14-16l-6-12 12 6zM14-16l6-12-12 6z" fill="#fff3c4" stroke="#141020" stroke-width="2.5"/>
+          </g>
+          <!-- Taschenlampe -->
+          <g transform="translate(58 250) rotate(-20)">
+            <path d="M14 -4L80 -26L80 26L14 4z" fill="#ffe27a" opacity=".45"/>
+            <rect x="-22" y="-7" width="36" height="14" rx="4" fill="#2b2f3a"/>
+            <rect x="10" y="-9" width="8" height="18" rx="2" fill="#ffcf3d"/>
+          </g>
+          <circle cx="44" cy="58" r="4" fill="#f6f2e8"/><circle cx="300" cy="280" r="3" fill="#f6f2e8"/>
+        </svg>
+      </div>
+    </section>
+
+    <p class="notice" id="pageNotice" hidden></p>
+
+    <section class="sec" aria-labelledby="gamesTitle">
+      <h2 id="gamesTitle" data-i18n="games.title">Spiele</h2>
+      <p class="sub" data-i18n="games.sub">Jedes Spiel hat eine Altersempfehlung nach FSK-Stufen.</p>
+      <div class="grid" id="games"></div>
+      <noscript><p>Matheus World braucht JavaScript. / Matheus World needs JavaScript.</p></noscript>
+    </section>
+
+    <section class="sec" aria-labelledby="fskTitle">
+      <h2 id="fskTitle" data-i18n="fsk.title">Was bedeutet FSK?</h2>
+      <p class="sub" data-i18n="fsk.sub">Die Farben zeigen, ab welchem Alter ein Spiel geeignet ist.</p>
+      <ul class="fsk-list">
+        <li><span class="fsk" data-fsk="0"><b>0</b>FSK</span><span data-i18n="fsk.0">Ohne Altersbeschränkung</span></li>
+        <li><span class="fsk" data-fsk="6"><b>6</b>FSK</span><span data-i18n="fsk.6">Ab 6 Jahren</span></li>
+        <li><span class="fsk" data-fsk="12"><b>12</b>FSK</span><span data-i18n="fsk.12">Ab 12 Jahren</span></li>
+        <li><span class="fsk" data-fsk="16"><b>16</b>FSK</span><span data-i18n="fsk.16">Ab 16 Jahren</span></li>
+        <li><span class="fsk" data-fsk="18"><b>18</b>FSK</span><span data-i18n="fsk.18">Ab 18 Jahren</span></li>
+      </ul>
+      <p class="note" data-i18n="fsk.note">Die Einstufungen sind eine eigene Einschätzung nach den Kriterien der FSK. Sie wurden nicht offiziell von der FSK oder der USK geprüft.</p>
+    </section>
+
+    <section class="sec">
+      <div class="phone">
+        <img src="assets/qr-site.png" alt="QR-Code: mlsmaycon.github.io/matheus-games" width="150" height="150">
+        <div>
+          <h2 data-i18n="phone.title">Auf dem Handy spielen</h2>
+          <p class="sub" data-i18n="phone.text">Scan den Code oder öffne diese Adresse:</p>
+          <code>mlsmaycon.github.io/matheus-games</code>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="row">
+      <span>© <span id="year">2026</span> Matheus World</span>
+      <nav aria-label="Rechtliches / Legal">
+        <a href="terms.html" data-i18n="f.terms">Nutzungsbedingungen</a>
+        <a href="privacy.html" data-i18n="f.privacy">Datenschutz</a>
+        <a href="imprint.html" data-i18n="f.imprint">Impressum</a>
+        <button class="linkbtn" id="resetData" type="button" data-i18n="f.reset">Meine Daten in diesem Browser löschen</button>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+<div class="gate" id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <form class="gate-box" id="gateForm" novalidate>
+    <h2 id="gTitle" data-i18n="g.title">Hallo! Wie alt bist du?</h2>
+    <div class="lang" role="group" aria-label="Sprache / Language" style="margin-bottom:12px">
+      <button type="button" data-lang="de" aria-pressed="true">DE</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <p data-i18n="g.text">Damit wir dir nur Spiele zeigen, die zu deinem Alter passen.</p>
+    <p class="notice" id="gNotice" hidden></p>
+    <div class="field">
+      <label for="gAge" data-i18n="g.age">Dein Alter</label>
+      <input id="gAge" type="number" inputmode="numeric" min="3" max="120" required>
+    </div>
+    <label class="check"><input type="checkbox" id="gTos"><span data-i18n-html="g.tos"></span></label>
+    <label class="check"><input type="checkbox" id="gPrivacy"><span data-i18n-html="g.privacy"></span></label>
+    <label class="check" id="gParentRow" hidden><input type="checkbox" id="gParent"><span data-i18n="g.parent"></span></label>
+    <p class="err" id="gErr" role="alert"></p>
+    <button class="play" type="submit" data-i18n="g.go">Los geht’s</button>
+  </form>
+</div>
+</body>
+</html>

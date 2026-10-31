@@ -1,16 +1,20 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Versteck-Alarm</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;800&display=swap">
+<script src="../../../assets/gate.js" data-fsk="0" data-game="versteck-alarm"></script>
+<title>Hide Alarm · Matheus World</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0}
 [hidden]{display:none!important}
+.mw-nav{max-width:1100px;margin:0 auto 4px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:700;font-size:14px}
+.mw-nav a{color:inherit;opacity:.85;text-decoration:none;padding:6px 10px;border-radius:999px;background:#ffffff14}
+.mw-nav a:hover,.mw-nav a:focus-visible{opacity:1;background:#ffffff26;outline:none}
+.mw-nav .mw-right{display:flex;gap:8px;align-items:center}
+.mw-fsk{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-weight:900;color:#111;background:var(--mw-fsk,#fff)}
+
 /* Layout: game console column — status strip, 3D house with HUD overlays, thumb controls, rules. Single committed night look: flashlight yellow on deep blue. */
 :root{
   --bg:#0f1b2b;
@@ -21,8 +25,8 @@ body{margin:0}
   --beam:#ffcf3d;
   --alarm:#ff5a4f;
   --safe:#47d7a8;
-  --display:"Fredoka","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
-  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Arial Rounded MT Bold","SF Pro Rounded",ui-rounded,"Trebuchet MS",system-ui,sans-serif;
+  --body:ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:dark;
 }
 html,body{background:var(--bg);color:var(--ink)}
@@ -85,12 +89,13 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 
 </head>
 <body>
+<nav class="mw-nav" aria-label="Matheus World"><a href="../../../index.html">← Matheus World</a><span class="mw-right"><span class="mw-fsk" style="--mw-fsk:#ffffff" title="Age rating">FSK 0</span><a href="../de/index.html" hreflang="de" lang="de">Deutsch</a></span></nav>
 <div class="app">
   <header>
-    <h1>Versteck-Alarm<small>Verstecken oder suchen – im ganzen Haus.</small></h1>
+    <h1>Hide Alarm<small>Hide or seek – all over the house.</small></h1>
     <div class="rec">
-      <div class="stat"><span>Überlebt</span><b id="recHide">0×</b></div>
-      <div class="stat"><span>Beste Suche</span><b id="recSeek">–</b></div>
+      <div class="stat"><span>Survived</span><b id="recHide">0×</b></div>
+      <div class="stat"><span>Best search</span><b id="recSeek">–</b></div>
     </div>
   </header>
 
@@ -98,71 +103,71 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
     <div id="labels"></div>
     <div id="vig"></div>
     <canvas id="mini" width="330" height="250" aria-hidden="true"></canvas>
-    <button class="kicher" id="kicher" type="button" hidden aria-label="Kichern hören">Kichern<b id="kicherN">3</b></button>
-    <div class="hud"><span class="pill" id="hudStatus">Wähle einen Modus</span><span class="pill time" id="hudTime"></span></div>
+    <button class="kicher" id="kicher" type="button" hidden aria-label="Hear a giggle">Giggle<b id="kicherN">3</b></button>
+    <div class="hud"><span class="pill" id="hudStatus">Choose a mode</span><span class="pill time" id="hudTime"></span></div>
     <div id="joy" hidden><i></i></div>
     <div id="toasts" aria-live="polite"></div>
-    <div id="blackout" hidden><b id="countNum">8</b><span>Augen zu! Die Kinder verstecken sich …</span></div>
+    <div id="blackout" hidden><b id="countNum">8</b><span>Eyes closed! The kids are hiding …</span></div>
     <div class="screen" id="startScreen">
-      <h2>Versteck-Alarm</h2>
-      <p>Ein Haus, ein Garten, eine Garage und jede Menge Verstecke. Willst du dich vor dem Sucher verstecken oder selbst suchen?</p>
+      <h2>Hide Alarm</h2>
+      <p>A house, a garden, a garage and loads of hiding spots. Do you want to hide from the seeker or be the seeker?</p>
       <div class="modes">
-        <button class="mode" type="button" data-mode="hide">Verstecken<small>Du + 3 Kinder gegen den Sucher</small></button>
-        <button class="mode alt" type="button" data-mode="seek">Suchen<small>Finde 4 Kinder in 120 Sekunden</small></button>
+        <button class="mode" type="button" data-mode="hide">Hide<small>You + 3 kids against the seeker</small></button>
+        <button class="mode alt" type="button" data-mode="seek">Seek<small>Find 4 kids in 120 seconds</small></button>
       </div>
     </div>
     <div class="screen" id="endScreen" hidden>
       <h2 id="endTitle"></h2>
       <p id="endText"></p>
       <div class="modes">
-        <button class="mode" type="button" id="again">Nochmal</button>
-        <button class="mode alt" type="button" id="toMenu">Modus wählen</button>
+        <button class="mode" type="button" id="again">Play again</button>
+        <button class="mode alt" type="button" id="toMenu">Choose mode</button>
       </div>
     </div>
   </div>
 
   <div class="controls">
-    <button class="btn" id="act" type="button">Aktion · E</button>
-    <button class="btn sneak" id="sneak" type="button" aria-pressed="false">Schleichen · Shift</button>
-    <button class="btn hint" id="hint" type="button">Kichern hören · H (3)</button>
-    <button class="btn sneak" id="sound" type="button" aria-pressed="true">Ton an · M</button>
+    <button class="btn" id="act" type="button">Action · E</button>
+    <button class="btn sneak" id="sneak" type="button" aria-pressed="false">Sneak · Shift</button>
+    <button class="btn hint" id="hint" type="button">Hear a giggle · H (3)</button>
+    <button class="btn sneak" id="sound" type="button" aria-pressed="true">Sound on · M</button>
   </div>
-  <p class="help"><b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt, <b>E</b> versteckt dich oder durchsucht ein Versteck, <b>Shift</b> schleicht. <b>Verstecken:</b> Du und drei Kinder gegen den Sucher. Überlebe 100 Sekunden. <b>Suchen:</b> Finde alle vier Kinder in 120 Sekunden. <b>H</b> lässt das nächste Kind kichern (3× pro Runde, Ton an).</p>
+  <p class="help"><b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms, <b>E</b> hides you or searches a hiding spot, <b>Shift</b> sneaks. <b>Hide:</b> You and three kids against the seeker. Survive 100 seconds. <b>Seek:</b> Find all four kids in 120 seconds. <b>H</b> makes the nearest kid giggle (3× per round, sound on).</p>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../../../assets/vendor/three.r128.min.js"></script>
 <script>
 (()=>{
 const $=id=>document.getElementById(id);
-if(!window.THREE){$('hudStatus').textContent='3D konnte nicht geladen werden.';return;}
+if(!window.THREE){$('hudStatus').textContent='3D could not be loaded.';return;}
 
 /*MAP*/
 const MW=33,MH=25;
 const DOORS=[[11,5],[11,6],[11,18],[11,19],[22,5],[22,6],[22,18],[22,19],[5,12],[6,12],[16,12],[17,12],[27,12],[28,12]];
 const ROOMS=[
-  {n:'Schlafzimmer',x:1,y:1,w:10,h:11,col:'#cdbfe6'},
-  {n:'Bad',x:12,y:1,w:10,h:11,col:'#bfe0ea'},
-  {n:'Garten',x:23,y:1,w:9,h:11,col:'#7fc46a'},
-  {n:'Wohnzimmer',x:1,y:13,w:10,h:11,col:'#ead2ad'},
-  {n:'Küche',x:12,y:13,w:10,h:11,col:'#efe6c9'},
+  {n:'Bedroom',x:1,y:1,w:10,h:11,col:'#cdbfe6'},
+  {n:'Bathroom',x:12,y:1,w:10,h:11,col:'#bfe0ea'},
+  {n:'Garden',x:23,y:1,w:9,h:11,col:'#7fc46a'},
+  {n:'Living room',x:1,y:13,w:10,h:11,col:'#ead2ad'},
+  {n:'Kitchen',x:12,y:13,w:10,h:11,col:'#efe6c9'},
   {n:'Garage',x:23,y:13,w:9,h:11,col:'#b8bcc6'},
 ];
 const KIND={
-  S:{n:'Schrank',hide:1,sight:1,verb:'im Schrank'},
-  B:{n:'Bett',hide:1,sight:0,verb:'unter dem Bett'},
-  K:{n:'Kisten',hide:1,sight:1,verb:'hinter den Kisten'},
-  W:{n:'Badewanne',hide:1,sight:0,verb:'in der Badewanne'},
-  L:{n:'Wäschekorb',hide:1,sight:0,verb:'im Wäschekorb'},
-  U:{n:'Busch',hide:1,sight:1,verb:'im Busch'},
-  M:{n:'Mülltonne',hide:1,sight:0,verb:'in der Mülltonne'},
-  C:{n:'Sofa',hide:1,sight:0,verb:'hinter dem Sofa'},
-  E:{n:'Esstisch',hide:1,sight:0,verb:'unter dem Tisch'},
-  A:{n:'Auto',hide:1,sight:1,verb:'im Kofferraum'},
-  R:{n:'Regal',hide:0,sight:1},
-  T:{n:'Tisch',hide:0,sight:0},
-  F:{n:'Kühlschrank',hide:0,sight:1},
-  Z:{n:'Küchenzeile',hide:0,sight:0},
-  X:{n:'Baum',hide:0,sight:1},
+  S:{n:'wardrobe',hide:1,sight:1,verb:'in the wardrobe'},
+  B:{n:'bed',hide:1,sight:0,verb:'under the bed'},
+  K:{n:'boxes',hide:1,sight:1,verb:'behind the boxes'},
+  W:{n:'bathtub',hide:1,sight:0,verb:'in the bathtub'},
+  L:{n:'laundry basket',hide:1,sight:0,verb:'in the laundry basket'},
+  U:{n:'bush',hide:1,sight:1,verb:'in the bush'},
+  M:{n:'trash can',hide:1,sight:0,verb:'in the trash can'},
+  C:{n:'sofa',hide:1,sight:0,verb:'behind the sofa'},
+  E:{n:'dining table',hide:1,sight:0,verb:'under the table'},
+  A:{n:'car',hide:1,sight:1,verb:'in the car trunk'},
+  R:{n:'shelf',hide:0,sight:1},
+  T:{n:'table',hide:0,sight:0},
+  F:{n:'fridge',hide:0,sight:1},
+  Z:{n:'counter',hide:0,sight:0},
+  X:{n:'tree',hide:0,sight:1},
 };
 const FURN=[
   ['B',2,2,3,4],['S',9,1,2,1],['K',2,9,1,1],['R',6,1,2,1],['T',7,9,2,1],
@@ -252,8 +257,8 @@ const ground=new THREE.Mesh(new THREE.PlaneGeometry(90,70),M('#4f8f45'));ground.
 function floorTex(col,kind){
   const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');
   g.fillStyle=col;g.fillRect(0,0,128,128);
-  if(kind==='Garten'){for(let i=0;i<260;i++){g.fillStyle=Math.random()<.5?'#72b75e':'#8ccf76';g.fillRect(Math.random()*128,Math.random()*128,2,5);}}
-  else if(kind==='Bad'||kind==='Küche'){g.strokeStyle='#00000018';g.lineWidth=2;for(let i=0;i<=128;i+=32){g.beginPath();g.moveTo(i,0);g.lineTo(i,128);g.moveTo(0,i);g.lineTo(128,i);g.stroke();}}
+  if(kind==='Garden'){for(let i=0;i<260;i++){g.fillStyle=Math.random()<.5?'#72b75e':'#8ccf76';g.fillRect(Math.random()*128,Math.random()*128,2,5);}}
+  else if(kind==='Bathroom'||kind==='Kitchen'){g.strokeStyle='#00000018';g.lineWidth=2;for(let i=0;i<=128;i+=32){g.beginPath();g.moveTo(i,0);g.lineTo(i,128);g.moveTo(0,i);g.lineTo(128,i);g.stroke();}}
   else if(kind==='Garage'){g.fillStyle='#00000010';for(let i=0;i<40;i++){g.beginPath();g.arc(Math.random()*128,Math.random()*128,Math.random()*6,0,7);g.fill();}}
   else {g.strokeStyle='#00000014';g.lineWidth=2;for(let i=0;i<=128;i+=16){g.beginPath();g.moveTo(0,i);g.lineTo(128,i);g.stroke();}}
   const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;
@@ -417,7 +422,7 @@ function kidSound(h){
   const rustly=['U','K','L','M','B'].includes(h.spot.k);
   if(Math.random()<(rustly?0.6:0.3))playRustle(vol*1.3,pan);else playGiggle(vol*0.5,pan);
 }
-$('sound').addEventListener('click',()=>{soundOn=!soundOn;audioInit();$('sound').setAttribute('aria-pressed',soundOn);$('sound').textContent=soundOn?'Ton an · M':'Ton aus · M';});
+$('sound').addEventListener('click',()=>{soundOn=!soundOn;audioInit();$('sound').setAttribute('aria-pressed',soundOn);$('sound').textContent=soundOn?'Sound on · M':'Sound off · M';});
 
 function startMode(m){
   audioInit();
@@ -430,7 +435,7 @@ function startMode(m){
     seeker.mesh=buildChar('#e0473d',{band:'#ffffff',torch:true,skin:'#f2c9a0'});seeker.torchArm=true;
     spawnHiders(3,18.5,15.5,0);
     phase='count';countT=12;timer=100;
-    toast('Der Sucher zählt bis 12.','#ffcf3d');
+    toast('The seeker is counting to 12.','#ffcf3d');
   } else {
     player.x=7.5;player.y=15.5;player.face=Math.PI;
     spawnHiders(4,6.5,14.5,2);
@@ -456,7 +461,7 @@ function pickSpotFor(h,threat){
   for(const t of free){const a=nearestAccess(t,h);const p=bfsPath(Math.floor(h.x),Math.floor(h.y),a.x,a.y);if(p){if(h.spot&&h.spot.reserved===h)h.spot.reserved=null;t.reserved=h;h.spot=t;h.path=p;return true;}}
   return false;
 }
-const pron=h=>h.name==='Ben'||h.name==='Lio'?'ihn':'sie';
+const pron=h=>h.name==='Ben'||h.name==='Lio'?'him':'her';
 function endGame(win,title,text){
   phase='end';cone.visible=false;
   $('endTitle').textContent=title;$('endText').textContent=text;
@@ -489,7 +494,7 @@ cv.addEventListener('pointerup',endJoy);cv.addEventListener('pointercancel',endJ
 cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(0.6,Math.min(1.6,zoom*(e.deltaY>0?1.1:0.9)));},{passive:false});
 $('act').addEventListener('click',doAction);
 $('sneak').addEventListener('click',()=>{sneakToggle=!sneakToggle;$('sneak').setAttribute('aria-pressed',sneakToggle);});
-function updateButtons(){$('hint').textContent=`Kichern hören · H (${hints})`;$('hint').disabled=hints<=0||phase!=='play';$('kicherN').textContent=hints;$('kicher').disabled=hints<=0||phase!=='play';}
+function updateButtons(){$('hint').textContent=`Hear a giggle · H (${hints})`;$('hint').disabled=hints<=0||phase!=='play';$('kicherN').textContent=hints;$('kicher').disabled=hints<=0||phase!=='play';}
 $('kicher').addEventListener('click',doHint);
 $('hint').addEventListener('click',doHint);
 
@@ -515,17 +520,17 @@ function doAction(){
       player.spot.occupant=null;player.spot.wig=0.3;player.spot=null;player.hidden=false;player.mesh.visible=true;$('vig').classList.remove('on');return;
     }
     const s=nearestSpot();if(!s)return;
-    if(s.occupant){toast('Da ist kein Platz.','#ff5a4f');return;}
+    if(s.occupant){toast('No room in there.','#ff5a4f');return;}
     const seen=seeker&&canSee();
     player.hidden=true;player.spot=s;s.occupant=player;s.wig=0.35;player.mesh.visible=false;$('vig').classList.add('on');
-    if(seen){seeker.knownSpot=s;toast('Oh nein, er hat gesehen, wo du hin bist!','#ff5a4f');}
-    else toast(`Versteckt ${s.K.verb}. Psst!`,'#47d7a8');
+    if(seen){seeker.knownSpot=s;toast('Oh no, he saw where you went!','#ff5a4f');}
+    else toast(`Hidden ${s.K.verb}. Shh!`,'#47d7a8');
   } else {
     const s=nearestSpot();if(!s)return;
     const h=s.occupant;
     if(h&&h.state==='hidden'){
       if(h.flitzer)flee(h);else found(h);
-    } else {s.wig=0.4;floatTxt(s.cx,s.cy,'leer','#9fb3cc',1);}
+    } else {s.wig=0.4;floatTxt(s.cx,s.cy,'empty','#9fb3cc',1);}
   }
 }
 
@@ -564,7 +569,7 @@ function seekerNext(){
 }
 function caught(msg){
   const survived=100-timer,left=hiders.filter(h=>h.state!=='found').length;
-  endGame(false,'Erwischt!',`${msg} Du hast ${survived.toFixed(0)} von 100 Sekunden durchgehalten. ${left?`${left} ${left===1?'Kind ist':'Kinder sind'} noch versteckt.`:'Alle anderen hatte er schon vor dir.'}`);
+  endGame(false,'Caught!',`${msg} You lasted ${survived.toFixed(0)} of 100 seconds. ${left?`${left} ${left===1?'kid is':'kids are'} still hidden.`:'He had already found everyone else.'}`);
 }
 function updateSeeker(dt){
   const s=seeker;
@@ -575,8 +580,8 @@ function updateSeeker(dt){
   const sees=!!tgt;
   if(sees){
     if(s.state!=='chase'||s.target!==tgt){
-      if(tgt===player)toast('Entdeckt!','#ff5a4f');
-      else toast(`Der Sucher hat ${tgt.name} entdeckt und rennt hinterher!`,'#ffb347');
+      if(tgt===player)toast('Spotted!','#ff5a4f');
+      else toast(`The seeker spotted ${tgt.name} and is giving chase!`,'#ffb347');
       s.queue=[];s.repath=0;
     }
     s.state='chase';s.target=tgt;s.lastSeen={x:tgt.x,y:tgt.y};s.mark='!';
@@ -590,7 +595,7 @@ function updateSeeker(dt){
       if(s.checkT<=0){
         s.goalSpot.lastChecked=time;
         const occ=s.goalSpot.occupant;
-        if(occ===player){caught(`Der Sucher hat dich ${s.goalSpot.K.verb} gefunden.`);return;}
+        if(occ===player){caught(`The seeker found you ${s.goalSpot.K.verb}.`);return;}
         if(occ&&occ.state==='hidden')seekerFound(occ,s.goalSpot.K.verb);
         seekerNext();
       }
@@ -601,8 +606,8 @@ function updateSeeker(dt){
         if(!s.path.length){const dx=T.x-s.x,dy=T.y-s.y,d=Math.hypot(dx,dy)||1;s.x+=dx/d*4.3*dt;s.y+=dy/d*4.3*dt;s.face=Math.atan2(dx,dy);s.moving=1;}
         else follow(s,4.3,dt);
         if(dist(s,T)<0.7){
-          if(T===player){caught('Der Sucher hat dich geschnappt.');return;}
-          seekerFound(T,'auf der Flucht');s.target=null;s.mark='';seekerNext();
+          if(T===player){caught('The seeker grabbed you.');return;}
+          seekerFound(T,'on the run');s.target=null;s.mark='';seekerNext();
         }
       } else {
         s.state='investigate';s.mark='?';seekerGoto(Math.floor(s.lastSeen.x),Math.floor(s.lastSeen.y));
@@ -624,7 +629,7 @@ function updateSeeker(dt){
     const t={x:Math.max(1,Math.min(MW-2,Math.floor(s.lastSeen.x))),y:Math.max(1,Math.min(MH-2,Math.floor(s.lastSeen.y)))};
     if(blocked(t.x,t.y)){t.x=Math.floor(player.x);t.y=Math.floor(player.y);}
     seekerGoto(t.x,t.y);
-    if(heardToastCd<=0){heardToastCd=6;toast('Er hat dich gehört!','#ffcf3d');}
+    if(heardToastCd<=0){heardToastCd=6;toast('He heard you!','#ffcf3d');}
   }
 }
 
@@ -645,8 +650,8 @@ function flee(h,threat){
   h.x=a.x+.5;h.y=a.y+.5;h.mesh.visible=true;h.spot=null;
   if(!pickSpotFor(h,threat)){if(mode==='seek')found(h);else {h.state='goto';h.path=[];}return;}
   h.flitzer=false;h.state='flee';h.nerv=0;
-  if(mode==='seek')toast(`${h.name} flitzt davon! Fang ${pron(h)}!`,'#ff7ab6');
-  else toast(`${h.name} springt aus dem Versteck und rennt!`,'#ffb347');
+  if(mode==='seek')toast(`${h.name} dashes off! Catch ${pron(h)}!`,'#ff7ab6');
+  else toast(`${h.name} jumps out and runs!`,'#ffb347');
 }
 const MEET=[[7,19],[8,19],[7,20],[8,20]];
 function sendToMeet(h){
@@ -655,21 +660,21 @@ function sendToMeet(h){
   h.state='found';h.mesh.visible=true;h.spot=null;
   const n=hiders.filter(c=>c.state==='found').length;
   const m=MEET[n-1];h.path=bfsPath(Math.floor(h.x),Math.floor(h.y),m[0],m[1])||[];
-  floatTxt(h.x,h.y,'Gefunden!',mode==='seek'?'#47d7a8':'#ff5a4f');
+  floatTxt(h.x,h.y,'Found!',mode==='seek'?'#47d7a8':'#ff5a4f');
   return n;
 }
 function seekerFound(h,how){
   const n=sendToMeet(h);
   const left=hiders.length-n;
-  toast(`Der Sucher hat ${h.name} ${how} gefunden! ${left?`Noch ${left} + du versteckt.`:'Jetzt bist nur noch du übrig!'}`,'#ff5a4f');
+  toast(`The seeker found ${h.name} ${how}! ${left?`${left} + you still hidden.`:'Now it is just you left!'}`,'#ff5a4f');
 }
 function found(h){
   const n=sendToMeet(h);
-  toast(`${h.name} gefunden! (${n}/4)`,'#47d7a8');
+  toast(`Found ${h.name}! (${n}/4)`,'#47d7a8');
   if(n===4){
     const t=120-timer;
     if(!rec.bestSeek||t<rec.bestSeek){rec.bestSeek=t;saveRec();}
-    endGame(true,'Alle gefunden!',`Du hast alle vier Kinder in ${t.toFixed(1)} Sekunden gefunden.${rec.bestSeek===t?' Neuer Rekord!':''}`);
+    endGame(true,'Found them all!',`You found all four kids in ${t.toFixed(1)} seconds.${rec.bestSeek===t?' New record!':''}`);
   }
 }
 function updateHiders(dt){
@@ -706,8 +711,8 @@ function update(dt){
     if(mode==='seek'){$('countNum').textContent=Math.ceil(countT);}
     if(countT<=0){
       phase='play';
-      if(mode==='seek'){$('blackout').hidden=true;hiders.forEach(h=>{if(h.state==='goto')enterSpot(h);});toast('Fertig oder nicht, ich komme!','#ffcf3d');}
-      else {seeker.state='wander';seekerNext();toast('Ich komme!','#ff5a4f');}
+      if(mode==='seek'){$('blackout').hidden=true;hiders.forEach(h=>{if(h.state==='goto')enterSpot(h);});toast('Ready or not, here I come!','#ffcf3d');}
+      else {seeker.state='wander';seekerNext();toast('Here I come!','#ff5a4f');}
       updateButtons();
     }
   } else if(phase==='play'){
@@ -717,9 +722,9 @@ function update(dt){
       if(mode==='hide'){
         rec.hideWins++;saveRec();
         const left=hiders.filter(h=>h.state!=='found').length,f=hiders.length-left;
-        endGame(true,'Geschafft!',`Der Sucher hat dich 100 Sekunden lang nicht gefunden. ${f?`Von den anderen hat er ${f} erwischt, ${left} ${left===1?'hat':'haben'} wie du durchgehalten.`:'Und auch kein anderes Kind. Alle haben gewonnen!'}`);
+        endGame(true,'You made it!',`The seeker didn't find you for 100 seconds. ${f?`He caught ${f} of the others, ${left} made it like you.`:'And no other kid either. Everyone wins!'}`);
       }
-      else{const n=hiders.filter(h=>h.state==='found').length;endGame(false,'Zeit um!',`Du hast ${n} von 4 Kindern gefunden.`);}
+      else{const n=hiders.filter(h=>h.state==='found').length;endGame(false,'Time is up!',`You found ${n} of 4 kids.`);}
       return;
     }
   }
@@ -750,9 +755,9 @@ function update(dt){
   player.hint=null;
   if(phase==='play'||(phase==='count'&&mode==='hide')){
     if(mode==='hide'){
-      if(player.hidden)player.hint={t:`Versteckt ${player.spot.K.verb} · [E] raus`,c:'#47d7a8'};
-      else{const s=nearestSpot();if(s)player.hint=s.occupant?{t:'Besetzt',c:'#ff5a4f'}:{t:`[E] Verstecken: ${s.K.verb}`,c:'#ffcf3d'};}
-    } else {const s=nearestSpot();if(s)player.hint={t:`[E] ${s.K.n} durchsuchen`,c:'#ffcf3d'};}
+      if(player.hidden)player.hint={t:`Hidden ${player.spot.K.verb} · [E] get out`,c:'#47d7a8'};
+      else{const s=nearestSpot();if(s)player.hint=s.occupant?{t:'Taken',c:'#ff5a4f'}:{t:`[E] Hide ${s.K.verb}`,c:'#ffcf3d'};}
+    } else {const s=nearestSpot();if(s)player.hint={t:`[E] Search the ${s.K.n}`,c:'#ffcf3d'};}
   }
 }
 
@@ -787,7 +792,7 @@ function drawLabels(){
   for(const r of ROOMS)lab(r.n,X3(r.x+r.w/2),0.05,Z3(r.y+r.h-0.7),null,12,'room');
   if(seeker&&phase!=='menu'){
     if(seeker.mark)lab(seeker.mark,X3(seeker.x),2.6,Z3(seeker.y),seeker.mark==='!'?'#ff5a4f':seeker.mark==='?'?'#ffb347':'#ffcf3d',seeker.state==='count'?22:20);
-    lab('Sucher',X3(seeker.x),-0.1,Z3(seeker.y)+0.4,'#ffb3ad',11);
+    lab('Seeker',X3(seeker.x),-0.1,Z3(seeker.y)+0.4,'#ffb3ad',11);
   }
   for(const h of hiders)if(h.mesh.visible)lab(h.name,X3(h.x),2.2,Z3(h.y),h.state==='found'?'#47d7a8':'#fff',12);
   for(const f of floats)lab(f.txt,X3(f.x),f.h,Z3(f.y),f.col,16);
@@ -809,19 +814,19 @@ function drawMini(){
 function hud(){
   const st=$('hudStatus'),tm=$('hudTime');
   st.classList.remove('alarm');
-  if(phase==='menu'){st.textContent='Wähle einen Modus';tm.textContent='';return;}
+  if(phase==='menu'){st.textContent='Choose a mode';tm.textContent='';return;}
   if(mode==='hide'){
-    if(phase==='count'){st.textContent=`Sucher zählt … ${Math.ceil(countT)}`;tm.textContent='100 s';return;}
+    if(phase==='count'){st.textContent=`Seeker counting … ${Math.ceil(countT)}`;tm.textContent='100 s';return;}
     const d=seeker?dist(seeker,player):99;
-    if(seeker&&seeker.state==='chase'){st.textContent='Er hat dich gesehen!';st.classList.add('alarm');}
-    else if(player.hidden)st.textContent=d<3?'Puls: RASEND':d<7?'Puls: schneller':'Puls: ruhig';
-    else st.textContent=player.sneak?'Du schleichst':'Unterwegs';
+    if(seeker&&seeker.state==='chase'){st.textContent='He has seen you!';st.classList.add('alarm');}
+    else if(player.hidden)st.textContent=d<3?'Heartbeat: RACING':d<7?'Heartbeat: faster':'Heartbeat: calm';
+    else st.textContent=player.sneak?'Sneaking':'On the move';
     if(player.hidden&&d<3)st.classList.add('alarm');
     const left=hiders.filter(h=>h.state!=='found').length;
-    st.textContent+=` · Andere: ${left}/${hiders.length}`;
+    st.textContent+=` · Others: ${left}/${hiders.length}`;
   } else {
     const n=hiders.filter(h=>h.state==='found').length;
-    st.textContent=phase==='count'?'Augen zu …':`Gefunden: ${n}/4`;
+    st.textContent=phase==='count'?'Eyes closed …':`Found: ${n}/4`;
   }
   tm.textContent=Math.ceil(timer)+' s';
 }

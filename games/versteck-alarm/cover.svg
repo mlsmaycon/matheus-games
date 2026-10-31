@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <rect width="640" height="400" fill="#0f1b2b"/>
+  <!-- Boden / Raum von oben -->
+  <rect x="40" y="40" width="560" height="320" rx="10" fill="#ead2ad"/>
+  <g stroke="#00000014" stroke-width="3"><path d="M40 80h560M40 120h560M40 160h560M40 200h560M40 240h560M40 280h560M40 320h560"/></g>
+  <rect x="40" y="40" width="560" height="320" rx="10" fill="none" stroke="#7d6a5a" stroke-width="14"/>
+  <!-- Schrank -->
+  <rect x="470" y="56" width="110" height="70" rx="6" fill="#a8724a" stroke="#5a3a22" stroke-width="4"/>
+  <path d="M525 60v62" stroke="#5a3a22" stroke-width="4"/>
+  <!-- Augen im Schrankspalt -->
+  <g><circle cx="516" cy="92" r="6" fill="#fff"/><circle cx="534" cy="92" r="6" fill="#fff"/><circle cx="517" cy="93" r="3" fill="#0f1b2b"/><circle cx="535" cy="93" r="3" fill="#0f1b2b"/></g>
+  <!-- Sofa -->
+  <rect x="70" y="250" width="170" height="56" rx="12" fill="#d0556a" stroke="#8c3445" stroke-width="4"/>
+  <rect x="70" y="290" width="170" height="20" rx="8" fill="#b8455a"/>
+  <!-- Kind hinter dem Sofa (Kopf + Haare) -->
+  <circle cx="200" cy="240" r="16" fill="#ffd9b8" stroke="#0f1b2b" stroke-width="3"/>
+  <path d="M184 238a16 16 0 0 1 32 0z" fill="#5a3a22"/>
+  <!-- Pflanze -->
+  <circle cx="420" cy="310" r="26" fill="#3f9c4e"/><circle cx="436" cy="296" r="16" fill="#57bb66"/>
+  <!-- Lichtkegel -->
+  <path d="M300 214L560 330L520 380L260 380z" fill="#ffe27a" opacity=".38"/>
+  <path d="M300 214L470 140L560 330z" fill="#ffe27a" opacity=".24"/>
+  <!-- Sucher von oben -->
+  <g transform="translate(300 214)">
+    <ellipse cx="0" cy="22" rx="26" ry="9" fill="#0004"/>
+    <circle r="26" fill="#e0473d" stroke="#0f1b2b" stroke-width="4"/>
+    <circle cy="-4" r="17" fill="#f2c9a0" stroke="#0f1b2b" stroke-width="3"/>
+    <path d="M-17-8h34" stroke="#fff" stroke-width="6"/>
+    <rect x="18" y="4" width="26" height="10" rx="3" fill="#2b2f3a" transform="rotate(28)"/>
+  </g>
+  <!-- Fragezeichen -->
+  <text x="300" y="168" fill="#ffcf3d" font-family="Arial Rounded MT Bold,Trebuchet MS,sans-serif" font-size="52" font-weight="700" text-anchor="middle" stroke="#0f1b2b" stroke-width="6" paint-order="stroke">?</text>
+</svg>

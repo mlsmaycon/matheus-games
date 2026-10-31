@@ -1,28 +1,49 @@
-# Matheus Games
+# Matheus World
 
-Browser games built with plain HTML, CSS and JavaScript. No build step: open a game's `index.html` in a browser and play.
+Free 3D browser games by Matheus, in German and English. A static website that runs on GitHub Pages: no build step, no server, no outside requests.
+
+**Live (once GitHub Pages is on):** https://mlsmaycon.github.io/matheus-games/
 
 ## Games
 
-### Brainrot-Raub (`brainrot-raub/`)
+| Game | German | English | FSK |
+|---|---|---|---|
+| Brainrot-Raub / Brainrot Heist | [`games/brainrot-raub/de`](games/brainrot-raub/de/index.html) | [`games/brainrot-raub/en`](games/brainrot-raub/en/index.html) | 6 |
+| Versteck-Alarm / Hide Alarm | [`games/versteck-alarm/de`](games/versteck-alarm/de/index.html) | [`games/versteck-alarm/en`](games/versteck-alarm/en/index.html) | 0 |
 
-A 3D game in the style of "Steal a Brainrot". Buy creatures off the conveyor belt, collect the money they earn, steal the best ones from three rival bases, and protect your own base with a laser shield.
+**Brainrot-Raub:** buy creatures off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
-- **Tech:** one HTML file, plain JavaScript, [three.js r128](https://threejs.org/) from a CDN for 3D rendering
-- **Controls:** WASD / arrow keys or drag on the playfield to move, E to buy or steal, Q to sell, mouse wheel to zoom
-- **Saving:** progress is stored in the browser's localStorage
-- `qr-code.png` links to the hosted version on claude.ai (only works for people the game has been shared with)
+**Versteck-Alarm:** hide-and-seek in a house with garden and garage. Hide with three AI kids from a seeker with a flashlight, or seek four kids yourself using only giggle sounds as hints.
 
-Language of the game: German.
+## How the site works
 
-### Versteck-Alarm (`versteck-alarm/`)
+- **Age and consent:** on the first visit the start page asks for the player’s age and agreement to the Terms of Use and Privacy Policy (plus a parent’s confirmation under 16). Games rated above the player’s age are locked. Game pages check this with `assets/gate.js` and send visitors back to the start page if needed.
+- **FSK ratings:** every game has an FSK level (0/6/12/16/18). They are our own assessment, not an official FSK/USK review, and the site says so.
+- **Languages:** the start page and legal pages switch between German and English. Every game exists in both languages (see [CONTRIBUTING.md](CONTRIBUTING.md) – this is the rule for all new games).
+- **Privacy:** everything is stored in the browser’s localStorage only. No cookies, no tracking, no CDNs or web fonts; three.js r128 is served from `assets/vendor/`.
 
-A 3D hide-and-seek game in a house with a bedroom, bathroom, living room, kitchen, garden and garage, with 22 hiding spots.
+## Turn on GitHub Pages
 
-- **Hide mode:** you and three AI kids hide while the seeker counts to 12. Survive 100 seconds. The seeker's flashlight cone shows where he is looking, running makes noise, and kids who panic may bolt from their spot.
-- **Seek mode:** find four hidden kids in 120 seconds. Two of them are runners who jump out and flee. Hints are sound only: the giggle button (or H) makes the nearest kid giggle, panned left/right by direction and louder when closer. Hidden kids also rustle or giggle on their own.
-- **Tech:** one HTML file, plain JavaScript, three.js r128 from a CDN, Web Audio for sounds
-- **Controls:** WASD / arrow keys or drag on the playfield, E to hide or search, Shift to sneak, H to hear a giggle, M to toggle sound, mouse wheel to zoom
-- **Saving:** records are stored in the browser's localStorage
+1. Repository **Settings → Pages**.
+2. Source: **Deploy from a branch**, branch `main`, folder `/ (root)`.
+3. The site appears at `https://mlsmaycon.github.io/matheus-games/` after a minute or two.
 
-Language of the game: German.
+GitHub Pages for a **private** repository needs a paid GitHub plan (Pro, Team or Enterprise). On a free plan, make the repository public or keep it private and host elsewhere.
+
+## Before going public
+
+Fill in the placeholders marked `[ … ]` in `imprint.html` and `privacy.html` (name, address, email). The legal texts are a starting point, not legal advice.
+
+## Run locally
+
+Any static file server works, for example:
+
+```
+python3 -m http.server 8000
+```
+
+then open http://localhost:8000/.
+
+## Licences
+
+Games and artwork © Matheus. three.js © three.js authors, MIT licence (`assets/vendor/three.LICENSE.txt`).
