@@ -2,7 +2,7 @@
 
 Free 3D browser games by Matheus, in German and English. A static website that runs on GitHub Pages: no build step, no server, no outside requests.
 
-**Live (once GitHub Pages is on):** https://mlsmaycon.github.io/matheus-games/
+**Live:** https://mycraftgames.com/ (custom domain via `CNAME`; also https://mlsmaycon.github.io/matheus-games/)
 
 ## Games
 
@@ -35,7 +35,7 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 
 1. Repository **Settings → Pages**.
 2. Source: **Deploy from a branch**, branch `main`, folder `/ (root)`.
-3. The site appears at `https://mlsmaycon.github.io/matheus-games/` after a minute or two.
+3. The site appears at `https://mycraftgames.com/` after a minute or two (the `CNAME` file sets the custom domain).
 
 GitHub Pages for a **private** repository needs a paid GitHub plan (Pro, Team or Enterprise). On a free plan, make the repository public or keep it private and host elsewhere.
 
