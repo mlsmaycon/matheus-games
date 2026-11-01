@@ -83,6 +83,9 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 .item kbd{font-family:inherit;font-size:11px;color:var(--muted);border:1px solid var(--panel-2);border-radius:5px;padding:0 5px;margin-left:4px}
 .item[aria-pressed="true"]{border-color:var(--moss);background:var(--panel-2)}
 .item.poor span{color:var(--danger)}
+.weapons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.item.wpn[aria-pressed="true"]{border-color:var(--torch)}
+.item.wpn.owned span{color:var(--moss)}
 .controls{display:flex;gap:10px;flex-wrap:wrap}
 .btn{font-family:var(--display);font-weight:800;font-size:17px;border:0;border-radius:14px;padding:12px 16px;cursor:pointer;color:#171a33;background:var(--torch);box-shadow:0 4px 0 var(--torch-dark);flex:1 1 130px}
 .btn.alt{background:var(--panel-2);color:var(--ink);box-shadow:0 4px 0 #0d0f22}
@@ -128,6 +131,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
         <li data-t="step1" data-html="1"></li>
         <li data-t="step2" data-html="1"></li>
         <li data-t="step3" data-html="1"></li>
+        <li data-t="step4" data-html="1"></li>
       </ol>
       <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
     </div>
@@ -139,6 +143,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
   </div>
 
   <div class="items" id="items" role="group"></div>
+  <div class="weapons" id="weapons" role="group"></div>
   <div class="controls">
     <button class="btn" id="act" type="button" data-t="act">Aktion · E</button>
     <button class="btn moss" id="night" type="button" data-t="startNight">Nacht starten · N</button>
@@ -161,7 +166,7 @@ const TXT={
     step3:'<b>Nacht:</b> Hau die Monster mit dem Hammer (<b>E</b>). Fackeln brennen sie, Türme schießen.',
     go:'Los geht’s',again:'Nochmal',endTitle:'Das Haus ist gefallen!',
     act:'Aktion · E',actShort:'Aktion',startNight:'Nacht starten · N',soundOn:'Ton an · M',soundOff:'Ton aus · M',
-    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder haut (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>N</b> startet die Nacht früher.',
+    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe. <b>N</b> startet die Nacht früher.',
     noload:'3D konnte nicht geladen werden.',
     i_wood:'Holzwand',i_stone:'Steinmauer',i_torch:'Fackel',i_tower:'Turm',i_demolish:'Abreißen',
     c_w:'{n} Holz',c_s:'{n} Stein',c_ws:'{w} Holz + {s} Stein',c_refund:'gibt die Hälfte zurück',
@@ -172,7 +177,12 @@ const TXT={
     houseHit:'Dein Haus wird angegriffen!',down:'Autsch! Du bist umgefallen.',up:'Weiter geht’s!',
     bats:'Fledermäuse! Die fliegen über Mauern.',grummel:'Ein Grummel! Der ist stark.',broke:'Eine Mauer ist kaputt!',
     end:'Du hast {n} Nächte überstanden und {k} Monster besiegt.',record:' Neuer Rekord!',
-    tipStart:'Hack ein paar Bäume und bau Mauern ums Haus!'
+    tipStart:'Hack ein paar Bäume und bau Mauern ums Haus!',
+    step4:'<b>Waffen & Tiere:</b> Bau dir Schwert oder Bogen (<b>Q</b> wechselt). Freunde dich mit dem Hund an, und sammel die Eier der Hühner.',
+    w_hammer:'Hammer',w_sword:'Schwert',w_bow:'Bogen',wReady:'bereit',wEquip:'in der Hand',
+    wBought:'{w} gebaut! Drück Q zum Wechseln.',wPoor:'Zu wenig Material für {w}.',
+    dogSeen:'Da hinten sitzt ein Hund! Geh hin und drück E.',dogFriend:'Bello ist jetzt dein Freund! Er hilft dir nachts.',hDog:'[E] Hund anfreunden',dogName:'Bello',
+    egg:'Ein Ei! +1 Herz',eggFull:'Ein Ei! Lecker.',noTarget:'Kein Monster in Reichweite'
   },
   en:{
     title:'Night Fort',sub:'Build by day, defend by night.',statNights:'Nights',statBest:'Best',wood:'wood',stone:'stone',house:'Your house',
@@ -182,7 +192,7 @@ const TXT={
     step3:'<b>Night:</b> Bonk the monsters with your hammer (<b>E</b>). Torches burn them, towers shoot.',
     go:'Let’s go',again:'Play again',endTitle:'The house has fallen!',
     act:'Action · E',actShort:'Action',startNight:'Start night · N',soundOn:'Sound on · M',soundOff:'Sound off · M',
-    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or bonks (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>N</b> starts the night early.',
+    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons. <b>N</b> starts the night early.',
     noload:'3D could not be loaded.',
     i_wood:'Wood wall',i_stone:'Stone wall',i_torch:'Torch',i_tower:'Tower',i_demolish:'Demolish',
     c_w:'{n} wood',c_s:'{n} stone',c_ws:'{w} wood + {s} stone',c_refund:'refunds half',
@@ -193,7 +203,12 @@ const TXT={
     houseHit:'Your house is under attack!',down:'Ouch! You got knocked down.',up:'Back on your feet!',
     bats:'Bats! They fly over walls.',grummel:'A Grumble! That one is strong.',broke:'A wall broke!',
     end:'You survived {n} nights and defeated {k} monsters.',record:' New record!',
-    tipStart:'Chop some trees and build walls around the house!'
+    tipStart:'Chop some trees and build walls around the house!',
+    step4:'<b>Weapons & animals:</b> Craft a sword or bow (<b>Q</b> switches). Make friends with the dog and collect the hens’ eggs.',
+    w_hammer:'Hammer',w_sword:'Sword',w_bow:'Bow',wReady:'ready',wEquip:'in hand',
+    wBought:'{w} crafted! Press Q to switch.',wPoor:'Not enough material for the {w}.',
+    dogSeen:'There’s a dog over there! Walk to it and press E.',dogFriend:'Bello is your friend now! He helps you at night.',hDog:'[E] Make friends with the dog',dogName:'Bello',
+    egg:'An egg! +1 heart',eggFull:'An egg! Yum.',noTarget:'No monster in range'
   }
 };
 const t=(k,v)=>{let s=(TXT[LANG][k]??TXT.de[k]??k);if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s;};
@@ -368,11 +383,16 @@ function buildPlayer(){
   const hammer=new THREE.Group();hammer.position.set(0,-0.55,0.1);armR.add(hammer);
   hammer.add(part(G.cyl,'#7a4a2a',0.05,0.7,0.05,0,0,0.25).rotateX(Math.PI/2));
   hammer.add(part(G.box,'#6c717c',0.3,0.24,0.24,0,0,0.6));
+  const sword=new THREE.Group();sword.position.set(0,-0.55,0.1);armR.add(sword);sword.visible=false;
+  sword.add(part(G.box,'#5a3a22',0.08,0.08,0.22,0,0,0.05),part(G.box,'#ffd23f',0.34,0.06,0.06,0,0,0.17),part(G.box,'#dfe6f0',0.08,0.03,0.85,0,0,0.62));
+  const bow=new THREE.Group();bow.position.set(0,-0.5,0.15);armR.add(bow);bow.visible=false;
+  const arc=new THREE.Mesh(new THREE.TorusGeometry(0.45,0.035,6,16,Math.PI),M('#8c5e3a'));arc.rotation.y=Math.PI/2;arc.rotation.z=Math.PI/2;bow.add(arc);
+  bow.add(part(G.cyl,'#f6f1e4',0.01,0.9,0.01,0,0,0,false));
   g.add(part(G.sph,'#ffd9b8',0.42,0.42,0.42,0,1.58,0));
   g.add(part(G.sph,'#ffffff',0.1,0.12,0.07,-0.15,1.63,0.37,false),part(G.sph,'#ffffff',0.1,0.12,0.07,0.15,1.63,0.37,false));
   g.add(part(G.sph,'#171a33',0.05,0.06,0.04,-0.15,1.63,0.43,false),part(G.sph,'#171a33',0.05,0.06,0.04,0.15,1.63,0.43,false));
   g.add(part(G.half,'#ffd23f',0.46,0.34,0.46,0,1.72,0),part(G.cyl,'#ffd23f',0.52,0.04,0.52,0,1.72,0.05));
-  outer.userData={inner:g,legs,armL,armR};
+  outer.userData={inner:g,legs,armL,armR,tools:{hammer,sword,bow}};
   scene.add(outer);return outer;
 }
 function eyes(g,y,z,s,col){g.add(part(G.sph,'#ffffff',0.11*s,0.13*s,0.07*s,-0.16*s,y,z,false),part(G.sph,'#ffffff',0.11*s,0.13*s,0.07*s,0.16*s,y,z,false));
@@ -404,6 +424,32 @@ function buildMonster(type){
   Object.assign(outer.userData,{inner:g,body,baseEm:body.emissive.clone()});
   scene.add(outer);return outer;
 }
+function buildDog(){
+  const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
+  const fur='#b8783a',dark='#7a4a22';
+  g.add(part(G.sph,fur,0.32,0.28,0.5,0,0.55,0));
+  const legs=[];[[-0.17,0.25],[0.17,0.25],[-0.17,-0.25],[0.17,-0.25]].forEach(([x,z])=>{const l=part(G.cyl,fur,0.07,0.4,0.07,x,0.2,z);legs.push(l);g.add(l);});
+  const head=new THREE.Group();head.position.set(0,0.85,0.45);g.add(head);
+  head.add(part(G.sph,fur,0.24,0.22,0.24,0,0,0),part(G.sph,'#e8c08a',0.13,0.1,0.14,0,-0.06,0.2),part(G.sph,'#171a33',0.05,0.04,0.04,0,-0.02,0.33,false));
+  head.add(part(G.sph,'#171a33',0.035,0.04,0.03,-0.1,0.07,0.2,false),part(G.sph,'#171a33',0.035,0.04,0.03,0.1,0.07,0.2,false));
+  head.add(part(G.sph,dark,0.07,0.16,0.05,-0.2,0.05,0),part(G.sph,dark,0.07,0.16,0.05,0.2,0.05,0));
+  const tail=part(G.cyl,fur,0.04,0.35,0.04,0,0.75,-0.5);tail.rotation.x=-0.6;g.add(tail);
+  g.add(part(G.cyl,'#e8322a',0.17,0.05,0.17,0,0.72,0.38,false));
+  outer.userData={inner:g,legs,tail,head};
+  scene.add(outer);return outer;
+}
+function buildHen(){
+  const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
+  const legs=[part(G.cyl,'#ff9a1f',0.03,0.25,0.03,-0.08,0.12,0),part(G.cyl,'#ff9a1f',0.03,0.25,0.03,0.08,0.12,0)];g.add(...legs);
+  g.add(part(G.sph,'#c86a2a',0.26,0.23,0.32,0,0.42,0));
+  const tail=part(G.cone,'#8a3a1a',0.12,0.25,0.1,0,0.6,-0.3);tail.rotation.x=-0.7;g.add(tail);
+  const head=new THREE.Group();head.position.set(0,0.7,0.2);g.add(head);
+  head.add(part(G.sph,'#c86a2a',0.13,0.14,0.13,0,0,0),part(G.sph,'#e8322a',0.05,0.06,0.05,0,0.14,0,false));
+  const beak=part(G.cone,'#ff9a1f',0.04,0.1,0.04,0,-0.01,0.15,false);beak.rotation.x=Math.PI/2;head.add(beak);
+  head.add(part(G.sph,'#171a33',0.025,0.03,0.025,-0.09,0.03,0.07,false),part(G.sph,'#171a33',0.025,0.03,0.025,0.09,0.03,0.07,false));
+  outer.userData={inner:g,legs,head};
+  scene.add(outer);return outer;
+}
 const MONSTER={
   slime:{hp:42,speed:1.7,dmg:6,hurt:1,r:0.45},
   grummel:{hp:130,speed:1.15,dmg:18,hurt:2,r:0.65},
@@ -428,6 +474,14 @@ const arrowMat=new THREE.MeshBasicMaterial({color:'#5a3a22'});
 let phase='start',time=0,day=1,nights=0,kills=0,dayT=50,isNight=false,nightAmt=0,spawnQueue=[],spawnT=0,duskToast=false;
 let wood=6,stone=0,houseHp=400;const HOUSE_MAX=400;
 let monsters=[],floats=[],selected=null,actCd=0,houseToastCd=0;
+const WEAPONS={hammer:{dmg:26,reach:1.9,cd:0.38},sword:{dmg:42,reach:2.4,cd:0.3,w:6,s:6},bow:{dmg:22,range:9,cd:0.55,w:8,s:4,ranged:true}};
+const WORDER=['hammer','sword','bow'];
+let weapon='hammer',owned={hammer:true,sword:false,bow:false};
+const dog={x:12.5,z:8.5,face:0,friend:false,moving:0,biteCd:0,stuck:0,seen:false};
+dog.mesh=buildDog();
+const hens=[0,1].map(i=>{const h={x:HC.x+(i?2.2:-2.2),z:HC.z+2,face:0,tx:0,tz:0,wt:0,moving:0,eggT:20+i*8,peck:0};h.mesh=buildHen();return h;});
+let eggs=[];
+const eggGeo=new THREE.SphereGeometry(1,12,10);
 let best=0,soundOn=true;
 try{best=(JSON.parse(localStorage.getItem('nachtburg-v1')||'{}').best)||0;}catch(e){}
 function saveRec(){try{localStorage.setItem('nachtburg-v1',JSON.stringify({best}));}catch(e){}}
@@ -469,6 +523,9 @@ const sfx={
   hurt(){tone('square',400,180,0,0.25,0.12,1500);},
   arrow(){tone('triangle',900,400,0,0.12,0.1);},
   breakw(){noise(0,0.35,0.35,700);tone('sine',160,60,0,0.35,0.2);},
+  bark(){tone('square',520,320,0,0.1,0.12,1600);tone('square',560,330,0.16,0.1,0.12,1600);},
+  cluck(){for(let i=0;i<2;i++)tone('square',640,380,i*0.09,0.07,0.06,1800);},
+  egg(){tone('triangle',660,990,0,0.15,0.14);tone('sine',1320,0,0.12,0.2,0.1);},
   night(){tone('sine',220,110,0,1.6,0.18);tone('sine',330,165,0.1,1.6,0.1);tone('sine',500,700,1.2,0.5,0.08);tone('sine',700,520,1.7,0.9,0.08);},
   dawn(){[784,988,1175,1568].forEach((f,i)=>tone('sine',f,f*1.06,i*0.12,0.12,0.12));[1318,1568].forEach((f,i)=>tone('sine',f,f*1.1,0.7+i*0.1,0.1,0.1));}
 };
@@ -485,6 +542,24 @@ ORDER.forEach((k,i)=>{
   b.addEventListener('click',()=>select(selected===k?null:k));
   itemsBox.appendChild(b);
 });
+const wpnBox=$('weapons');
+WORDER.forEach(k=>{
+  const b=document.createElement('button');b.type='button';b.className='item wpn';b.dataset.w=k;
+  b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=t('w_'+k);
+  b.addEventListener('click',()=>pickWeapon(k));
+  wpnBox.appendChild(b);
+});
+function wCost(k){const w=WEAPONS[k];return t('c_ws',{w:w.w,s:w.s});}
+function pickWeapon(k){
+  audioInit();
+  if(!owned[k]){
+    const w=WEAPONS[k];
+    if(wood<w.w||stone<w.s){toast(t('wPoor',{w:t('w_'+k)}),'#ff6b6b');sfx.denied();return;}
+    wood-=w.w;stone-=w.s;owned[k]=true;toast(t('wBought',{w:t('w_'+k)}),'#ffb340');sfx.build();
+  }
+  weapon=k;sfx.swing();
+}
+function cycleWeapon(){const list=WORDER.filter(k=>owned[k]);const i=list.indexOf(weapon);weapon=list[(i+1)%list.length];sfx.swing();}
 function select(k){selected=k;itemsBox.querySelectorAll('.item').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.k===k)));}
 function afford(k){const it=ITEMS[k];return k==='demolish'||(wood>=it.w&&stone>=it.s);}
 
@@ -502,7 +577,14 @@ function startGame(){
   day=1;nights=0;kills=0;dayT=50;isNight=false;spawnQueue=[];duskToast=false;
   wood=6;stone=0;houseHp=HOUSE_MAX;select(null);
   Object.assign(player,{x:HC.x,z:HC.z+3,face:0,hearts:5,down:0,inv:0,swing:0});
+  weapon='hammer';owned={hammer:true,sword:false,bow:false};
+  eggs.forEach(e=>scene.remove(e.mesh));eggs=[];
+  // Hund sitzt irgendwo im Wald
+  for(let k=0;k<200;k++){const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<10||d>15||kind[idx(i,j)]!==EMPTY)continue;dog.x=cx(i);dog.z=cz(j);break;}
+  Object.assign(dog,{friend:false,seen:false,biteCd:0,stuck:0});
+  hens.forEach((h,i)=>{h.x=HC.x+(i?2.4:-2.4);h.z=HC.z+2.2;h.eggT=18+i*9;});
   phase='play';sfx.dawn();toast(t('tipStart'),'#7fd16b');
+  setTimeout(()=>{if(phase==='play'&&!dog.friend)toast(t('dogSeen'),'#ffb340');},6000);
 }
 function endGame(){
   phase='end';
@@ -575,15 +657,25 @@ function canPlace(i,j){
   return 'ok';
 }
 function nearestNature(){let best=null,bd=1.55;for(const o of nature.values()){if(!o.alive)continue;const d=dist2(player,{x:cx(o.i),z:cz(o.j)});if(d<bd){bd=d;best=o;}}return best;}
-function monstersInReach(){return monsters.filter(m=>dist2(m,player)<(m.type==='bat'?2.1:1.9));}
+function monstersInReach(){const r=WEAPONS[weapon].reach||1.9;return monsters.filter(m=>dist2(m,player)<(m.type==='bat'?r+0.2:r));}
+function bowTarget(){let best=null,bd=WEAPONS.bow.range;for(const m of monsters){const d=dist2(m,player);if(d<bd){bd=d;best=m;}}return best;}
 function action(){
   if(phase!=='play'||player.down>0||actCd>0)return;
   audioInit();
   // Monster zuerst
-  const ms=monstersInReach();
-  if(ms.length&&!(selected&&!isNight)){
-    actCd=0.38;player.swing=0.3;sfx.swing();
-    ms.forEach(m=>{m.hp-=26;m.hit=0.15;const d=dist2(m,player)||1;m.kx=(m.x-player.x)/d*5;m.kz=(m.z-player.z)/d*5;});
+  const W=WEAPONS[weapon],fighting=!(selected&&!isNight);
+  if(W.ranged&&fighting){
+    const tg=bowTarget();
+    if(tg){
+      actCd=W.cd;player.swing=0.2;player.face=Math.atan2(tg.x-player.x,tg.z-player.z);sfx.arrow();
+      const a={x:player.x,y:1.2,z:player.z,tgt:tg,dmg:W.dmg,mesh:new THREE.Mesh(arrowGeo,arrowMat)};scene.add(a.mesh);arrows.push(a);
+      return;
+    }
+  }
+  const ms=W.ranged?[]:monstersInReach();
+  if(ms.length&&fighting){
+    actCd=W.cd;player.swing=0.3;sfx.swing();
+    ms.forEach(m=>{m.hp-=W.dmg;m.hit=0.15;const d=dist2(m,player)||1;m.kx=(m.x-player.x)/d*5;m.kz=(m.z-player.z)/d*5;});
     const f=ms[0];player.face=Math.atan2(f.x-player.x,f.z-player.z);
     setTimeout(()=>sfx.hit(),60);
     for(const m of ms.slice())if(m.hp<=0)killMonster(m);
@@ -603,6 +695,10 @@ function action(){
     b.mesh.position.set(cx(i),0,cz(j));scene.add(b.mesh);blocks.set(n,b);kind[n]=BLOCK;flowDirty=true;
     puff(cx(i),0.3,cz(j),5,'#e8dcc4');sfx.build();actCd=0.22;
     if(!afford(selected))select(selected);
+    return;
+  }
+  if(!dog.friend&&dist2(player,dog)<1.7){
+    dog.friend=true;actCd=0.4;sfx.bark();toast(t('dogFriend'),'#7fd16b');floatTxt(dog.x,dog.z,'♥','#ff6b6b',1.6,1.4);
     return;
   }
   const o=nearestNature();
@@ -638,6 +734,7 @@ window.addEventListener('keydown',e=>{
     if(k==='e'||k===' ')action();
     if(k==='m')$('sound').click();
     if(k==='n')startNight();
+    if(k==='q')cycleWeapon();
     if(k==='b'||k==='escape')select(null);
     const num=parseInt(k,10);if(num>=1&&num<=5)select(selected===ORDER[num-1]?null:ORDER[num-1]);
   }
@@ -727,6 +824,38 @@ function update(dt){
     }
     m.bite=Math.max(0,(m.bite||0)-dt);
   }
+  // Hund
+  dog.biteCd=Math.max(0,dog.biteCd-dt);dog.moving=0;
+  if(dog.friend){
+    let tg=null,bd=7;
+    if(isNight)for(const m of monsters){if(MONSTER[m.type].fly)continue;const d=dist2(m,dog);if(d<bd&&dist2(m,player)<10){bd=d;tg=m;}}
+    let gx,gz,sp;
+    if(tg){gx=tg.x;gz=tg.z;sp=5.6;
+      if(bd<0.95&&dog.biteCd<=0){dog.biteCd=0.6;tg.hp-=14;tg.hit=0.15;sfx.bark();if(tg.hp<=0)killMonster(tg);}}
+    else{gx=player.x-Math.sin(player.face)*1.5;gz=player.z-Math.cos(player.face)*1.5;sp=Math.min(6,dist2(dog,{x:gx,z:gz})*2.5);}
+    const vx=gx-dog.x,vz=gz-dog.z,vl=Math.hypot(vx,vz);
+    if(vl>(tg?0.7:0.6)){const ox=dog.x,oz=dog.z;dog.x+=vx/vl*sp*dt;dog.z+=vz/vl*sp*dt;dog.face=Math.atan2(vx,vz);dog.moving=1;collideTiles(dog,0.3);
+      if(Math.hypot(dog.x-ox,dog.z-oz)<sp*dt*0.3)dog.stuck+=dt;else dog.stuck=Math.max(0,dog.stuck-dt);}
+    if(dist2(dog,player)>14||dog.stuck>2.5){dog.x=player.x+0.8;dog.z=player.z+0.8;dog.stuck=0;collideTiles(dog,0.3);puff(dog.x,0.5,dog.z,4,'#e8dcc4');}
+  } else {
+    const d=dist2(dog,player);if(d<6)dog.face=Math.atan2(player.x-dog.x,player.z-dog.z);
+  }
+  // Hühner & Eier
+  for(const h of hens){
+    h.wt-=dt;h.peck=Math.max(0,h.peck-dt);h.moving=0;
+    if(h.wt<=0){h.wt=2+Math.random()*3;if(Math.random()<0.35){h.tx=h.x;h.tz=h.z;h.peck=1.2;}else{const a=Math.random()*Math.PI*2,r=1.5+Math.random()*3.5;h.tx=HC.x+Math.cos(a)*r;h.tz=HC.z+Math.sin(a)*r;}}
+    const vx=h.tx-h.x,vz=h.tz-h.z,vl=Math.hypot(vx,vz);
+    if(vl>0.2){h.x+=vx/vl*0.9*dt;h.z+=vz/vl*0.9*dt;h.face=Math.atan2(vx,vz);h.moving=1;}
+    collideTiles(h,0.25);
+    h.eggT-=dt;
+    if(h.eggT<=0){h.eggT=26+Math.random()*12;if(eggs.length<4){const e={x:h.x,z:h.z,mesh:new THREE.Mesh(eggGeo,M('#fff6e0'))};e.mesh.scale.set(0.12,0.15,0.12);e.mesh.position.set(e.x,0.15,e.z);e.mesh.castShadow=true;scene.add(e.mesh);eggs.push(e);sfx.cluck();}}
+  }
+  for(const e of eggs.slice()){
+    if(player.down<=0&&dist2(e,player)<0.8){
+      scene.remove(e.mesh);eggs.splice(eggs.indexOf(e),1);sfx.egg();
+      if(player.hearts<5){player.hearts++;floatTxt(e.x,e.z,'+♥','#ff6b6b',1.8,1.2);toast(t('egg'),'#fff6e0');}else{floatTxt(e.x,e.z,t('eggFull'),'#fff6e0',1.8,1.2);}
+    }
+  }
   // Fackeln & Türme
   for(const b of blocks.values()){
     b.shake=Math.max(0,b.shake-dt);b.pop=Math.max(0,b.pop-dt);
@@ -740,7 +869,7 @@ function update(dt){
   for(const a of arrows.slice()){
     if(!monsters.includes(a.tgt)){scene.remove(a.mesh);arrows.splice(arrows.indexOf(a),1);continue;}
     const ty=a.tgt.y+0.6,dx=a.tgt.x-a.x,dy=ty-a.y,dz=a.tgt.z-a.z,d=Math.hypot(dx,dy,dz);
-    if(d<0.4){a.tgt.hp-=20;a.tgt.hit=0.15;if(a.tgt.hp<=0)killMonster(a.tgt);scene.remove(a.mesh);arrows.splice(arrows.indexOf(a),1);continue;}
+    if(d<0.4){a.tgt.hp-=(a.dmg||20);a.tgt.hit=0.15;if(a.tgt.hp<=0)killMonster(a.tgt);scene.remove(a.mesh);arrows.splice(arrows.indexOf(a),1);continue;}
     const s=Math.min(d,16*dt);a.x+=dx/d*s;a.y+=dy/d*s;a.z+=dz/d*s;
     a.mesh.position.set(a.x,a.y,a.z);a.mesh.lookAt(a.tgt.x,ty,a.tgt.z);
   }
@@ -770,6 +899,17 @@ function syncWorld(){
   u.armR.rotation.x=player.swing>0?-2.4+(0.3-player.swing)/0.3*3.2:sw*0.6;
   u.inner.rotation.x=player.down>0?-1.4:0;u.inner.position.y=player.down>0?0.3:0;
   m.visible=!(player.inv>0&&player.down<=0&&Math.floor(time*10)%2===0);
+  for(const k of WORDER)u.tools[k].visible=k===weapon;
+  // Hund
+  const du=dog.mesh.userData;dog.mesh.position.set(dog.x,0,dog.z);turn(dog.mesh,dog.face,0.25);
+  const dsw=dog.moving?Math.sin(time*18)*0.7:0;du.legs.forEach((l,i)=>l.rotation.x=(i%2?dsw:-dsw)*(i<2?1:-1));
+  du.tail.rotation.z=Math.sin(time*(dog.friend?18:6))*0.6;
+  du.inner.position.y=dog.friend?0:Math.abs(Math.sin(time*2))*0.02;
+  du.head.rotation.x=dog.biteCd>0.4?0.4:0;
+  // Hühner
+  for(const h of hens){const hu=h.mesh.userData;h.mesh.position.set(h.x,0,h.z);turn(h.mesh,h.face,0.2);
+    const hs=h.moving?Math.sin(time*14)*0.7:0;hu.legs[0].rotation.x=hs;hu.legs[1].rotation.x=-hs;hu.head.rotation.x=h.peck>0?Math.max(0,Math.sin(time*14))*0.9:0;}
+  for(const e of eggs){e.mesh.rotation.z=Math.sin(time*3+e.x)*0.15;}
   // Natur
   for(const o of nature.values()){
     const iu=o.mesh.userData.inner;
@@ -838,6 +978,7 @@ function hint(){
     if(!afford(selected))return {t:t('hPoor'),c:'#ff6b6b'};
     return {t:t('hBuild',{item:t('i_'+selected)}),c:'#7fd16b'};
   }
+  if(!dog.friend&&dist2(player,dog)<1.7)return {t:t('hDog'),c:'#ffb340'};
   const o=nearestNature();
   if(o)return o.type==='tree'?{t:t('hChop'),c:'#e8b07a'}:{t:t('hMine'),c:'#c7ccd8'};
   return null;
@@ -845,6 +986,7 @@ function hint(){
 function drawLabels(){
   li=0;cw=stage.clientWidth;ch=stage.clientHeight;
   for(const f of floats)lab(f.txt,f.x,f.h,f.z,f.col,15);
+  if(phase==='play')lab(dog.friend?t('dogName'):'?',dog.x,1.5,dog.z,dog.friend?'#ffd9a0':'#ffb340',dog.friend?11:18);
   const h=hint();if(h)lab(h.t,player.x,2.8,player.z,h.c,13,true);
   for(const mo of monsters)if(mo.hp<mo.max){const k=Math.max(0,mo.hp/mo.max);lab('▮'.repeat(Math.ceil(k*5))+'▯'.repeat(5-Math.ceil(k*5)),mo.x,mo.y+(mo.type==='grummel'?2.3:mo.type==='bat'?0.6:1.2),mo.z,k>0.5?'#7fd16b':'#ff6b6b',10);}
   for(let i=li;i<pool.length;i++){if(!pool[i]._s.h){pool[i].hidden=true;pool[i]._s.h=true;}}
@@ -859,6 +1001,8 @@ function drawMini(){
   for(const b of blocks.values()){mc.fillStyle=b.type==='wood'?'#c08a5a':b.type==='stone'?'#d0d4dc':b.type==='torch'?'#ffb340':'#ffffff';mc.fillRect(b.i,b.j,1,1);}
   mc.fillStyle='#b8452a';mc.fillRect(HOUSE_T.i0,HOUSE_T.j0,3,3);
   for(const m of monsters){mc.fillStyle=m.type==='slime'?'#5fd35a':m.type==='grummel'?'#b08aff':'#ff6b6b';mc.beginPath();mc.arc(m.x+GW/2,m.z+GH/2,0.6,0,7);mc.fill();}
+  mc.fillStyle='#e8a060';mc.beginPath();mc.arc(dog.x+GW/2,dog.z+GH/2,0.6,0,7);mc.fill();
+  mc.fillStyle='#ffffff';for(const e of eggs){mc.beginPath();mc.arc(e.x+GW/2,e.z+GH/2,0.4,0,7);mc.fill();}
   mc.fillStyle='#ffd23f';mc.strokeStyle='#171a33';mc.lineWidth=0.3;mc.beginPath();mc.arc(player.x+GW/2,player.z+GH/2,0.8,0,7);mc.fill();mc.stroke();
 }
 function hud(){
@@ -871,6 +1015,8 @@ function hud(){
   const bar=$('hHouseBar');bar.style.width=(k*100).toFixed(0)+'%';bar.style.background=k>0.5?'#7fd16b':k>0.25?'#ffb340':'#ff6b6b';
   $('sNights').textContent=nights;
   $('night').disabled=phase!=='play'||isNight;
+  wpnBox.querySelectorAll('.item').forEach(b=>{const k=b.dataset.w,w=WEAPONS[k];b.setAttribute('aria-pressed',String(k===weapon));b.classList.toggle('owned',owned[k]);
+    b.classList.toggle('poor',!owned[k]&&(wood<w.w||stone<w.s));const sp=b.querySelector('span'),txt=owned[k]?t(k===weapon?'wEquip':'wReady'):wCost(k);if(sp.textContent!==txt)sp.textContent=txt;});
   itemsBox.querySelectorAll('.item').forEach(b=>b.classList.toggle('poor',!afford(b.dataset.k)));
 }
 
@@ -895,7 +1041,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
