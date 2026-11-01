@@ -54,6 +54,17 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 .pill.phase.day{color:var(--torch)}
 .pill .w{color:#e8b07a}.pill .s{color:#c7ccd8}
 .hearts{color:var(--danger);letter-spacing:2px}
+.pill.more{font-size:13px;color:var(--muted)}
+.pill.more b{color:var(--ink)}
+.inv{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;width:min(560px,90vw)}
+.slot{background:var(--panel);border:3px solid var(--panel-2);border-radius:14px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.slot svg{width:46px;height:46px}
+.slot b{font-family:var(--display);font-size:22px;font-variant-numeric:tabular-nums}
+.slot span{font-size:13px;color:var(--muted);font-weight:800}
+.slot.empty{opacity:.45}
+.slot button{font-family:var(--display);font-weight:800;font-size:14px;border:0;border-radius:10px;padding:6px 12px;cursor:pointer;background:var(--moss);color:#171a33;margin-top:2px}
+.slot button:disabled{opacity:.4;cursor:not-allowed}
+.slot button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .house{position:absolute;left:12px;bottom:12px;width:min(200px,46%);background:#171a33e6;border-radius:14px;padding:8px 12px;pointer-events:none;font-family:var(--display);font-weight:800;font-size:14px;display:flex;flex-direction:column;gap:6px}
 .house .row{display:flex;justify-content:space-between;gap:8px}
 .house .bar{height:10px;border-radius:999px;background:#ffffff26;overflow:hidden}
@@ -75,6 +86,23 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 .screen ol li b{color:var(--torch)}
 .go{font-family:var(--display);font-weight:800;font-size:22px;border:0;border-radius:16px;padding:14px 30px;cursor:pointer;background:var(--torch);color:#171a33;box-shadow:0 5px 0 var(--torch-dark)}
 .go:active{transform:translateY(3px)}
+.go.alt{background:var(--panel-2);color:var(--ink);box-shadow:0 5px 0 #0d0f22}
+.arc-menu{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.arc-pick{font-family:var(--display);font-weight:800;font-size:18px;border:3px solid var(--panel-2);background:var(--panel);color:var(--ink);border-radius:16px;padding:14px 18px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:200px;max-width:260px;text-align:left}
+.arc-pick small{font-family:var(--body);font-size:13px;color:var(--muted);font-weight:700}
+.arc-pick:hover{border-color:var(--torch)}
+.arc-info{font-family:var(--display);font-weight:800;font-size:18px;color:var(--torch);font-variant-numeric:tabular-nums}
+.holes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:min(330px,80vw)}
+.hole{aspect-ratio:1;border-radius:50%;border:0;background:radial-gradient(ellipse at 50% 70%,#0a0c1a 0 45%,#3a2a20 46% 60%,#4f8a3c 61%);cursor:pointer;padding:12%;display:grid;place-items:center}
+.hole svg{width:100%;height:100%;transition:transform .08s}
+.hole.hit svg{transform:scale(.7)}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:min(360px,86vw)}
+.card{aspect-ratio:3/4;border-radius:12px;border:3px solid var(--panel-2);background:var(--panel-2);cursor:pointer;padding:14%;display:grid;place-items:center}
+.card .back{width:60%;height:60%;border-radius:50%;background:var(--torch);opacity:.35}
+.card svg{width:100%;height:100%}
+.card.open{background:#f6f1e4}
+.card.done{background:#d8f0c8;border-color:var(--moss)}
+.hole:focus-visible,.card:focus-visible,.arc-pick:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .items{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
 @media (max-width:560px){.items{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .item{font-family:var(--body);border:3px solid var(--panel-2);background:var(--panel);color:var(--ink);border-radius:14px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:56px;text-align:left}
@@ -117,6 +145,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
       <span class="pill phase day" id="hPhase"></span>
       <div class="col">
         <span class="pill"><span class="w" id="hWood">0</span> <span data-t="wood">Holz</span> · <span class="s" id="hStone">0</span> <span data-t="stone">Stein</span></span>
+        <span class="pill more" id="hMore"></span>
         <span class="pill hearts" id="hHearts" aria-label=""></span>
       </div>
     </div>
@@ -136,6 +165,24 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
       </ol>
       <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
     </div>
+    <div class="screen" id="invScreen" hidden>
+      <h2 data-t="invTitle">Deine Truhe</h2>
+      <p data-t="invText"></p>
+      <div class="inv" id="invGrid"></div>
+      <button class="go alt" type="button" id="invClose" data-t="arcClose">Zurück ins Spiel</button>
+    </div>
+    <div class="screen" id="arcadeScreen" hidden>
+      <h2 data-t="arcadeTitle">Spielautomat</h2>
+      <div class="arc-menu" id="arcMenu">
+        <button class="arc-pick" type="button" id="pickWhack"><span data-t="g_whack">Schleim-Klopfen</span><small data-t="g_whackInfo"></small></button>
+        <button class="arc-pick" type="button" id="pickMemory"><span data-t="g_memory">Monster-Memory</span><small data-t="g_memoryInfo"></small></button>
+      </div>
+      <span class="arc-info" id="arcInfo" hidden></span>
+      <div class="holes" id="holes" hidden></div>
+      <div class="cards" id="cards" hidden></div>
+      <p id="arcMsg"></p>
+      <button class="go alt" type="button" id="arcClose" data-t="arcClose">Zurück ins Spiel</button>
+    </div>
     <div class="screen" id="endScreen" hidden>
       <h2 data-t="endTitle">Das Haus ist gefallen!</h2>
       <p id="endText"></p>
@@ -148,6 +195,8 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
   <div class="controls">
     <button class="btn" id="act" type="button" data-t="act">Aktion · E</button>
     <button class="btn moss" id="night" type="button" data-t="startNight">Nacht starten · N</button>
+    <button class="btn alt" id="invBtn" type="button" data-t="invBtn">Truhe · I</button>
+    <button class="btn alt" id="eatBtn" type="button" data-t="eatBtn">Essen · F</button>
     <button class="btn alt" id="sound" type="button" aria-pressed="true" data-t="soundOn">Ton an · M</button>
   </div>
   <p class="help" data-t="help" data-html="1"></p>
@@ -167,7 +216,7 @@ const TXT={
     step3:'<b>Nacht:</b> Hau die Monster mit dem Hammer (<b>E</b>). Fackeln brennen sie, Türme schießen.',
     go:'Los geht’s',again:'Nochmal',endTitle:'Das Haus ist gefallen!',
     act:'Aktion · E',actShort:'Aktion',startNight:'Nacht starten · N',soundOn:'Ton an · M',soundOff:'Ton aus · M',
-    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe. <b>N</b> startet die Nacht früher.',
+    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe, <b>F</b> isst etwas, <b>I</b> öffnet die Truhe. <b>N</b> startet die Nacht früher.',
     noload:'3D konnte nicht geladen werden.',
     i_wood:'Holzwand',i_stone:'Steinmauer',i_torch:'Fackel',i_tower:'Turm',i_demolish:'Abreißen',
     c_w:'{n} Holz',c_s:'{n} Stein',c_ws:'{w} Holz + {s} Stein',c_refund:'gibt die Hälfte zurück',
@@ -175,9 +224,21 @@ const TXT={
     dayBuild:'Tag 1 · Bau zuerst dein Haus!',site:'Baustelle',st_found:'Fundament',st_walls:'Wände',st_roof:'Dach',
     hStage:'[E] {st} bauen ({c})',hStagePoor:'{st}: es fehlt {c}',siteLabel:'Hier kommt dein Haus hin',
     stageDone:'{st} fertig!',
-    door:'Eingang',f_bed:'Bett',f_fire:'Kamin',f_chest:'Truhe',f_table:'Tisch',f_rug:'Teppich',
+    sticks:'Äste',wool:'Wolle',needs:'Es fehlt: {c}',
+    invTitle:'Deine Truhe',invText:'Hier sind alle deine Sachen. Essen gibt dir ein Herz zurück.',invBtn:'Truhe · I',eatBtn:'Essen · F',eatOne:'Essen',
+    inv_wood:'Holz',inv_stone:'Stein',inv_sticks:'Äste',inv_wool:'Wolle',inv_berries:'Beeren',inv_apples:'Äpfel',inv_eggs:'Eier',
+    hudMore:'{st} Äste · {wo} Wolle · {f} Essen',full:'Du bist satt! Alle Herzen sind voll.',noFood:'Du hast nichts zu essen. Pflück Beeren oder Äpfel!',
+    hShear:'[E] Schaf scheren (+2 Wolle)',sheepBare:'Die Wolle wächst noch nach …',hBerries:'[E] Beeren pflücken',hApples:'[E] Äpfel pflücken',hChest:'[E] Truhe öffnen',
+    plusWool:'+{n} Wolle',plusBerries:'+{n} Beeren',plusApples:'+{n} Äpfel',plusSticks:'+{n} Äste',plusEgg:'+1 Ei',
+    door:'Eingang',f_bed:'Bett',f_fire:'Kamin',f_chest:'Truhe',f_table:'Tisch',f_rug:'Teppich',f_arcade:'Spielautomat',
+    fBuilt_arcade:'Spielautomat gebaut! Drück E davor und spiel Minispiele.',hArcade:'[E] Spielautomat spielen',
+    arcadeTitle:'Spielautomat',arcClose:'Zurück ins Spiel',g_whack:'Schleim-Klopfen',g_whackInfo:'Hau die Schleime, nicht die Hühner! 20 Sekunden.',
+    g_memory:'Monster-Memory',g_memoryInfo:'Finde alle 6 Paare.',whackHelp:'Klick oder tipp auf die Schleime (oder Tasten 1–9). Hühner nicht hauen!',
+    whackInfo:'Treffer: {s} · noch {t} s',whackDone:'Fertig! {s} Schleime erwischt.',memHelp:'Dreh zwei Karten um. Gleiche Bilder bleiben offen.',
+    memInfo:'Paare: {p} / 6 · Versuche: {n}',memDone:'Alle Paare gefunden! {n} Versuche, {s} Sekunden.',memCard:'Karte {n}',
+    arcReward:'Belohnung: +{w} Holz, +{s} Stein!',arcNoReward:'Heute gab es schon eine Belohnung für dieses Spiel. Morgen wieder!',
     hFurn:'[E] {f} bauen ({c})',hFurnPoor:'{f}: braucht {c}',hRest:'[E] Ausruhen – alle Herzen voll',restWait:'Noch {n} s, bis du wieder müde bist',rested:'Gut geschlafen! Alle Herzen sind voll.',
-    fBuilt_bed:'Bett gebaut! Hier ruhst du dich aus, und hier wachst du auf.',fBuilt_fire:'Kamin gebaut! Er repariert dein Haus langsam.',fBuilt_chest:'Truhe gebaut! Jeden Morgen liegt Material drin.',
+    fBuilt_bed:'Bett gebaut! Hier ruhst du dich aus, und hier wachst du auf.',fBuilt_fire:'Kamin gebaut! Er repariert dein Haus langsam.',fBuilt_chest:'Truhe gebaut! Drück E davor, um alle Sachen zu sehen. Jeden Morgen liegt Material drin.',
     fBuilt_table:'Tisch gebaut! Du hast jetzt ein Herz mehr.',fBuilt_rug:'Teppich gebaut! Wie gemütlich.',
     chestGift:'Die Truhe ist voll: +5 Holz, +3 Stein!',wakeBed:'Du wachst in deinem Bett auf.',houseDone:'Dein Haus steht! Geh rein und richte es ein. In 45 Sekunden wird es dunkel!',needHouse:'Bau zuerst dein Haus!',
     hChop:'[E] Holz hacken',hMine:'[E] Stein abbauen',hBuild:'[E] {item} bauen',hPoor:'Zu wenig Material',hBad:'Hier geht nichts',hFar:'Zu weit vom Haus',hDemo:'[E] Abreißen',hNothing:'Nichts zum Abreißen',
@@ -187,8 +248,8 @@ const TXT={
     bats:'Fledermäuse! Die fliegen über Mauern.',grummel:'Ein Grummel! Der ist stark.',broke:'Eine Mauer ist kaputt!',
     end:'Du hast {n} Nächte überstanden und {k} Monster besiegt.',record:' Neuer Rekord!',
     tipStart:'Hack Bäume und klopf Steine, dann bau dein Haus auf der Baustelle!',
-    step5:'<b>Drinnen:</b> Geh durch die Tür ins Haus und bau Bett, Tisch, Kamin, Truhe und Teppich. Jedes Teil hilft dir.',
-    step4:'<b>Waffen & Tiere:</b> Bau dir Schwert oder Bogen (<b>Q</b> wechselt). Freunde dich mit dem Hund an, und sammel die Eier der Hühner.',
+    step5:'<b>Drinnen:</b> Geh durch die Tür ins Haus und bau Bett, Tisch, Kamin, Truhe, Teppich und einen Spielautomaten mit Minispielen.',
+    step4:'<b>Tiere & Essen:</b> Scher die Schafe für Wolle (fürs Bett), pflück Beeren und Äpfel, sammel Eier. Essen (<b>F</b>) gibt Herzen. In der Truhe (<b>I</b>) siehst du alles. Freunde dich mit dem Hund an und bau Schwert oder Bogen (<b>Q</b> wechselt).',
     w_hammer:'Hammer',w_sword:'Schwert',w_bow:'Bogen',wReady:'bereit',wEquip:'in der Hand',
     wBought:'{w} gebaut! Drück Q zum Wechseln.',wPoor:'Zu wenig Material für {w}.',
     dogSeen:'Da hinten sitzt ein Hund! Geh hin und drück E.',dogFriend:'Bello ist jetzt dein Freund! Er hilft dir nachts.',hDog:'[E] Hund anfreunden',dogName:'Bello',
@@ -202,7 +263,7 @@ const TXT={
     step3:'<b>Night:</b> Bonk the monsters with your hammer (<b>E</b>). Torches burn them, towers shoot.',
     go:'Let’s go',again:'Play again',endTitle:'The house has fallen!',
     act:'Action · E',actShort:'Action',startNight:'Start night · N',soundOn:'Sound on · M',soundOff:'Sound off · M',
-    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons. <b>N</b> starts the night early.',
+    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early.',
     noload:'3D could not be loaded.',
     i_wood:'Wood wall',i_stone:'Stone wall',i_torch:'Torch',i_tower:'Tower',i_demolish:'Demolish',
     c_w:'{n} wood',c_s:'{n} stone',c_ws:'{w} wood + {s} stone',c_refund:'refunds half',
@@ -210,9 +271,21 @@ const TXT={
     dayBuild:'Day 1 · Build your house first!',site:'Building site',st_found:'Foundation',st_walls:'Walls',st_roof:'Roof',
     hStage:'[E] Build {st} ({c})',hStagePoor:'{st}: you still need {c}',siteLabel:'Your house goes here',
     stageDone:'{st} done!',
-    door:'Entrance',f_bed:'Bed',f_fire:'Fireplace',f_chest:'Chest',f_table:'Table',f_rug:'Rug',
+    sticks:'sticks',wool:'wool',needs:'Missing: {c}',
+    invTitle:'Your chest',invText:'All your things are in here. Food gives you a heart back.',invBtn:'Chest · I',eatBtn:'Eat · F',eatOne:'Eat',
+    inv_wood:'Wood',inv_stone:'Stone',inv_sticks:'Sticks',inv_wool:'Wool',inv_berries:'Berries',inv_apples:'Apples',inv_eggs:'Eggs',
+    hudMore:'{st} sticks · {wo} wool · {f} food',full:'You’re full! All hearts are full.',noFood:'You have nothing to eat. Pick berries or apples!',
+    hShear:'[E] Shear the sheep (+2 wool)',sheepBare:'The wool is still growing back …',hBerries:'[E] Pick berries',hApples:'[E] Pick apples',hChest:'[E] Open the chest',
+    plusWool:'+{n} wool',plusBerries:'+{n} berries',plusApples:'+{n} apples',plusSticks:'+{n} sticks',plusEgg:'+1 egg',
+    door:'Entrance',f_bed:'Bed',f_fire:'Fireplace',f_chest:'Chest',f_table:'Table',f_rug:'Rug',f_arcade:'Arcade machine',
+    fBuilt_arcade:'Arcade machine built! Press E in front of it to play mini-games.',hArcade:'[E] Play the arcade machine',
+    arcadeTitle:'Arcade machine',arcClose:'Back to the game',g_whack:'Slime Bonk',g_whackInfo:'Bonk the slimes, not the hens! 20 seconds.',
+    g_memory:'Monster Memory',g_memoryInfo:'Find all 6 pairs.',whackHelp:'Click or tap the slimes (or keys 1–9). Don’t bonk the hens!',
+    whackInfo:'Hits: {s} · {t} s left',whackDone:'Done! You got {s} slimes.',memHelp:'Turn over two cards. Matching pictures stay open.',
+    memInfo:'Pairs: {p} / 6 · Tries: {n}',memDone:'All pairs found! {n} tries, {s} seconds.',memCard:'Card {n}',
+    arcReward:'Reward: +{w} wood, +{s} stone!',arcNoReward:'You already got a reward for this game today. Come back tomorrow!',
     hFurn:'[E] Build {f} ({c})',hFurnPoor:'{f}: needs {c}',hRest:'[E] Rest – all hearts full',restWait:'{n} s until you are tired again',rested:'Slept well! All hearts are full.',
-    fBuilt_bed:'Bed built! Rest here, and this is where you wake up.',fBuilt_fire:'Fireplace built! It slowly repairs your house.',fBuilt_chest:'Chest built! Every morning there’s material inside.',
+    fBuilt_bed:'Bed built! Rest here, and this is where you wake up.',fBuilt_fire:'Fireplace built! It slowly repairs your house.',fBuilt_chest:'Chest built! Press E in front of it to see all your things. Every morning there’s material inside.',
     fBuilt_table:'Table built! You now have one more heart.',fBuilt_rug:'Rug built! How cosy.',
     chestGift:'The chest is full: +5 wood, +3 stone!',wakeBed:'You wake up in your bed.',houseDone:'Your house is built! Go inside and furnish it. It gets dark in 45 seconds!',needHouse:'Build your house first!',
     hChop:'[E] Chop wood',hMine:'[E] Mine stone',hBuild:'[E] Build {item}',hPoor:'Not enough material',hBad:'Can’t build here',hFar:'Too far from the house',hDemo:'[E] Demolish',hNothing:'Nothing to demolish',
@@ -222,8 +295,8 @@ const TXT={
     bats:'Bats! They fly over walls.',grummel:'A Grumble! That one is strong.',broke:'A wall broke!',
     end:'You survived {n} nights and defeated {k} monsters.',record:' New record!',
     tipStart:'Chop trees and break rocks, then build your house on the building site!',
-    step5:'<b>Inside:</b> Walk through the door and build a bed, table, fireplace, chest and rug. Each one helps you.',
-    step4:'<b>Weapons & animals:</b> Craft a sword or bow (<b>Q</b> switches). Make friends with the dog and collect the hens’ eggs.',
+    step5:'<b>Inside:</b> Walk through the door and build a bed, table, fireplace, chest, rug and an arcade machine with mini-games.',
+    step4:'<b>Animals & food:</b> Shear sheep for wool (for the bed), pick berries and apples, collect eggs. Eating (<b>F</b>) gives hearts. The chest (<b>I</b>) shows all your things. Make friends with the dog and craft a sword or bow (<b>Q</b> switches).',
     w_hammer:'Hammer',w_sword:'Sword',w_bow:'Bow',wReady:'ready',wEquip:'in hand',
     wBought:'{w} crafted! Press Q to switch.',wPoor:'Not enough material for the {w}.',
     dogSeen:'There’s a dog over there! Walk to it and press E.',dogFriend:'Bello is your friend now! He helps you at night.',hDog:'[E] Make friends with the dog',dogName:'Bello',
@@ -247,7 +320,7 @@ const HC={x:cx(20),z:cz(15)};
 for(let j=HOUSE_T.j0;j<=HOUSE_T.j1;j++)for(let i=HOUSE_T.i0;i<=HOUSE_T.i1;i++)kind[idx(i,j)]=HOUSE;
 const BUILD_R=10;
 const ITEMS={
-  wood:{w:3,s:0,hp:60},stone:{w:0,s:3,hp:170},torch:{w:2,s:0,hp:30},tower:{w:5,s:5,hp:130},demolish:{}
+  wood:{w:3,s:0,hp:60},stone:{w:0,s:3,hp:170},torch:{w:0,s:0,st:2,hp:30},tower:{w:5,s:5,hp:130},demolish:{}
 };
 const ORDER=['wood','stone','torch','tower','demolish'];
 const blocks=new Map(),nature=new Map();
@@ -361,11 +434,12 @@ const houseParts=(()=>{
 })();
 // Einrichtung: feste Plätze im Haus (relativ zur Hausmitte)
 const FURN=[
-  {k:'bed',x:-1.45,z:-1.2,w:1.1,d:1.9,cw:6,cs:0},
+  {k:'bed',x:-1.45,z:-1.2,w:1.1,d:1.9,cw:4,cs:0,cwo:3},
   {k:'fire',x:1.2,z:-1.95,w:1.3,d:0.55,cw:0,cs:6},
   {k:'chest',x:1.85,z:0.55,w:0.55,d:0.95,cw:5,cs:1},
   {k:'table',x:-1.2,z:1.15,w:1.0,d:1.0,cw:4,cs:0},
-  {k:'rug',x:0.35,z:0.1,w:1.9,d:1.4,cw:2,cs:0,flat:true}
+  {k:'rug',x:0.35,z:0.1,w:1.9,d:1.4,cw:2,cs:0,flat:true},
+  {k:'arcade',x:1.7,z:1.6,w:0.7,d:0.6,cw:4,cs:2}
 ];
 const furnG=new THREE.Group();furnG.position.set(HC.x,0.31,HC.z);scene.add(furnG);
 FURN.forEach(f=>{
@@ -377,6 +451,10 @@ FURN.forEach(f=>{
   if(f.k==='table'){g.add(part(G.cyl,'#a8724a',0.5,0.08,0.5,0,0.72,0),part(G.cyl,'#7d5234',0.07,0.7,0.07,0,0.36,0));
     [[0.65,0],[-0.65,0]].forEach(([a,b])=>g.add(part(G.cyl,'#7d5234',0.2,0.05,0.2,a,0.42,b),part(G.cyl,'#7d5234',0.04,0.42,0.04,a,0.21,b)));
     g.add(part(G.sph,'#fff6e0',0.08,0.1,0.08,0.1,0.85,0.1),part(G.cyl,'#f4f1ea',0.16,0.03,0.16,-0.15,0.78,-0.1));}
+  if(f.k==='arcade'){g.add(part(G.box,'#5a3ad8',f.w,1.6,f.d,0,0.8,0),part(G.box,'#3a2a9a',f.w+0.04,0.25,f.d+0.04,0,1.7,0));
+    const scr=part(G.box,new THREE.MeshBasicMaterial({color:'#7be0ff'}),f.w*0.75,0.5,0.04,0,1.15,f.d/2+0.01,false);scr.rotation.x=-0.15;g.add(scr);g.userData.screen=scr;
+    g.add(part(G.box,'#2a1f6a',f.w*0.9,0.08,0.3,0,0.82,f.d/2+0.12),part(G.cyl,'#171a33',0.03,0.14,0.03,-0.12,0.92,f.d/2+0.14),part(G.sph,'#ff4a4a',0.05,0.05,0.05,-0.12,1.0,f.d/2+0.14),part(G.sph,'#ffd23f',0.04,0.03,0.04,0.12,0.88,f.d/2+0.14,false));
+    g.rotation.y=-Math.PI/2;}
   if(f.k==='rug'){const r=new THREE.Mesh(G.plane,M('#c04a5a'));r.rotation.x=-Math.PI/2;r.scale.set(f.w,f.d,1);r.position.y=0.01;r.receiveShadow=true;g.add(r);
     const r2=new THREE.Mesh(G.plane,M('#ffd23f'));r2.rotation.x=-Math.PI/2;r2.scale.set(f.w*0.75,f.d*0.65,1);r2.position.y=0.015;g.add(r2);}
   f.mesh=g;g.visible=false;
@@ -387,10 +465,145 @@ FURN.forEach(f=>{
   f.built=false;
 });
 const roomLight=new THREE.PointLight(0xffc070,0,7,1.5);roomLight.position.set(HC.x,2.2,HC.z);scene.add(roomLight);
+/* ---------- Essen & Truhe (Inventar) ---------- */
+function foodCount(){return apples+berries+eggsInv;}
+function eat(kind){
+  audioInit();
+  if(phase!=='play'||player.down>0)return false;
+  if(player.hearts>=maxHearts()){toast(t('full'),'#7fd16b');return false;}
+  let k=kind;
+  if(!k)k=apples>0?'apples':berries>0?'berries':eggsInv>0?'eggs':null;
+  if(!k||(k==='apples'&&apples<1)||(k==='berries'&&berries<1)||(k==='eggs'&&eggsInv<1)){toast(t('noFood'),'#ff6b6b');sfx.denied();return false;}
+  if(k==='apples')apples--;else if(k==='berries')berries--;else eggsInv--;
+  player.hearts++;sfx.eat();floatTxt(player.x,player.z,'+♥','#ff6b6b',2.6,1.2);
+  return true;
+}
+const INV=[
+  {k:'wood',get:()=>wood,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><rect x="8" y="20" width="44" height="20" rx="10" fill="#a8724a" stroke="#6a4020" stroke-width="3"/><ellipse cx="46" cy="30" rx="6" ry="10" fill="#e8c08a" stroke="#6a4020" stroke-width="3"/><circle cx="46" cy="30" r="3" fill="#c08a5a"/></svg>'},
+  {k:'stone',get:()=>stone,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 44l6-18 14-8 16 6 6 20z" fill="#9aa0ab" stroke="#5a5f6a" stroke-width="3" stroke-linejoin="round"/></svg>'},
+  {k:'sticks',get:()=>sticks,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M12 48L46 12M20 50L50 22M34 30l8 2" stroke="#7a4a2a" stroke-width="5" stroke-linecap="round"/></svg>'},
+  {k:'wool',get:()=>wool,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M16 42a9 9 0 0 1 0-18 12 12 0 0 1 22-6 10 10 0 0 1 10 14 8 8 0 0 1-4 10z" fill="#f6f4ee" stroke="#b8b0a0" stroke-width="3"/></svg>'},
+  {k:'berries',food:true,get:()=>berries,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="22" cy="36" r="9" fill="#d8324a"/><circle cx="38" cy="38" r="9" fill="#3a4ad8"/><circle cx="30" cy="24" r="9" fill="#d8324a"/><path d="M30 15q4-8 12-8" stroke="#3e6b2a" stroke-width="3" fill="none"/></svg>'},
+  {k:'apples',food:true,get:()=>apples,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 20c-12-6-22 2-20 14 2 12 10 20 20 16 10 4 18-4 20-16 2-12-8-20-20-14z" fill="#e8322a" stroke="#8a1a1a" stroke-width="3"/><path d="M30 20q0-8 4-12" stroke="#5a3a22" stroke-width="3" fill="none"/><path d="M33 12q8-4 12 2-8 2-12-2z" fill="#4caf50"/></svg>'},
+  {k:'eggs',food:true,get:()=>eggsInv,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><ellipse cx="30" cy="33" rx="14" ry="18" fill="#fff6e0" stroke="#c8b890" stroke-width="3"/></svg>'}
+];
+function renderInv(){
+  const grid=$('invGrid');grid.innerHTML='';
+  for(const it of INV){
+    const n=it.get(),d=document.createElement('div');d.className='slot'+(n?'':' empty');
+    d.innerHTML=it.svg+'<b></b><span></span>';d.querySelector('b').textContent=n;d.querySelector('span').textContent=t('inv_'+it.k);
+    if(it.food){const b=document.createElement('button');b.type='button';b.textContent=t('eatOne');b.disabled=!n||player.hearts>=maxHearts();
+      b.addEventListener('click',()=>{eat(it.k);renderInv();});d.appendChild(b);}
+    grid.appendChild(d);
+  }
+}
+function openInv(){
+  if(phase!=='play')return;
+  paused=true;for(const k in keys)keys[k]=false;holdAct=false;renderInv();$('invScreen').hidden=false;sfx.chop();
+  setTimeout(()=>$('invClose').focus(),30);
+}
+function closeInv(){$('invScreen').hidden=true;paused=false;last=performance.now();}
+$('invBtn').addEventListener('click',()=>{$('invScreen').hidden?openInv():closeInv();});
+$('invClose').addEventListener('click',closeInv);
+$('eatBtn').addEventListener('click',()=>eat());
+
+/* ---------- Spielautomat: Minispiele ---------- */
+let paused=false,arcTimer=null,arcRewardDay={whack:0,memory:0};
+const SVG={
+  slime:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M8 50a22 24 0 0 1 44 0z" fill="#5fd35a" stroke="#1f6a1a" stroke-width="3"/><circle cx="23" cy="34" r="6" fill="#fff"/><circle cx="37" cy="34" r="6" fill="#fff"/><circle cx="24" cy="35" r="3" fill="#171a33"/><circle cx="38" cy="35" r="3" fill="#171a33"/><path d="M24 44h12" stroke="#171a33" stroke-width="3" stroke-linecap="round"/></svg>',
+  hen:'<svg viewBox="0 0 60 60" aria-hidden="true"><ellipse cx="30" cy="38" rx="17" ry="14" fill="#c86a2a" stroke="#6a3010" stroke-width="3"/><circle cx="38" cy="22" r="9" fill="#c86a2a" stroke="#6a3010" stroke-width="3"/><path d="M34 13q4-7 8 0" fill="#e8322a"/><path d="M46 22l8 3-8 3z" fill="#ff9a1f"/><circle cx="40" cy="20" r="2" fill="#171a33"/></svg>',
+  pumpkin:'<svg viewBox="0 0 60 60" aria-hidden="true"><ellipse cx="30" cy="36" rx="22" ry="18" fill="#ff8a1f" stroke="#a8500a" stroke-width="3"/><path d="M30 18v-8" stroke="#3e6b2a" stroke-width="5" stroke-linecap="round"/><path d="M20 32l4-6 4 6zM32 32l4-6 4 6z" fill="#5a2a08"/></svg>',
+  star:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 6l7 15 16 2-12 11 3 16-14-8-14 8 3-16L7 23l16-2z" fill="#ffd23f" stroke="#b8901a" stroke-width="3" stroke-linejoin="round"/></svg>',
+  heart:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 52S8 38 8 22a11 11 0 0 1 22-3 11 11 0 0 1 22 3c0 16-22 30-22 30z" fill="#ff6b6b" stroke="#a83a3a" stroke-width="3"/></svg>',
+  bat:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 24c-10-10-22-8-26 2 6-2 10 2 12 6 4-4 10-2 14 2 4-4 10-6 14-2 2-4 6-8 12-6-4-10-16-12-26-2z" fill="#4a3a6a" stroke="#1a1030" stroke-width="2"/><circle cx="26" cy="27" r="2" fill="#ff4a4a"/><circle cx="34" cy="27" r="2" fill="#ff4a4a"/></svg>',
+  tree:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 6L12 40h36z" fill="#3a8f48" stroke="#1f5a2a" stroke-width="3" stroke-linejoin="round"/><rect x="26" y="40" width="8" height="12" fill="#7a4a2a"/></svg>',
+  rock:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 44l6-18 14-8 16 6 6 20z" fill="#9aa0ab" stroke="#5a5f6a" stroke-width="3" stroke-linejoin="round"/></svg>'
+};
+function arcReset(){
+  clearInterval(arcTimer);arcTimer=null;
+  $('arcMenu').hidden=false;$('arcInfo').hidden=true;$('holes').hidden=true;$('cards').hidden=true;$('arcMsg').textContent='';
+}
+function openArcade(){
+  paused=true;for(const k in keys)keys[k]=false;holdAct=false;
+  arcReset();$('arcadeScreen').hidden=false;sfx.coin();
+  setTimeout(()=>$('pickWhack').focus(),30);
+}
+function closeArcade(){arcReset();$('arcadeScreen').hidden=true;paused=false;last=performance.now();}
+function giveReward(game,w,st){
+  if(arcRewardDay[game]===day){$('arcMsg').textContent=t('arcNoReward');return;}
+  arcRewardDay[game]=day;wood+=w;stone+=st;
+  $('arcMsg').textContent=t('arcReward',{w,s:st});
+}
+// Schleim-Klopfen: 20 Sekunden, Schleime hauen, Hühner verschonen
+function startWhack(){
+  $('arcMenu').hidden=true;$('arcInfo').hidden=false;const holesEl=$('holes');holesEl.hidden=false;holesEl.innerHTML='';$('arcMsg').textContent=t('whackHelp');
+  const holes=[];let score=0,left=20,next=0,end=performance.now()+20000;
+  for(let i=0;i<9;i++){
+    const b=document.createElement('button');b.type='button';b.className='hole';b.setAttribute('aria-label',String(i+1));
+    const h={el:b,what:null,until:0};
+    const hit=()=>{
+      if(!h.what)return;
+      if(h.what==='slime'){score++;sfx.hit();}else{score=Math.max(0,score-2);sfx.cluck();}
+      h.what=null;b.classList.add('hit');setTimeout(()=>{b.classList.remove('hit');if(!h.what)b.innerHTML='';},90);
+    };
+    b.addEventListener('pointerdown',e=>{e.preventDefault();hit();});
+    b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hit();}});
+    holes.push(Object.assign(h,{hit}));holesEl.appendChild(b);
+  }
+  whackKeys=holes;
+  const info=()=>{$('arcInfo').textContent=t('whackInfo',{s:score,t:Math.max(0,Math.ceil(left))});};info();
+  arcTimer=setInterval(()=>{
+    const now=performance.now();left=(end-now)/1000;
+    for(const h of holes)if(h.what&&now>h.until){h.what=null;h.el.innerHTML='';}
+    if(now>next){
+      const free=holes.filter(h=>!h.what);
+      if(free.length){const h=free[(Math.random()*free.length)|0];h.what=Math.random()<0.2?'hen':'slime';h.until=now+(h.what==='hen'?1100:850-Math.min(300,(20-left)*15));h.el.innerHTML=SVG[h.what];}
+      next=now+420+Math.random()*380;
+    }
+    info();
+    if(left<=0){
+      clearInterval(arcTimer);arcTimer=null;whackKeys=null;holes.forEach(h=>{h.what=null;h.el.innerHTML='';});
+      $('arcInfo').textContent=t('whackDone',{s:score});
+      giveReward('whack',Math.floor(score/2),Math.floor(score/4));sfx.dawn();
+      setTimeout(()=>{if(!$('arcadeScreen').hidden){$('arcMenu').hidden=false;$('holes').hidden=true;}},1600);
+    }
+  },50);
+}
+let whackKeys=null;
+window.addEventListener('keydown',e=>{if(!paused||!whackKeys)return;const n=parseInt(e.key,10);if(n>=1&&n<=9){e.preventDefault();whackKeys[n-1].hit();}});
+// Monster-Memory: 6 Paare finden
+function startMemory(){
+  $('arcMenu').hidden=true;$('arcInfo').hidden=false;const box=$('cards');box.hidden=false;box.innerHTML='';$('arcMsg').textContent=t('memHelp');
+  const kinds=['slime','pumpkin','star','heart','bat','tree'];
+  const deck=kinds.concat(kinds).sort(()=>Math.random()-.5);
+  let open=[],done=0,tries=0,lock=false;const t0=performance.now();
+  const info=()=>{$('arcInfo').textContent=t('memInfo',{p:done,n:tries});};info();
+  deck.forEach((k,i)=>{
+    const b=document.createElement('button');b.type='button';b.className='card';b.setAttribute('aria-label',t('memCard',{n:i+1}));b.innerHTML='<span class="back"></span>';
+    const c={k,el:b,shown:false,done:false};
+    b.addEventListener('click',()=>{
+      if(lock||c.shown||c.done)return;
+      c.shown=true;b.classList.add('open');b.innerHTML=SVG[k];open.push(c);sfx.chop();
+      if(open.length===2){
+        tries++;const [a,bb]=open;open=[];
+        if(a.k===bb.k){a.done=bb.done=true;a.el.classList.add('done');bb.el.classList.add('done');done++;sfx.egg();info();
+          if(done===6){const secs=Math.round((performance.now()-t0)/1000);$('arcInfo').textContent=t('memDone',{n:tries,s:secs});sfx.dawn();
+            giveReward('memory',tries<=10?8:5,tries<=10?5:3);
+            setTimeout(()=>{if(!$('arcadeScreen').hidden){$('arcMenu').hidden=false;$('cards').hidden=true;}},1800);}}
+        else{lock=true;info();setTimeout(()=>{[a,bb].forEach(x=>{x.shown=false;x.el.classList.remove('open');x.el.innerHTML='<span class="back"></span>';});lock=false;},800);}
+      }
+    });
+    box.appendChild(b);
+  });
+}
+$('pickWhack').addEventListener('click',startWhack);
+$('pickMemory').addEventListener('click',startMemory);
+$('arcClose').addEventListener('click',closeArcade);
+
 function furnBuilt(k){const f=FURN.find(q=>q.k===k);return !!(f&&f.built);}
 function maxHearts(){return furnBuilt('table')?6:5;}
 function nearestFurn(){let best=null,bd=1.35;for(const f of FURN){const d=Math.hypot(player.x-(HC.x+f.x),player.z-(HC.z+f.z))-Math.min(f.w,f.d)/2;if(d<bd){bd=d;best=f;}}return best;}
-function furnCost(f){if(f.cw&&f.cs)return t('c_ws',{w:f.cw,s:f.cs});return f.cw?t('c_w',{n:f.cw}):t('c_s',{n:f.cs});}
+function furnCost(f){return costStr(fcost(f));}
 let restCd=0;
 function showHouse(){
   houseParts.site.visible=houseStage<1;houseParts.found.visible=houseStage>=1;houseParts.walls.visible=houseStage>=2;houseParts.roofG.visible=houseStage>=3;
@@ -400,8 +613,12 @@ showHouse();
 const houseDone=()=>houseStage>=3;
 
 /* ---------- Natur ---------- */
-function buildTree(){const g=new THREE.Group(),inner=new THREE.Group();g.add(inner);
-  inner.add(part(G.cyl,'#7a4a2a',0.22,1,0.22,0,0.5,0),part(G.cone,'#3a8f48',0.8,1.6,0.8,0,1.6,0),part(G.cone,'#48a456',0.6,1.2,0.6,0,2.3,0));
+function buildTree(apple){const g=new THREE.Group(),inner=new THREE.Group();g.add(inner);
+  if(apple){
+    inner.add(part(G.cyl,'#7a4a2a',0.2,1.2,0.2,0,0.6,0),part(G.ico,'#4caf50',0.95,0.85,0.95,0,1.75,0),part(G.ico,'#5cc160',0.6,0.55,0.6,0.3,2.25,0.1));
+    const ap=new THREE.Group();[[0.6,1.6,0.5],[-0.55,1.8,0.45],[0.2,1.3,0.8],[-0.3,2.1,-0.6],[0.7,2.0,-0.3]].forEach(([x,y,z])=>ap.add(part(G.sph,'#e8322a',0.12,0.12,0.12,x,y,z,false)));
+    inner.add(ap);g.userData.apples=ap;
+  } else inner.add(part(G.cyl,'#7a4a2a',0.22,1,0.22,0,0.5,0),part(G.cone,'#3a8f48',0.8,1.6,0.8,0,1.6,0),part(G.cone,'#48a456',0.6,1.2,0.6,0,2.3,0));
   g.userData.inner=inner;return g;}
 function buildRock(){const g=new THREE.Group(),inner=new THREE.Group();g.add(inner);
   const r=part(G.dodec,'#8e939e',0.55,0.45,0.5,0,0.35,0);r.rotation.y=Math.random()*3;inner.add(r);inner.add(part(G.dodec,'#a2a7b2',0.3,0.28,0.3,0.25,0.65,0.1));
@@ -409,8 +626,9 @@ function buildRock(){const g=new THREE.Group(),inner=new THREE.Group();g.add(inn
 function placeNature(type,i,j){
   const n=idx(i,j);kind[n]=type==='tree'?TREE:ROCK;
   let o=nature.get(n);
-  if(!o){o={type,i,j,n,mesh:type==='tree'?buildTree():buildRock()};o.mesh.position.set(cx(i),0,cz(j));scene.add(o.mesh);nature.set(n,o);}
+  if(!o){const apple=type==='tree'&&Math.random()<0.35;o={type,i,j,n,apple,mesh:type==='tree'?buildTree(apple):buildRock()};o.mesh.position.set(cx(i),0,cz(j));scene.add(o.mesh);nature.set(n,o);}
   o.alive=true;o.hits=type==='tree'?4:5;o.shake=0;o.grow=0;o.mesh.visible=true;o.mesh.scale.setScalar(1);
+  o.apples=o.apple?3:0;if(o.mesh.userData.apples)o.mesh.userData.apples.visible=o.apples>0;
 }
 (()=>{
   let trees=0,rocks=0,tries=0;
@@ -424,6 +642,18 @@ function placeNature(type,i,j){
     if(rocks<14&&Math.random()<0.35){placeNature('rock',i,j);rocks++;}else if(trees<34){placeNature('tree',i,j);trees++;}
   }
 })();
+
+/* ---------- Beerenbüsche ---------- */
+const bushes=[];
+function buildBush(){const g=new THREE.Group();
+  g.add(part(G.ico,'#3f9c4e',0.55,0.45,0.55,0,0.4,0),part(G.ico,'#4caf5c',0.4,0.35,0.4,0.3,0.55,0.15),part(G.ico,'#4caf5c',0.35,0.3,0.35,-0.3,0.5,-0.1));
+  const b=new THREE.Group();[[0.3,0.6,0.35],[-0.25,0.55,0.4],[0.05,0.8,0.3],[0.45,0.45,0],[-0.4,0.4,0.2],[0.1,0.5,-0.45]].forEach(([x,y,z],i)=>b.add(part(G.sph,i%2?'#3a4ad8':'#d8324a',0.07,0.07,0.07,x,y,z,false)));
+  g.add(b);g.userData.berries=b;scene.add(g);return g;}
+(()=>{let tries=0;while(bushes.length<9&&tries<2000){tries++;const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;
+  if(kind[idx(i,j)]!==EMPTY||i<1||j<1||i>GW-2||j>GH-2)continue;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<6||d>15)continue;
+  if(bushes.some(b=>Math.hypot(b.x-cx(i),b.z-cz(j))<3))continue;
+  const b={x:cx(i)+(Math.random()-.5)*0.3,z:cz(j)+(Math.random()-.5)*0.3,full:true,mesh:buildBush()};b.mesh.position.set(b.x,0,b.z);bushes.push(b);}})();
+function refillBushes(){bushes.forEach(b=>{b.full=true;b.mesh.userData.berries.visible=true;});}
 
 /* ---------- Bauteile ---------- */
 function buildBlockMesh(type){
@@ -535,6 +765,18 @@ function buildHen(){
   outer.userData={inner:g,legs,head};
   scene.add(outer);return outer;
 }
+function buildSheep(){
+  const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
+  const legs=[];[[-0.18,0.28],[0.18,0.28],[-0.18,-0.28],[0.18,-0.28]].forEach(([x,z])=>{const l=part(G.cyl,'#2a2430',0.06,0.45,0.06,x,0.22,z);legs.push(l);g.add(l);});
+  const skin=part(G.sph,'#f2b8b0',0.3,0.26,0.42,0,0.6,0);g.add(skin);
+  const fleece=new THREE.Group();[[0,0.66,0,0.42],[0.2,0.75,0.2,0.28],[-0.2,0.75,0.15,0.28],[0.15,0.72,-0.25,0.3],[-0.15,0.72,-0.22,0.3],[0,0.85,0,0.3]].forEach(([x,y,z,r])=>fleece.add(part(G.ico,'#f6f4ee',r,r*0.9,r,x,y,z)));
+  g.add(fleece);
+  const head=new THREE.Group();head.position.set(0,0.8,0.48);g.add(head);
+  head.add(part(G.sph,'#2a2430',0.17,0.19,0.2,0,0,0),part(G.sph,'#2a2430',0.06,0.14,0.04,-0.17,0.04,-0.02),part(G.sph,'#2a2430',0.06,0.14,0.04,0.17,0.04,-0.02));
+  head.add(part(G.sph,'#ffffff',0.04,0.05,0.03,-0.07,0.05,0.16,false),part(G.sph,'#ffffff',0.04,0.05,0.03,0.07,0.05,0.16,false));
+  outer.userData={inner:g,legs,fleece,head};
+  scene.add(outer);return outer;
+}
 const MONSTER={
   slime:{hp:42,speed:1.7,dmg:6,hurt:1,r:0.45},
   grummel:{hp:130,speed:1.15,dmg:18,hurt:2,r:0.65},
@@ -558,14 +800,21 @@ const arrowMat=new THREE.MeshBasicMaterial({color:'#5a3a22'});
 /* ---------- Zustand ---------- */
 let phase='start',time=0,day=1,nights=0,kills=0,dayT=50,isNight=false,nightAmt=0,spawnQueue=[],spawnT=0,duskToast=false;
 let wood=6,stone=0,houseHp=400;const HOUSE_MAX=400;
+let sticks=0,wool=0,berries=0,apples=0,eggsInv=0;
+function have(c){return wood>=(c.w||0)&&stone>=(c.s||0)&&sticks>=(c.st||0)&&wool>=(c.wo||0);}
+function pay(c){wood-=c.w||0;stone-=c.s||0;sticks-=c.st||0;wool-=c.wo||0;}
+function costStr(c){const p=[];if(c.w)p.push(c.w+' '+t('wood'));if(c.s)p.push(c.s+' '+t('stone'));if(c.st)p.push(c.st+' '+t('sticks'));if(c.wo)p.push(c.wo+' '+t('wool'));return p.join(' + ');}
+function missStr(c){return costStr({w:Math.max(0,(c.w||0)-wood),s:Math.max(0,(c.s||0)-stone),st:Math.max(0,(c.st||0)-sticks),wo:Math.max(0,(c.wo||0)-wool)});}
+const fcost=f=>({w:f.cw,s:f.cs,wo:f.cwo||0});
 let monsters=[],floats=[],selected=null,actCd=0,houseToastCd=0;
-const WEAPONS={hammer:{dmg:26,reach:1.9,cd:0.38},sword:{dmg:42,reach:2.4,cd:0.3,w:6,s:6},bow:{dmg:22,range:9,cd:0.55,w:8,s:4,ranged:true}};
+const WEAPONS={hammer:{dmg:26,reach:1.9,cd:0.38},sword:{dmg:42,reach:2.4,cd:0.3,w:6,s:6},bow:{dmg:22,range:9,cd:0.55,w:4,s:0,st:6,wo:2,ranged:true}};
 const WORDER=['hammer','sword','bow'];
 let weapon='hammer',owned={hammer:true,sword:false,bow:false};
 const dog={x:12.5,z:8.5,face:0,friend:false,moving:0,biteCd:0,stuck:0,seen:false};
 dog.mesh=buildDog();
 const hens=[0,1].map(i=>{const h={x:HC.x+(i?4:-4),z:HC.z+3.5,face:0,tx:0,tz:0,wt:0,moving:0,eggT:20+i*8,peck:0};h.mesh=buildHen();return h;});
 let eggs=[];
+const sheep=[0,1,2].map(i=>{const a=i*2.1+0.6;const sh={x:HC.x+Math.cos(a)*9,z:HC.z+Math.sin(a)*7,face:0,tx:0,tz:0,wt:0,moving:0,wool:true,regrow:0,baa:3+i*4};sh.mesh=buildSheep();return sh;});
 const eggGeo=new THREE.SphereGeometry(1,12,10);
 let best=0,soundOn=true;
 try{best=(JSON.parse(localStorage.getItem('nachtburg-v1')||'{}').best)||0;}catch(e){}
@@ -608,6 +857,9 @@ const sfx={
   hurt(){tone('square',400,180,0,0.25,0.12,1500);},
   arrow(){tone('triangle',900,400,0,0.12,0.1);},
   breakw(){noise(0,0.35,0.35,700);tone('sine',160,60,0,0.35,0.2);},
+  baa(v){v=v||1;tone('sawtooth',300,260,0,0.45,0.08*v,900);tone('sawtooth',304,262,0.05,0.4,0.05*v,900);},
+  eat(){tone('square',300,220,0,0.06,0.08,1200);tone('square',280,200,0.1,0.06,0.08,1200);tone('sine',660,990,0.2,0.15,0.1);},
+  coin(){tone('square',988,0,0,0.08,0.1,3000);tone('square',1318,0,0.08,0.25,0.1,3000);},
   rest(){[523,440,392,330].forEach((f,i)=>tone('sine',f,0,i*0.18,0.3,0.12));},
   bark(){tone('square',520,320,0,0.1,0.12,1600);tone('square',560,330,0.16,0.1,0.12,1600);},
   cluck(){for(let i=0;i<2;i++)tone('square',640,380,i*0.09,0.07,0.06,1800);},
@@ -619,7 +871,7 @@ $('sound').addEventListener('click',()=>{soundOn=!soundOn;audioInit();$('sound')
 
 /* ---------- Bauleiste ---------- */
 const itemsBox=$('items');
-function costText(k){const it=ITEMS[k];if(k==='demolish')return t('c_refund');if(it.w&&it.s)return t('c_ws',{w:it.w,s:it.s});return it.w?t('c_w',{n:it.w}):t('c_s',{n:it.s});}
+function costText(k){const it=ITEMS[k];if(k==='demolish')return t('c_refund');return costStr(it);}
 ORDER.forEach((k,i)=>{
   const b=document.createElement('button');b.type='button';b.className='item';b.dataset.k=k;b.setAttribute('aria-pressed','false');
   b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=t('i_'+k);
@@ -635,13 +887,13 @@ WORDER.forEach(k=>{
   b.addEventListener('click',()=>pickWeapon(k));
   wpnBox.appendChild(b);
 });
-function wCost(k){const w=WEAPONS[k];return t('c_ws',{w:w.w,s:w.s});}
+function wCost(k){return costStr(WEAPONS[k]);}
 function pickWeapon(k){
   audioInit();
   if(!owned[k]){
     const w=WEAPONS[k];
-    if(wood<w.w||stone<w.s){toast(t('wPoor',{w:t('w_'+k)}),'#ff6b6b');sfx.denied();return;}
-    wood-=w.w;stone-=w.s;owned[k]=true;toast(t('wBought',{w:t('w_'+k)}),'#ffb340');sfx.build();
+    if(!have(w)){toast(t('wPoor',{w:t('w_'+k)})+' '+t('needs',{c:missStr(w)}),'#ff6b6b');sfx.denied();return;}
+    pay(w);owned[k]=true;toast(t('wBought',{w:t('w_'+k)}),'#ffb340');sfx.build();
   }
   weapon=k;sfx.swing();
 }
@@ -649,7 +901,7 @@ function cycleWeapon(){const list=WORDER.filter(k=>owned[k]);const i=list.indexO
 function stageCost(st){if(st.w&&st.s)return t('c_ws',{w:st.w,s:st.s});return st.w?t('c_w',{n:st.w}):t('c_s',{n:st.s});}
 function stageMissing(st){const mw=Math.max(0,st.w-wood),ms=Math.max(0,st.s-stone);if(mw&&ms)return t('c_ws',{w:mw,s:ms});return mw?t('c_w',{n:mw}):t('c_s',{n:ms});}
 function select(k){selected=k;itemsBox.querySelectorAll('.item').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.k===k)));}
-function afford(k){const it=ITEMS[k];return k==='demolish'||(wood>=it.w&&stone>=it.s);}
+function afford(k){return k==='demolish'||have(ITEMS[k]);}
 
 /* ---------- Ablauf ---------- */
 function resetWorld(){
@@ -663,9 +915,10 @@ function startGame(){
   audioInit();resetWorld();
   $('startScreen').hidden=true;$('endScreen').hidden=true;
   day=1;nights=0;kills=0;dayT=50;isNight=false;spawnQueue=[];duskToast=false;
-  wood=6;stone=0;houseHp=HOUSE_MAX;select(null);houseStage=0;showHouse();
+  wood=6;stone=0;sticks=0;wool=0;berries=0;apples=0;eggsInv=0;houseHp=HOUSE_MAX;select(null);refillBushes();
+  sheep.forEach((sh,i)=>{const a=i*2.1+0.6;sh.x=HC.x+Math.cos(a)*9;sh.z=HC.z+Math.sin(a)*7;sh.wool=true;sh.regrow=0;});houseStage=0;showHouse();
   Object.assign(player,{x:HC.x,z:HC.z+4,face:0,hearts:5,down:0,inv:0,swing:0});
-  FURN.forEach(f=>f.built=false);restCd=0;
+  FURN.forEach(f=>f.built=false);restCd=0;arcRewardDay={whack:0,memory:0};
   weapon='hammer';owned={hammer:true,sword:false,bow:false};
   eggs.forEach(e=>scene.remove(e.mesh));eggs=[];
   // Hund sitzt irgendwo im Wald
@@ -702,6 +955,8 @@ function startDay(){
   for(const b of blocks.values())b.hp=Math.min(b.max,b.hp+(b.max-b.hp)*0.5);
   houseHp=Math.min(HOUSE_MAX,houseHp+80);
   if(furnBuilt('chest')){wood+=5;stone+=3;setTimeout(()=>phase==='play'&&toast(t('chestGift'),'#ffd23f'),1800);}
+  refillBushes();
+  for(const o of nature.values())if(o.alive&&o.apple){o.apples=3;o.mesh.userData.apples.visible=true;}
   for(const o of nature.values())if(!o.alive&&kind[o.n]===EMPTY&&dist2(player,{x:cx(o.i),z:cz(o.j)})>1.2){placeNature(o.type,o.i,o.j);o.mesh.scale.setScalar(0.01);o.grow=1;}
   flowDirty=true;
   sfx.dawn();toast(t('dawn',{n:nights}),'#7fd16b');
@@ -759,14 +1014,17 @@ function canPlace(i,j){
   if(Math.hypot(cx(i)-HC.x,cz(j)-HC.z)>BUILD_R)return 'far';
   const occ=e=>Math.abs(e.x-cx(i))<0.5+0.35&&Math.abs(e.z-cz(j))<0.5+0.35;
   if(occ(player))return 'bad';
+  if(bushes.some(b=>Math.abs(b.x-cx(i))<0.9&&Math.abs(b.z-cz(j))<0.9))return 'bad';
   if(monsters.some(m=>!MONSTER[m.type].fly&&occ(m)))return 'bad';
   return 'ok';
 }
+function nearestSheep(){let best=null,bd=1.5;for(const sh of sheep){const d=dist2(player,sh);if(d<bd){bd=d;best=sh;}}return best;}
+function nearestBush(){let best=null,bd=1.35;for(const b of bushes){if(!b.full)continue;const d=dist2(player,b);if(d<bd){bd=d;best=b;}}return best;}
 function nearestNature(){let best=null,bd=1.55;for(const o of nature.values()){if(!o.alive)continue;const d=dist2(player,{x:cx(o.i),z:cz(o.j)});if(d<bd){bd=d;best=o;}}return best;}
 function monstersInReach(){const r=WEAPONS[weapon].reach||1.9;return monsters.filter(m=>dist2(m,player)<(m.type==='bat'?r+0.2:r));}
 function bowTarget(){let best=null,bd=WEAPONS.bow.range;for(const m of monsters){const d=dist2(m,player);if(d<bd){bd=d;best=m;}}return best;}
 function action(){
-  if(phase!=='play'||player.down>0||actCd>0)return;
+  if(phase!=='play'||paused||player.down>0||actCd>0)return;
   audioInit();
   // Monster zuerst
   const W=WEAPONS[weapon],fighting=!(selected&&!isNight);
@@ -791,12 +1049,12 @@ function action(){
     const {i,j}=targetTile(),n=idx(i,j);
     if(selected==='demolish'){
       const b=blocks.get(n);if(!b){sfx.denied();actCd=0.25;return;}
-      const it=ITEMS[b.type],k=b.hp/b.max;wood+=Math.floor(it.w*0.5*k+0.5);stone+=Math.floor(it.s*0.5*k+0.5);
+      const it=ITEMS[b.type],k=b.hp/b.max;wood+=Math.floor(it.w*0.5*k+0.5);stone+=Math.floor(it.s*0.5*k+0.5);sticks+=Math.floor((it.st||0)*0.5*k+0.5);
       removeBlock(n,false);actCd=0.25;sfx.chop();return;
     }
     const c=canPlace(i,j);
     if(c!=='ok'||!afford(selected)){sfx.denied();actCd=0.25;return;}
-    const it=ITEMS[selected];wood-=it.w;stone-=it.s;
+    const it=ITEMS[selected];pay(it);
     const b={type:selected,hp:it.hp,max:it.hp,n,i,j,shake:0,cd:0,mesh:buildBlockMesh(selected),pop:0.25};
     b.mesh.position.set(cx(i),0,cz(j));scene.add(b.mesh);blocks.set(n,b);kind[n]=BLOCK;flowDirty=true;
     puff(cx(i),0.3,cz(j),5,'#e8dcc4');sfx.build();actCd=0.22;
@@ -807,13 +1065,15 @@ function action(){
     const f=nearestFurn();
     if(f&&!f.built){
       actCd=0.4;
-      if(wood<f.cw||stone<f.cs){sfx.denied();floatTxt(HC.x+f.x,HC.z+f.z,t('hPoor'),'#ff6b6b',1.6,1.2);return;}
-      wood-=f.cw;stone-=f.cs;f.built=true;showHouse();
+      if(!have(fcost(f))){sfx.denied();floatTxt(HC.x+f.x,HC.z+f.z,t('needs',{c:missStr(fcost(f))}),'#ff6b6b',1.6,1.6);return;}
+      pay(fcost(f));f.built=true;showHouse();
       collidePlayer(player,0.32);
       puff(HC.x+f.x,0.6,HC.z+f.z,8,'#e8dcc4');sfx.build();toast(t('fBuilt_'+f.k),'#7fd16b');
       if(f.k==='table')player.hearts=Math.min(maxHearts(),player.hearts+1);
       return;
     }
+    if(f&&f.k==='arcade'&&f.built){actCd=0.4;openArcade();return;}
+    if(f&&f.k==='chest'&&f.built){actCd=0.4;openInv();return;}
     if(f&&f.k==='bed'&&f.built){
       actCd=0.5;
       if(restCd>0){floatTxt(player.x,player.z,t('restWait',{n:Math.ceil(restCd)}),'#aab2d6',2.4,1.2);return;}
@@ -834,15 +1094,28 @@ function action(){
     dog.friend=true;actCd=0.4;sfx.bark();toast(t('dogFriend'),'#7fd16b');floatTxt(dog.x,dog.z,'♥','#ff6b6b',1.6,1.4);
     return;
   }
+  const sh=nearestSheep();
+  if(sh){
+    actCd=0.4;
+    if(!sh.wool){floatTxt(sh.x,sh.z,t('sheepBare'),'#aab2d6',1.6,1.2);return;}
+    sh.wool=false;sh.regrow=50;wool+=2;sfx.baa();puff(sh.x,0.8,sh.z,8,'#ffffff');floatTxt(sh.x,sh.z,t('plusWool',{n:2}),'#ffffff',1.8,1.2);
+    return;
+  }
+  const bu=nearestBush();
+  if(bu){actCd=0.4;bu.full=false;bu.mesh.userData.berries.visible=false;berries+=3;sfx.egg();floatTxt(bu.x,bu.z,t('plusBerries',{n:3}),'#ff7a9a',1.4,1.2);return;}
   const o=nearestNature();
+  if(o&&o.type==='tree'&&o.apples>0){
+    actCd=0.4;const n=o.apples;apples+=n;o.apples=0;o.mesh.userData.apples.visible=false;o.shake=0.3;sfx.egg();
+    floatTxt(cx(o.i),cz(o.j),t('plusApples',{n}),'#ff6b6b',2.6,1.2);return;
+  }
   if(o){
     actCd=0.35;player.swing=0.3;player.face=Math.atan2(cx(o.i)-player.x,cz(o.j)-player.z);o.shake=0.25;o.hits--;
-    if(o.type==='tree'){wood++;sfx.chop();floatTxt(cx(o.i),cz(o.j),t('plusW',{n:1}),'#e8b07a',2.4,0.9);}
+    if(o.type==='tree'){wood++;sfx.chop();const st=Math.random()<0.5;if(st)sticks++;floatTxt(cx(o.i),cz(o.j),t('plusW',{n:1})+(st?' · '+t('plusSticks',{n:1}):''),'#e8b07a',2.4,0.9);}
     else{stone++;sfx.mine();floatTxt(cx(o.i),cz(o.j),t('plusS',{n:1}),'#c7ccd8',1.6,0.9);}
     puff(cx(o.i),o.type==='tree'?1.2:0.5,cz(o.j),2,o.type==='tree'?'#b8e0a0':'#c7ccd8');
     if(o.hits<=0){
       o.alive=false;kind[o.n]=EMPTY;flowDirty=true;o.fall=1;
-      if(o.type==='tree'){wood+=2;floatTxt(cx(o.i),cz(o.j),t('plusW',{n:2}),'#e8b07a',3,1.2);}else{stone+=1;}
+      if(o.type==='tree'){wood+=2;sticks+=2;floatTxt(cx(o.i),cz(o.j),t('plusW',{n:2})+' · '+t('plusSticks',{n:2}),'#e8b07a',3,1.2);}else{stone+=1;}
       sfx.breakw();
     }
     return;
@@ -868,7 +1141,10 @@ window.addEventListener('keydown',e=>{
     if(k==='m')$('sound').click();
     if(k==='n')startNight();
     if(k==='q')cycleWeapon();
+    if(k==='f')eat();
+    if(k==='i'){if($('invScreen').hidden){if(!paused)openInv();}else closeInv();}
     if(k==='b'||k==='escape')select(null);
+    if(k==='escape'&&paused){if(!$('invScreen').hidden)closeInv();else closeArcade();}
     const num=parseInt(k,10);if(num>=1&&num<=5)select(selected===ORDER[num-1]?null:ORDER[num-1]);
   }
   keys[k]=true;
@@ -892,7 +1168,7 @@ cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(0.6,Math.min(1.
 /* ---------- Update ---------- */
 function update(dt){
   time+=dt;
-  if(phase!=='play')return;
+  if(phase!=='play'||paused)return;
   actCd=Math.max(0,actCd-dt);houseToastCd=Math.max(0,houseToastCd-dt);
   if((keys['e']||keys[' ']||holdAct)&&actCd<=0)action();
   if(flowDirty)computeFlow();
@@ -973,6 +1249,16 @@ function update(dt){
   } else {
     const d=dist2(dog,player);if(d<6)dog.face=Math.atan2(player.x-dog.x,player.z-dog.z);
   }
+  // Schafe
+  for(const sh of sheep){
+    sh.wt-=dt;sh.moving=0;sh.baa-=dt;
+    if(!sh.wool){sh.regrow-=dt;if(sh.regrow<=0)sh.wool=true;}
+    if(sh.wt<=0){sh.wt=3+Math.random()*4;if(Math.random()<0.4){sh.tx=sh.x;sh.tz=sh.z;}else{const a=Math.random()*Math.PI*2,r=6+Math.random()*7;sh.tx=HC.x+Math.cos(a)*r;sh.tz=HC.z+Math.sin(a)*r*0.75;}}
+    const vx=sh.tx-sh.x,vz=sh.tz-sh.z,vl=Math.hypot(vx,vz);
+    if(vl>0.3){sh.x+=vx/vl*0.8*dt;sh.z+=vz/vl*0.8*dt;sh.face=Math.atan2(vx,vz);sh.moving=1;}
+    collideTiles(sh,0.4);
+    if(sh.baa<=0){sh.baa=10+Math.random()*12;if(dist2(sh,player)<9)sfx.baa(0.5);}
+  }
   // Hühner & Eier
   for(const h of hens){
     h.wt-=dt;h.peck=Math.max(0,h.peck-dt);h.moving=0;
@@ -986,7 +1272,7 @@ function update(dt){
   for(const e of eggs.slice()){
     if(player.down<=0&&dist2(e,player)<0.8){
       scene.remove(e.mesh);eggs.splice(eggs.indexOf(e),1);sfx.egg();
-      if(player.hearts<maxHearts()){player.hearts++;floatTxt(e.x,e.z,'+♥','#ff6b6b',1.8,1.2);toast(t('egg'),'#fff6e0');}else{floatTxt(e.x,e.z,t('eggFull'),'#fff6e0',1.8,1.2);}
+      eggsInv++;floatTxt(e.x,e.z,t('plusEgg'),'#fff6e0',1.8,1.2);
     }
   }
   // Fackeln & Türme
@@ -1039,6 +1325,7 @@ function syncWorld(){
   houseParts.roofG.visible=houseStage>=3&&!inside;
   houseParts.front.scale.y=inside?0.18:1;
   roomLight.intensity=(inside?0.9:0)+(furnBuilt('fire')&&houseDone()?0.5*nightAmt+0.2:0);
+  const arc=FURN.find(f=>f.k==='arcade');if(arc.built)arc.mesh.userData.screen.material.color.setHSL((time*0.15)%1,0.7,0.65);
   const fire=FURN[1];
   if(fire.built){fire.mesh.userData.flame.scale.set(0.2,0.4+Math.sin(time*18)*0.08,0.2);fire.mesh.userData.glow.scale.setScalar(1.4+Math.sin(time*9)*0.2);
     if(Math.random()<0.05&&!inside)puff(HC.x+1.3,4.4,HC.z-1.4,1,'#c8c8d0');}
@@ -1049,6 +1336,11 @@ function syncWorld(){
   du.tail.rotation.z=Math.sin(time*(dog.friend?18:6))*0.6;
   du.inner.position.y=dog.friend?0:Math.abs(Math.sin(time*2))*0.02;
   du.head.rotation.x=dog.biteCd>0.4?0.4:0;
+  // Schafe
+  for(const sh of sheep){const su=sh.mesh.userData;sh.mesh.position.set(sh.x,0,sh.z);turn(sh.mesh,sh.face,0.15);
+    const ss=sh.moving?Math.sin(time*10+sh.x)*0.5:0;su.legs.forEach((l,i)=>l.rotation.x=(i%2?ss:-ss)*(i<2?1:-1));
+    const target=sh.wool?1:0.25;const cur=su.fleece.scale.x;su.fleece.scale.setScalar(cur+(target-cur)*0.05);
+    su.head.rotation.x=!sh.moving?Math.max(0,Math.sin(time*1.5+sh.z))*0.5:0;}
   // Hühner
   for(const h of hens){const hu=h.mesh.userData;h.mesh.position.set(h.x,0,h.z);turn(h.mesh,h.face,0.2);
     const hs=h.moving?Math.sin(time*14)*0.7:0;hu.legs[0].rotation.x=hs;hu.legs[1].rotation.x=-hs;hu.head.rotation.x=h.peck>0?Math.max(0,Math.sin(time*14))*0.9:0;}
@@ -1122,13 +1414,19 @@ function hint(){
     return {t:t('hBuild',{item:t('i_'+selected)}),c:'#7fd16b'};
   }
   if(houseDone()&&inHouse(player)){const f=nearestFurn();
-    if(f&&!f.built)return (wood>=f.cw&&stone>=f.cs)?{t:t('hFurn',{f:t('f_'+f.k),c:furnCost(f)}),c:'#7fd16b'}:{t:t('hFurnPoor',{f:t('f_'+f.k),c:furnCost(f)}),c:'#ff6b6b'};
+    if(f&&!f.built)return have(fcost(f))?{t:t('hFurn',{f:t('f_'+f.k),c:furnCost(f)}),c:'#7fd16b'}:{t:t('hFurnPoor',{f:t('f_'+f.k),c:missStr(fcost(f))}),c:'#ff6b6b'};
+    if(f&&f.k==='arcade')return {t:t('hArcade'),c:'#7be0ff'};
+    if(f&&f.k==='chest')return {t:t('hChest'),c:'#ffd23f'};
     if(f&&f.k==='bed')return restCd>0?{t:t('restWait',{n:Math.ceil(restCd)}),c:'#aab2d6'}:{t:t('hRest'),c:'#c9b8ff'};
     if(!f)return null;}
   if(!houseDone()&&dist2(player,HC)<4.3){const st=HSTAGES[houseStage],ok=wood>=st.w&&stone>=st.s;
     return ok?{t:t('hStage',{st:t('st_'+st.k),c:stageCost(st)}),c:'#7fd16b'}:{t:t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),c:'#ff6b6b'};}
   if(!dog.friend&&dist2(player,dog)<1.7)return {t:t('hDog'),c:'#ffb340'};
+  const sh=nearestSheep();
+  if(sh)return sh.wool?{t:t('hShear'),c:'#ffffff'}:{t:t('sheepBare'),c:'#aab2d6'};
+  if(nearestBush())return {t:t('hBerries'),c:'#ff7a9a'};
   const o=nearestNature();
+  if(o&&o.type==='tree'&&o.apples>0)return {t:t('hApples'),c:'#ff6b6b'};
   if(o)return o.type==='tree'?{t:t('hChop'),c:'#e8b07a'}:{t:t('hMine'),c:'#c7ccd8'};
   return null;
 }
@@ -1153,6 +1451,8 @@ function drawMini(){
   for(const b of blocks.values()){mc.fillStyle=b.type==='wood'?'#c08a5a':b.type==='stone'?'#d0d4dc':b.type==='torch'?'#ffb340':'#ffffff';mc.fillRect(b.i,b.j,1,1);}
   mc.fillStyle='#b8452a';mc.fillRect(HOUSE_T.i0,HOUSE_T.j0,5,5);
   for(const m of monsters){mc.fillStyle=m.type==='slime'?'#5fd35a':m.type==='grummel'?'#b08aff':'#ff6b6b';mc.beginPath();mc.arc(m.x+GW/2,m.z+GH/2,0.6,0,7);mc.fill();}
+  mc.fillStyle='#ffffff';for(const sh of sheep){mc.beginPath();mc.arc(sh.x+GW/2,sh.z+GH/2,0.6,0,7);mc.fill();}
+  mc.fillStyle='#ff6b8b';for(const b of bushes)if(b.full){mc.beginPath();mc.arc(b.x+GW/2,b.z+GH/2,0.45,0,7);mc.fill();}
   mc.fillStyle='#e8a060';mc.beginPath();mc.arc(dog.x+GW/2,dog.z+GH/2,0.6,0,7);mc.fill();
   mc.fillStyle='#ffffff';for(const e of eggs){mc.beginPath();mc.arc(e.x+GW/2,e.z+GH/2,0.4,0,7);mc.fill();}
   mc.fillStyle='#ffd23f';mc.strokeStyle='#171a33';mc.lineWidth=0.3;mc.beginPath();mc.arc(player.x+GW/2,player.z+GH/2,0.8,0,7);mc.fill();mc.stroke();
@@ -1163,6 +1463,8 @@ function hud(){
   else if(!houseDone()){ph.textContent=t('dayBuild');ph.className='pill phase day';}
   else{const s=Math.max(0,Math.ceil(dayT));ph.textContent=t('day',{n:day,t:Math.floor(s/60)+':'+String(s%60).padStart(2,'0')});ph.className='pill phase day';}
   $('hWood').textContent=wood;$('hStone').textContent=stone;
+  const more=t('hudMore',{st:sticks,wo:wool,f:foodCount()});if($('hMore').textContent!==more)$('hMore').textContent=more;
+  $('eatBtn').disabled=phase!=='play'||foodCount()<1;
   const hh=$('hHearts');hh.textContent='♥'.repeat(Math.max(0,player.hearts))+'♡'.repeat(Math.max(0,maxHearts()-player.hearts));hh.setAttribute('aria-label',player.hearts+'/'+maxHearts());
   const bar=$('hHouseBar');
   if(!houseDone()){$('hHouseName').textContent=t('site');$('hHouse').textContent=houseStage+' / 3';bar.style.width=(houseStage/3*100).toFixed(0)+'%';bar.style.background='#ffb340';}
@@ -1171,7 +1473,7 @@ function hud(){
   $('sNights').textContent=nights;
   $('night').disabled=phase!=='play'||isNight||!houseDone();
   wpnBox.querySelectorAll('.item').forEach(b=>{const k=b.dataset.w,w=WEAPONS[k];b.setAttribute('aria-pressed',String(k===weapon));b.classList.toggle('owned',owned[k]);
-    b.classList.toggle('poor',!owned[k]&&(wood<w.w||stone<w.s));const sp=b.querySelector('span'),txt=owned[k]?t(k===weapon?'wEquip':'wReady'):wCost(k);if(sp.textContent!==txt)sp.textContent=txt;});
+    b.classList.toggle('poor',!owned[k]&&!have(w));const sp=b.querySelector('span'),txt=owned[k]?t(k===weapon?'wEquip':'wReady'):wCost(k);if(sp.textContent!==txt)sp.textContent=txt;});
   itemsBox.querySelectorAll('.item').forEach(b=>b.classList.toggle('poor',!afford(b.dataset.k)));
 }
 
@@ -1196,7 +1498,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
