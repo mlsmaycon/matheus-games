@@ -103,7 +103,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 .card.open{background:#f6f1e4}
 .card.done{background:#d8f0c8;border-color:var(--moss)}
 .hole:focus-visible,.card:focus-visible,.arc-pick:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.items{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.items{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
 @media (max-width:560px){.items{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .item{font-family:var(--body);border:3px solid var(--panel-2);background:var(--panel);color:var(--ink);border-radius:14px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:56px;text-align:left}
 .item b{font-family:var(--display);font-size:15px}
@@ -195,6 +195,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
   <div class="controls">
     <button class="btn" id="act" type="button" data-t="act">Aktion · E</button>
     <button class="btn moss" id="night" type="button" data-t="startNight">Nacht starten · N</button>
+    <button class="btn alt" id="p2Btn" type="button" data-t="p2Join">2. Spieler · P</button>
     <button class="btn alt" id="invBtn" type="button" data-t="invBtn">Truhe · I</button>
     <button class="btn alt" id="eatBtn" type="button" data-t="eatBtn">Essen · F</button>
     <button class="btn alt" id="sound" type="button" aria-pressed="true" data-t="soundOn">Ton an · M</button>
@@ -216,7 +217,7 @@ const TXT={
     step3:'<b>Nacht:</b> Hau die Monster mit dem Hammer (<b>E</b>). Fackeln brennen sie, Türme schießen.',
     go:'Los geht’s',again:'Nochmal',endTitle:'Das Haus ist gefallen!',
     act:'Aktion · E',actShort:'Aktion',startNight:'Nacht starten · N',soundOn:'Ton an · M',soundOff:'Ton aus · M',
-    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe, <b>F</b> isst etwas, <b>I</b> öffnet die Truhe. <b>N</b> startet die Nacht früher.',
+    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe, <b>F</b> isst etwas, <b>I</b> öffnet die Truhe. <b>N</b> startet die Nacht früher. <b>P</b> holt einen 2. Spieler dazu: Pfeiltasten zum Laufen, <b>Enter</b> für Aktion.',
     noload:'3D konnte nicht geladen werden.',
     i_wood:'Holzwand',i_stone:'Steinmauer',i_torch:'Fackel',i_tower:'Turm',i_demolish:'Abreißen',
     c_w:'{n} Holz',c_s:'{n} Stein',c_ws:'{w} Holz + {s} Stein',c_refund:'gibt die Hälfte zurück',
@@ -225,6 +226,9 @@ const TXT={
     hStage:'[E] {st} bauen ({c})',hStagePoor:'{st}: es fehlt {c}',siteLabel:'Hier kommt dein Haus hin',
     stageDone:'{st} fertig!',
     sticks:'Äste',wool:'Wolle',needs:'Es fehlt: {c}',
+    i_doghouse:'Hundehütte',inv_bones:'Knochen',plusBone:'+1 Knochen',dogWantsBone:'Bello möchte einen Knochen!',
+    oneDoghouse:'Bello hat schon eine Hütte.',doghouseBuilt:'Hundehütte gebaut! Bello ist glücklich und beißt kräftiger.',doghouseBuiltNoDog:'Hundehütte gebaut! Jetzt fehlt nur noch ein Hund …',
+    p2Join:'2. Spieler · P',p2Leave:'Spieler 2 raus · P',p2Joined:'Spieler 2 ist da! Pfeiltasten zum Laufen, Enter für Aktion.',p2Left:'Spieler 2 hat aufgehört.',pl:'Spieler {n}',
     invTitle:'Deine Truhe',invText:'Hier sind alle deine Sachen. Essen gibt dir ein Herz zurück.',invBtn:'Truhe · I',eatBtn:'Essen · F',eatOne:'Essen',
     inv_wood:'Holz',inv_stone:'Stein',inv_sticks:'Äste',inv_wool:'Wolle',inv_berries:'Beeren',inv_apples:'Äpfel',inv_eggs:'Eier',
     hudMore:'{st} Äste · {wo} Wolle · {f} Essen',full:'Du bist satt! Alle Herzen sind voll.',noFood:'Du hast nichts zu essen. Pflück Beeren oder Äpfel!',
@@ -252,7 +256,7 @@ const TXT={
     step4:'<b>Tiere & Essen:</b> Scher die Schafe für Wolle (fürs Bett), pflück Beeren und Äpfel, sammel Eier. Essen (<b>F</b>) gibt Herzen. In der Truhe (<b>I</b>) siehst du alles. Freunde dich mit dem Hund an und bau Schwert oder Bogen (<b>Q</b> wechselt).',
     w_hammer:'Hammer',w_sword:'Schwert',w_bow:'Bogen',wReady:'bereit',wEquip:'in der Hand',
     wBought:'{w} gebaut! Drück Q zum Wechseln.',wPoor:'Zu wenig Material für {w}.',
-    dogSeen:'Da hinten sitzt ein Hund! Geh hin und drück E.',dogFriend:'Bello ist jetzt dein Freund! Er hilft dir nachts.',hDog:'[E] Hund anfreunden',dogName:'Bello',
+    dogSeen:'Da hinten sitzt ein Hund! Er möchte einen Knochen. Auf der Wiese liegt einer.',dogFriend:'Bello ist jetzt dein Freund! Er hilft dir nachts.',hDog:'[E] Bello einen Knochen geben',dogName:'Bello',
     egg:'Ein Ei! +1 Herz',eggFull:'Ein Ei! Lecker.',noTarget:'Kein Monster in Reichweite'
   },
   en:{
@@ -263,7 +267,7 @@ const TXT={
     step3:'<b>Night:</b> Bonk the monsters with your hammer (<b>E</b>). Torches burn them, towers shoot.',
     go:'Let’s go',again:'Play again',endTitle:'The house has fallen!',
     act:'Action · E',actShort:'Action',startNight:'Start night · N',soundOn:'Sound on · M',soundOff:'Sound off · M',
-    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early.',
+    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early. <b>P</b> adds player 2: arrow keys to walk, <b>Enter</b> for action.',
     noload:'3D could not be loaded.',
     i_wood:'Wood wall',i_stone:'Stone wall',i_torch:'Torch',i_tower:'Tower',i_demolish:'Demolish',
     c_w:'{n} wood',c_s:'{n} stone',c_ws:'{w} wood + {s} stone',c_refund:'refunds half',
@@ -272,6 +276,9 @@ const TXT={
     hStage:'[E] Build {st} ({c})',hStagePoor:'{st}: you still need {c}',siteLabel:'Your house goes here',
     stageDone:'{st} done!',
     sticks:'sticks',wool:'wool',needs:'Missing: {c}',
+    i_doghouse:'Dog house',inv_bones:'Bones',plusBone:'+1 bone',dogWantsBone:'Bello wants a bone!',
+    oneDoghouse:'Bello already has a dog house.',doghouseBuilt:'Dog house built! Bello is happy and bites harder.',doghouseBuiltNoDog:'Dog house built! Now you just need a dog …',
+    p2Join:'Player 2 · P',p2Leave:'Player 2 out · P',p2Joined:'Player 2 is here! Arrow keys to walk, Enter for action.',p2Left:'Player 2 stopped playing.',pl:'Player {n}',
     invTitle:'Your chest',invText:'All your things are in here. Food gives you a heart back.',invBtn:'Chest · I',eatBtn:'Eat · F',eatOne:'Eat',
     inv_wood:'Wood',inv_stone:'Stone',inv_sticks:'Sticks',inv_wool:'Wool',inv_berries:'Berries',inv_apples:'Apples',inv_eggs:'Eggs',
     hudMore:'{st} sticks · {wo} wool · {f} food',full:'You’re full! All hearts are full.',noFood:'You have nothing to eat. Pick berries or apples!',
@@ -299,7 +306,7 @@ const TXT={
     step4:'<b>Animals & food:</b> Shear sheep for wool (for the bed), pick berries and apples, collect eggs. Eating (<b>F</b>) gives hearts. The chest (<b>I</b>) shows all your things. Make friends with the dog and craft a sword or bow (<b>Q</b> switches).',
     w_hammer:'Hammer',w_sword:'Sword',w_bow:'Bow',wReady:'ready',wEquip:'in hand',
     wBought:'{w} crafted! Press Q to switch.',wPoor:'Not enough material for the {w}.',
-    dogSeen:'There’s a dog over there! Walk to it and press E.',dogFriend:'Bello is your friend now! He helps you at night.',hDog:'[E] Make friends with the dog',dogName:'Bello',
+    dogSeen:'There’s a dog over there! He wants a bone. There’s one lying in the meadow.',dogFriend:'Bello is your friend now! He helps you at night.',hDog:'[E] Give Bello a bone',dogName:'Bello',
     egg:'An egg! +1 heart',eggFull:'An egg! Yum.',noTarget:'No monster in range'
   }
 };
@@ -320,9 +327,9 @@ const HC={x:cx(20),z:cz(15)};
 for(let j=HOUSE_T.j0;j<=HOUSE_T.j1;j++)for(let i=HOUSE_T.i0;i<=HOUSE_T.i1;i++)kind[idx(i,j)]=HOUSE;
 const BUILD_R=10;
 const ITEMS={
-  wood:{w:3,s:0,hp:60},stone:{w:0,s:3,hp:170},torch:{w:0,s:0,st:2,hp:30},tower:{w:5,s:5,hp:130},demolish:{}
+  wood:{w:3,s:0,hp:60},stone:{w:0,s:3,hp:170},torch:{w:0,s:0,st:2,hp:30},tower:{w:5,s:5,hp:130},doghouse:{w:5,s:0,hp:90},demolish:{}
 };
-const ORDER=['wood','stone','torch','tower','demolish'];
+const ORDER=['wood','stone','torch','tower','doghouse','demolish'];
 const blocks=new Map(),nature=new Map();
 const dist2=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const solid=k=>k!==EMPTY;
@@ -469,13 +476,14 @@ const roomLight=new THREE.PointLight(0xffc070,0,7,1.5);roomLight.position.set(HC
 function foodCount(){return apples+berries+eggsInv;}
 function eat(kind){
   audioInit();
-  if(phase!=='play'||player.down>0)return false;
-  if(player.hearts>=maxHearts()){toast(t('full'),'#7fd16b');return false;}
+  const who=players.filter(p=>p.down<=0).sort((a,b)=>a.hearts-b.hearts)[0];
+  if(phase!=='play'||!who)return false;
+  if(who.hearts>=maxHearts()){toast(t('full'),'#7fd16b');return false;}
   let k=kind;
   if(!k)k=apples>0?'apples':berries>0?'berries':eggsInv>0?'eggs':null;
   if(!k||(k==='apples'&&apples<1)||(k==='berries'&&berries<1)||(k==='eggs'&&eggsInv<1)){toast(t('noFood'),'#ff6b6b');sfx.denied();return false;}
   if(k==='apples')apples--;else if(k==='berries')berries--;else eggsInv--;
-  player.hearts++;sfx.eat();floatTxt(player.x,player.z,'+♥','#ff6b6b',2.6,1.2);
+  who.hearts++;sfx.eat();floatTxt(who.x,who.z,'+♥','#ff6b6b',2.6,1.2);
   return true;
 }
 const INV=[
@@ -485,6 +493,7 @@ const INV=[
   {k:'wool',get:()=>wool,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M16 42a9 9 0 0 1 0-18 12 12 0 0 1 22-6 10 10 0 0 1 10 14 8 8 0 0 1-4 10z" fill="#f6f4ee" stroke="#b8b0a0" stroke-width="3"/></svg>'},
   {k:'berries',food:true,get:()=>berries,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="22" cy="36" r="9" fill="#d8324a"/><circle cx="38" cy="38" r="9" fill="#3a4ad8"/><circle cx="30" cy="24" r="9" fill="#d8324a"/><path d="M30 15q4-8 12-8" stroke="#3e6b2a" stroke-width="3" fill="none"/></svg>'},
   {k:'apples',food:true,get:()=>apples,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 20c-12-6-22 2-20 14 2 12 10 20 20 16 10 4 18-4 20-16 2-12-8-20-20-14z" fill="#e8322a" stroke="#8a1a1a" stroke-width="3"/><path d="M30 20q0-8 4-12" stroke="#5a3a22" stroke-width="3" fill="none"/><path d="M33 12q8-4 12 2-8 2-12-2z" fill="#4caf50"/></svg>'},
+  {k:'bones',get:()=>bones,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M16 24a6 6 0 1 1 6-8l16 16a6 6 0 1 1 8 6 6 6 0 1 1-6 8L24 30a6 6 0 1 1-8-6z" fill="#fff6e0" stroke="#c8b890" stroke-width="3"/></svg>'},
   {k:'eggs',food:true,get:()=>eggsInv,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><ellipse cx="30" cy="33" rx="14" ry="18" fill="#fff6e0" stroke="#c8b890" stroke-width="3"/></svg>'}
 ];
 function renderInv(){
@@ -492,7 +501,7 @@ function renderInv(){
   for(const it of INV){
     const n=it.get(),d=document.createElement('div');d.className='slot'+(n?'':' empty');
     d.innerHTML=it.svg+'<b></b><span></span>';d.querySelector('b').textContent=n;d.querySelector('span').textContent=t('inv_'+it.k);
-    if(it.food){const b=document.createElement('button');b.type='button';b.textContent=t('eatOne');b.disabled=!n||player.hearts>=maxHearts();
+    if(it.food){const b=document.createElement('button');b.type='button';b.textContent=t('eatOne');b.disabled=!n||players.every(p=>p.hearts>=maxHearts());
       b.addEventListener('click',()=>{eat(it.k);renderInv();});d.appendChild(b);}
     grid.appendChild(d);
   }
@@ -674,6 +683,13 @@ function buildBlockMesh(type){
     inner.add(part(G.cyl,main,0.08,1.3,0.08,0,0.65,0),part(G.cyl,'#5a3a22',0.14,0.2,0.14,0,1.35,0));
     const flame=part(G.cone,new THREE.MeshBasicMaterial({color:'#ffb340'}),0.14,0.35,0.14,0,1.6,0,false);inner.add(flame);
     const gl=glow(2.6,0xffb050,0.6);gl.position.y=1.6;inner.add(gl);g.userData.flame=flame;g.userData.glow=gl;
+  } else if(type==='doghouse'){
+    main=new THREE.MeshLambertMaterial({color:'#c0603a'});
+    inner.add(part(G.box,main,0.9,0.75,0.9,0,0.38,0));
+    const roof=part(G.cone4,'#7a3a22',1.35,0.55,1.35,0,1.02,0);roof.rotation.y=Math.PI/4;inner.add(roof);
+    inner.add(part(G.cyl,'#2a1a14',0.22,0.06,0.22,0,0.3,0.44,false).rotateX(Math.PI/2),part(G.box,'#2a1a14',0.44,0.3,0.06,0,0.15,0.44,false));
+    inner.add(part(G.box,'#f6f1e4',0.5,0.16,0.04,0,0.68,0.46,false));
+    inner.add(part(G.cyl,'#3f8ad8',0.14,0.06,0.14,0.32,0.03,0.62));
   } else {
     main=new THREE.MeshLambertMaterial({color:'#8e939e'});
     inner.add(part(G.box,main,0.98,2.2,0.98,0,1.1,0));
@@ -687,14 +703,14 @@ function buildBlockMesh(type){
 }
 
 /* ---------- Spieler & Monster ---------- */
-function buildPlayer(){
+function buildPlayer(vest,helmet){vest=vest||'#ff8a2a';helmet=helmet||'#ffd23f';
   const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
   const legs=[part(G.cyl,'#3a4a7a',0.15,0.5,0.15,-0.18,0.25,0),part(G.cyl,'#3a4a7a',0.15,0.5,0.15,0.18,0.25,0)];g.add(...legs);
-  g.add(part(G.cyl,'#ff8a2a',0.42,0.65,0.36,0,0.8,0),part(G.sph,'#ff8a2a',0.42,0.24,0.36,0,1.12,0));
+  g.add(part(G.cyl,vest,0.42,0.65,0.36,0,0.8,0),part(G.sph,vest,0.42,0.24,0.36,0,1.12,0));
   g.add(part(G.box,'#ffe14d',0.06,0.6,0.38,-0.2,0.85,0.02,false),part(G.box,'#ffe14d',0.06,0.6,0.38,0.2,0.85,0.02,false));
-  const armL=part(G.cyl,'#ff8a2a',0.11,0.55,0.11,-0.52,0.85,0);g.add(armL);
+  const armL=part(G.cyl,vest,0.11,0.55,0.11,-0.52,0.85,0);g.add(armL);
   const armR=new THREE.Group();armR.position.set(0.52,1.1,0);g.add(armR);
-  armR.add(part(G.cyl,'#ff8a2a',0.11,0.55,0.11,0,-0.27,0));
+  armR.add(part(G.cyl,vest,0.11,0.55,0.11,0,-0.27,0));
   const hammer=new THREE.Group();hammer.position.set(0,-0.55,0.1);armR.add(hammer);
   hammer.add(part(G.cyl,'#7a4a2a',0.05,0.7,0.05,0,0,0.25).rotateX(Math.PI/2));
   hammer.add(part(G.box,'#6c717c',0.3,0.24,0.24,0,0,0.6));
@@ -706,7 +722,7 @@ function buildPlayer(){
   g.add(part(G.sph,'#ffd9b8',0.42,0.42,0.42,0,1.58,0));
   g.add(part(G.sph,'#ffffff',0.1,0.12,0.07,-0.15,1.63,0.37,false),part(G.sph,'#ffffff',0.1,0.12,0.07,0.15,1.63,0.37,false));
   g.add(part(G.sph,'#171a33',0.05,0.06,0.04,-0.15,1.63,0.43,false),part(G.sph,'#171a33',0.05,0.06,0.04,0.15,1.63,0.43,false));
-  g.add(part(G.half,'#ffd23f',0.46,0.34,0.46,0,1.72,0),part(G.cyl,'#ffd23f',0.52,0.04,0.52,0,1.72,0.05));
+  g.add(part(G.half,helmet,0.46,0.34,0.46,0,1.72,0),part(G.cyl,helmet,0.52,0.04,0.52,0,1.72,0.05));
   outer.userData={inner:g,legs,armL,armR,tools:{hammer,sword,bow}};
   scene.add(outer);return outer;
 }
@@ -812,16 +828,31 @@ const WORDER=['hammer','sword','bow'];
 let weapon='hammer',owned={hammer:true,sword:false,bow:false};
 const dog={x:12.5,z:8.5,face:0,friend:false,moving:0,biteCd:0,stuck:0,seen:false};
 dog.mesh=buildDog();
-const hens=[0,1].map(i=>{const h={x:HC.x+(i?4:-4),z:HC.z+3.5,face:0,tx:0,tz:0,wt:0,moving:0,eggT:20+i*8,peck:0};h.mesh=buildHen();return h;});
+const hens=[0,1].map(i=>{const h={x:HC.x+(i?7:-7),z:HC.z+3,face:0,tx:HC.x+(i?7:-7),tz:HC.z+3,wt:0,moving:0,eggT:20+i*8,peck:0};h.mesh=buildHen();return h;});
 let eggs=[];
-const sheep=[0,1,2].map(i=>{const a=i*2.1+0.6;const sh={x:HC.x+Math.cos(a)*9,z:HC.z+Math.sin(a)*7,face:0,tx:0,tz:0,wt:0,moving:0,wool:true,regrow:0,baa:3+i*4};sh.mesh=buildSheep();return sh;});
+let bones=0,boneDrops=[];
+function dropBone(x,z){const g=new THREE.Group();
+  g.add(part(G.cyl,'#fff6e0',0.06,0.5,0.06,0,0,0,false).rotateZ(Math.PI/2));
+  for(const a of [-1,1])for(const b of [-1,1])g.add(part(G.sph,'#fff6e0',0.08,0.08,0.08,a*0.26,0,b*0.06,false));
+  g.position.set(x,0.2,z);scene.add(g);boneDrops.push({x,z,mesh:g});}
+const sheep=[0,1,2].map(i=>{const a=i*2.1+0.6;const sh={x:HC.x+Math.cos(a)*11,z:HC.z+Math.sin(a)*8.5,face:0,tx:HC.x+Math.cos(a)*11,tz:HC.z+Math.sin(a)*8.5,wt:0,moving:0,wool:true,regrow:0,baa:3+i*4};sh.mesh=buildSheep();return sh;});
 const eggGeo=new THREE.SphereGeometry(1,12,10);
 let best=0,soundOn=true;
 try{best=(JSON.parse(localStorage.getItem('nachtburg-v1')||'{}').best)||0;}catch(e){}
 function saveRec(){try{localStorage.setItem('nachtburg-v1',JSON.stringify({best}));}catch(e){}}
 $('sBest').textContent=best;
-const player={x:HC.x,z:HC.z+4,face:0,moving:0,hearts:5,down:0,inv:0,swing:0};
+let player={x:HC.x,z:HC.z+4,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,name:'1'};
+const P1=player;let P2=null;const players=[P1];
+function nearestPlayer(e){let best=null,bd=1e9;for(const p of players){if(p.down>0)continue;const d=dist2(e,p);if(d<bd){bd=d;best=p;}}return best||P1;}
+function actAs(p){if(p===P1){action();return;}const keep=actCd;player=p;actCd=p.actCd||0;action();p.actCd=actCd;player=P1;actCd=keep;}
+function toggleP2(){
+  if(phase!=='play')return;
+  if(P2){scene.remove(P2.mesh);players.splice(players.indexOf(P2),1);P2=null;toast(t('p2Left'),'#aab2d6');}
+  else{P2={x:P1.x+1.2,z:P1.z+0.6,face:P1.face,moving:0,hearts:maxHearts(),down:0,inv:1,swing:0,actCd:0,name:'2'};P2.mesh=buildPlayer('#3f8ad8','#ff6b6b');players.push(P2);collidePlayer(P2,0.32);toast(t('p2Joined'),'#7be0ff');sfx.coin();}
+  $('p2Btn').textContent=t(P2?'p2Leave':'p2Join');
+}
 player.mesh=buildPlayer();
+$('p2Btn').addEventListener('click',toggleP2);
 const playerLight=new THREE.PointLight(0xffd090,0,10,1.4);scene.add(playerLight);
 
 const toastBox=$('toasts');
@@ -916,15 +947,18 @@ function startGame(){
   $('startScreen').hidden=true;$('endScreen').hidden=true;
   day=1;nights=0;kills=0;dayT=50;isNight=false;spawnQueue=[];duskToast=false;
   wood=6;stone=0;sticks=0;wool=0;berries=0;apples=0;eggsInv=0;houseHp=HOUSE_MAX;select(null);refillBushes();
-  sheep.forEach((sh,i)=>{const a=i*2.1+0.6;sh.x=HC.x+Math.cos(a)*9;sh.z=HC.z+Math.sin(a)*7;sh.wool=true;sh.regrow=0;});houseStage=0;showHouse();
+  sheep.forEach((sh,i)=>{const a=i*2.1+0.6;sh.x=HC.x+Math.cos(a)*11;sh.z=HC.z+Math.sin(a)*8.5;sh.tx=sh.x;sh.tz=sh.z;sh.wool=true;sh.regrow=0;});houseStage=0;showHouse();
   Object.assign(player,{x:HC.x,z:HC.z+4,face:0,hearts:5,down:0,inv:0,swing:0});
-  FURN.forEach(f=>f.built=false);restCd=0;arcRewardDay={whack:0,memory:0};
+  FURN.forEach(f=>f.built=false);restCd=0;
+  if(P2)Object.assign(P2,{x:HC.x+1.2,z:HC.z+4.4,hearts:5,down:0,inv:0,swing:0,actCd:0});
+  bones=0;boneDrops.forEach(bn=>scene.remove(bn.mesh));boneDrops=[];
+  {let pt=null;for(let k2=0;k2<200&&!pt;k2++){const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d>7&&d<11&&kind[idx(i,j)]===EMPTY)pt={x:cx(i),z:cz(j)};}if(pt)dropBone(pt.x,pt.z);}arcRewardDay={whack:0,memory:0};
   weapon='hammer';owned={hammer:true,sword:false,bow:false};
   eggs.forEach(e=>scene.remove(e.mesh));eggs=[];
   // Hund sitzt irgendwo im Wald
   for(let k=0;k<200;k++){const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<10||d>15||kind[idx(i,j)]!==EMPTY)continue;dog.x=cx(i);dog.z=cz(j);break;}
   Object.assign(dog,{friend:false,seen:false,biteCd:0,stuck:0});
-  hens.forEach((h,i)=>{h.x=HC.x+(i?4:-4);h.z=HC.z+3.5;h.eggT=18+i*9;});
+  hens.forEach((h,i)=>{h.x=HC.x+(i?7:-7);h.z=HC.z+3;h.tx=h.x;h.tz=h.z;h.eggT=18+i*9;});
   phase='play';sfx.dawn();toast(t('tipStart'),'#7fd16b');
   setTimeout(()=>{if(phase==='play'&&!dog.friend)toast(t('dogSeen'),'#ffb340');},6000);
 }
@@ -976,6 +1010,7 @@ function spawnMonster(type){
 }
 function killMonster(m){
   monsters.splice(monsters.indexOf(m),1);scene.remove(m.mesh);kills++;
+  if(Math.random()<(m.type==='grummel'?0.8:0.3))dropBone(m.x,m.z);
   puff(m.x,m.y+0.6,m.z,10,m.type==='slime'?'#a8f0a0':'#d8c8ff');sfx.pop();
 }
 
@@ -1013,11 +1048,13 @@ function canPlace(i,j){
   if(!inb(i,j))return 'bad';const n=idx(i,j);if(kind[n]!==EMPTY)return 'bad';
   if(Math.hypot(cx(i)-HC.x,cz(j)-HC.z)>BUILD_R)return 'far';
   const occ=e=>Math.abs(e.x-cx(i))<0.5+0.35&&Math.abs(e.z-cz(j))<0.5+0.35;
-  if(occ(player))return 'bad';
+  if(players.some(occ))return 'bad';
   if(bushes.some(b=>Math.abs(b.x-cx(i))<0.9&&Math.abs(b.z-cz(j))<0.9))return 'bad';
   if(monsters.some(m=>!MONSTER[m.type].fly&&occ(m)))return 'bad';
   return 'ok';
 }
+function keepAway(a,r,dt){const d=dist2(a,HC);if(d<r&&d>1e-3){const k=Math.min(r-d,2.5*dt);a.x+=(a.x-HC.x)/d*k;a.z+=(a.z-HC.z)/d*k;if(dist2({x:a.tx,z:a.tz},HC)<r){a.tx=HC.x+(a.x-HC.x)/d*(r+1.5);a.tz=HC.z+(a.z-HC.z)/d*(r+1.5);}}}
+function dogHut(){for(const b of blocks.values())if(b.type==='doghouse')return b;return null;}
 function nearestSheep(){let best=null,bd=1.5;for(const sh of sheep){const d=dist2(player,sh);if(d<bd){bd=d;best=sh;}}return best;}
 function nearestBush(){let best=null,bd=1.35;for(const b of bushes){if(!b.full)continue;const d=dist2(player,b);if(d<bd){bd=d;best=b;}}return best;}
 function nearestNature(){let best=null,bd=1.55;for(const o of nature.values()){if(!o.alive)continue;const d=dist2(player,{x:cx(o.i),z:cz(o.j)});if(d<bd){bd=d;best=o;}}return best;}
@@ -1053,12 +1090,14 @@ function action(){
       removeBlock(n,false);actCd=0.25;sfx.chop();return;
     }
     const c=canPlace(i,j);
+    if(selected==='doghouse'&&[...blocks.values()].some(b=>b.type==='doghouse')){sfx.denied();actCd=0.4;toast(t('oneDoghouse'),'#ffb340');return;}
     if(c!=='ok'||!afford(selected)){sfx.denied();actCd=0.25;return;}
     const it=ITEMS[selected];pay(it);
     const b={type:selected,hp:it.hp,max:it.hp,n,i,j,shake:0,cd:0,mesh:buildBlockMesh(selected),pop:0.25};
     b.mesh.position.set(cx(i),0,cz(j));scene.add(b.mesh);blocks.set(n,b);kind[n]=BLOCK;flowDirty=true;
     puff(cx(i),0.3,cz(j),5,'#e8dcc4');sfx.build();actCd=0.22;
-    if(!afford(selected))select(selected);
+    if(selected==='doghouse'){toast(dog.friend?t('doghouseBuilt'):t('doghouseBuiltNoDog'),'#7fd16b');select(null);}
+    else if(!afford(selected))select(selected);
     return;
   }
   if(houseDone()&&inHouse(player)){
@@ -1091,7 +1130,9 @@ function action(){
     return;
   }
   if(!dog.friend&&dist2(player,dog)<1.7){
-    dog.friend=true;actCd=0.4;sfx.bark();toast(t('dogFriend'),'#7fd16b');floatTxt(dog.x,dog.z,'♥','#ff6b6b',1.6,1.4);
+    actCd=0.4;
+    if(bones<1){sfx.denied();floatTxt(dog.x,dog.z,t('dogWantsBone'),'#ffb340',1.8,1.6);return;}
+    bones--;dog.friend=true;sfx.bark();toast(t('dogFriend'),'#7fd16b');floatTxt(dog.x,dog.z,'♥','#ff6b6b',1.6,1.4);
     return;
   }
   const sh=nearestSheep();
@@ -1141,11 +1182,13 @@ window.addEventListener('keydown',e=>{
     if(k==='m')$('sound').click();
     if(k==='n')startNight();
     if(k==='q')cycleWeapon();
+    if(k==='p')toggleP2();
+    if(k==='enter'&&P2&&!paused){e.preventDefault();actAs(P2);}
     if(k==='f')eat();
     if(k==='i'){if($('invScreen').hidden){if(!paused)openInv();}else closeInv();}
     if(k==='b'||k==='escape')select(null);
     if(k==='escape'&&paused){if(!$('invScreen').hidden)closeInv();else closeArcade();}
-    const num=parseInt(k,10);if(num>=1&&num<=5)select(selected===ORDER[num-1]?null:ORDER[num-1]);
+    const num=parseInt(k,10);if(num>=1&&num<=6)select(selected===ORDER[num-1]?null:ORDER[num-1]);
   }
   keys[k]=true;
 });
@@ -1182,28 +1225,38 @@ function update(dt){
     else if(!monsters.length)startDay();
   }
   nightAmt+=((isNight?1:0)-nightAmt)*Math.min(1,dt*0.8);
-  // Spieler
+  // Spieler (einer oder zwei)
+  for(const pl of players){
+  player=pl;
   player.inv=Math.max(0,player.inv-dt);player.swing=Math.max(0,player.swing-dt);
-  if(player.down>0){player.down-=dt;if(player.down<=0){player.hearts=maxHearts();player.inv=2;if(furnBuilt('bed')){player.x=HC.x-0.3;player.z=HC.z-1.2;toast(t('wakeBed'),'#7fd16b');}else{player.x=HC.x;player.z=HC.z+3.4;toast(t('up'),'#7fd16b');}}}
+  if(player.down>0){player.down-=dt;if(player.down<=0){player.hearts=maxHearts();player.inv=2;const off=player===P2?0.7:0;if(furnBuilt('bed')){player.x=HC.x-0.3+off;player.z=HC.z-1.2;toast(t('wakeBed')+(P2?' ('+t('pl',{n:player.name})+')':''),'#7fd16b');}else{player.x=HC.x+off;player.z=HC.z+3.4;toast(t('up')+(P2?' ('+t('pl',{n:player.name})+')':''),'#7fd16b');}}}
   let ix=0,iz=0;
-  if(keys['a']||keys['arrowleft'])ix--;if(keys['d']||keys['arrowright'])ix++;
-  if(keys['w']||keys['arrowup'])iz--;if(keys['s']||keys['arrowdown'])iz++;
-  if(joy){const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy);if(d>8){ix=dx/Math.max(d,46);iz=dy/Math.max(d,46);}}
+  if(pl===P1){
+    if(keys['a']||(!P2&&keys['arrowleft']))ix--;if(keys['d']||(!P2&&keys['arrowright']))ix++;
+    if(keys['w']||(!P2&&keys['arrowup']))iz--;if(keys['s']||(!P2&&keys['arrowdown']))iz++;
+    if(joy){const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy);if(d>8){ix=dx/Math.max(d,46);iz=dy/Math.max(d,46);}}
+  } else {
+    if(keys['arrowleft'])ix--;if(keys['arrowright'])ix++;if(keys['arrowup'])iz--;if(keys['arrowdown'])iz++;
+    pl.actCd=Math.max(0,(pl.actCd||0)-dt);
+    if(keys['enter']&&pl.actCd<=0&&!paused){actAs(pl);player=pl;}
+  }
   const il=Math.hypot(ix,iz);if(il>1){ix/=il;iz/=il;}
   player.moving=0;
   if(player.down<=0&&il>0.05){player.x+=ix*5*dt;player.z+=iz*5*dt;player.face=Math.atan2(ix,iz);player.moving=Math.min(1,il);}
   collidePlayer(player,0.32);
+  }
+  player=P1;
   // Monster
   for(const m of monsters.slice()){
     const S=MONSTER[m.type];
     m.atkCd=Math.max(0,m.atkCd-dt);m.hit=Math.max(0,m.hit-dt);m.moving=0;
     m.x+=m.kx*dt;m.z+=m.kz*dt;m.kx*=Math.pow(0.02,dt);m.kz*=Math.pow(0.02,dt);
-    const dp=dist2(m,player),alive=player.down<=0;
+    const tp=nearestPlayer(m),dp=dist2(m,tp),alive=tp.down<=0;
     let gx=null,gz=null;
     if(S.fly){
-      if(alive&&dp<2.5){gx=player.x;gz=player.z;}else{gx=HC.x;gz=HC.z;}
+      if(alive&&dp<2.5){gx=tp.x;gz=tp.z;}else{gx=HC.x;gz=HC.z;}
       if(dist2(m,HC)<2.2&&!(alive&&dp<2.5)){gx=null;if(m.atkCd<=0){m.atkCd=1;houseHp-=S.dmg;sfx.house();warnHouse();}}
-    } else if(alive&&dp<2.3){gx=player.x;gz=player.z;}
+    } else if(alive&&dp<2.3){gx=tp.x;gz=tp.z;}
     else{
       const n=idx(Math.max(0,Math.min(GW-1,ti(m.x))),Math.max(0,Math.min(GH-1,tj(m.z))));
       const nt=fnext[n];
@@ -1222,10 +1275,10 @@ function update(dt){
       if(vl>0.05){m.x+=vx/vl*sp*dt;m.z+=vz/vl*sp*dt;m.face=Math.atan2(vx,vz);m.moving=1;}
     }
     // Spieler verletzen
-    if(alive&&player.inv<=0&&dp<S.r+0.45&&m.atkCd<=0){
-      m.atkCd=1.1;player.hearts-=S.hurt;player.inv=0.9;sfx.hurt();m.bite=0.25;
-      const d=dp||1;player.x+=(player.x-m.x)/d*0.8;player.z+=(player.z-m.z)/d*0.8;
-      if(player.hearts<=0){player.hearts=0;player.down=3;toast(t('down'),'#ff6b6b');}
+    if(alive&&tp.inv<=0&&dp<S.r+0.45&&m.atkCd<=0){
+      m.atkCd=1.1;tp.hearts-=S.hurt;tp.inv=0.9;sfx.hurt();m.bite=0.25;
+      const d=dp||1;tp.x+=(tp.x-m.x)/d*0.8;tp.z+=(tp.z-m.z)/d*0.8;collidePlayer(tp,0.32);
+      if(tp.hearts<=0){tp.hearts=0;tp.down=3;toast(t('down')+(P2?' ('+t('pl',{n:tp.name})+')':''),'#ff6b6b');}
     }
     if(!S.fly){
       for(const o of monsters){if(o===m||MONSTER[o.type].fly)continue;const dx=m.x-o.x,dz=m.z-o.z,d=Math.hypot(dx,dz),mm=S.r+MONSTER[o.type].r-0.2;if(d<mm&&d>1e-4){m.x+=dx/d*(mm-d)*0.5;m.z+=dz/d*(mm-d)*0.5;}}
@@ -1240,12 +1293,17 @@ function update(dt){
     if(isNight)for(const m of monsters){if(MONSTER[m.type].fly)continue;const d=dist2(m,dog);if(d<bd&&dist2(m,player)<10){bd=d;tg=m;}}
     let gx,gz,sp;
     if(tg){gx=tg.x;gz=tg.z;sp=5.6;
-      if(bd<0.95&&dog.biteCd<=0){dog.biteCd=0.6;tg.hp-=14;tg.hit=0.15;sfx.bark();if(tg.hp<=0)killMonster(tg);}}
+      if(bd<0.95&&dog.biteCd<=0){dog.biteCd=0.6;tg.hp-=dogHut()?22:14;tg.hit=0.15;sfx.bark();if(tg.hp<=0)killMonster(tg);}}
+    const toHut=!tg&&dogHut()&&!isNight&&houseDone()&&players.every(p=>inHouse(p));
+    if(tg){}
+    else if(toHut){const hut=dogHut();gx=cx(hut.i);gz=cz(hut.j)+0.85;sp=Math.min(4,dist2(dog,{x:gx,z:gz})*2.5);}
     else{gx=player.x-Math.sin(player.face)*1.5;gz=player.z-Math.cos(player.face)*1.5;sp=Math.min(6,dist2(dog,{x:gx,z:gz})*2.5);}
+    dog.sleep=!tg&&dogHut()&&!isNight&&players.every(p=>inHouse(p))&&dist2(dog,{x:gx,z:gz})<0.8;
     const vx=gx-dog.x,vz=gz-dog.z,vl=Math.hypot(vx,vz);
     if(vl>(tg?0.7:0.6)){const ox=dog.x,oz=dog.z;dog.x+=vx/vl*sp*dt;dog.z+=vz/vl*sp*dt;dog.face=Math.atan2(vx,vz);dog.moving=1;collidePlayer(dog,0.3);
       if(Math.hypot(dog.x-ox,dog.z-oz)<sp*dt*0.3)dog.stuck+=dt;else dog.stuck=Math.max(0,dog.stuck-dt);}
-    if(dist2(dog,player)>14||dog.stuck>2.5){dog.x=player.x+0.5;dog.z=player.z+0.5;dog.stuck=0;collidePlayer(dog,0.3);puff(dog.x,0.5,dog.z,4,'#e8dcc4');}
+    if(toHut&&(dog.stuck>1.5||inHouse(dog))){const hut=dogHut();dog.x=cx(hut.i);dog.z=cz(hut.j)+0.85;dog.stuck=0;puff(dog.x,0.5,dog.z,4,'#e8dcc4');}
+    else if((dist2(dog,player)>14&&!dog.sleep)||dog.stuck>2.5){dog.x=player.x+0.5;dog.z=player.z+0.5;dog.stuck=0;collidePlayer(dog,0.3);puff(dog.x,0.5,dog.z,4,'#e8dcc4');}
   } else {
     const d=dist2(dog,player);if(d<6)dog.face=Math.atan2(player.x-dog.x,player.z-dog.z);
   }
@@ -1253,27 +1311,31 @@ function update(dt){
   for(const sh of sheep){
     sh.wt-=dt;sh.moving=0;sh.baa-=dt;
     if(!sh.wool){sh.regrow-=dt;if(sh.regrow<=0)sh.wool=true;}
-    if(sh.wt<=0){sh.wt=3+Math.random()*4;if(Math.random()<0.4){sh.tx=sh.x;sh.tz=sh.z;}else{const a=Math.random()*Math.PI*2,r=6+Math.random()*7;sh.tx=HC.x+Math.cos(a)*r;sh.tz=HC.z+Math.sin(a)*r*0.75;}}
+    if(sh.wt<=0){sh.wt=3+Math.random()*4;if(Math.random()<0.4){sh.tx=sh.x;sh.tz=sh.z;}else{const a=Math.random()*Math.PI*2,r=9+Math.random()*5;sh.tx=HC.x+Math.cos(a)*r;sh.tz=HC.z+Math.sin(a)*r*0.8;}}
     const vx=sh.tx-sh.x,vz=sh.tz-sh.z,vl=Math.hypot(vx,vz);
     if(vl>0.3){sh.x+=vx/vl*0.8*dt;sh.z+=vz/vl*0.8*dt;sh.face=Math.atan2(vx,vz);sh.moving=1;}
-    collideTiles(sh,0.4);
+    keepAway(sh,7.5,dt);collideTiles(sh,0.4);
     if(sh.baa<=0){sh.baa=10+Math.random()*12;if(dist2(sh,player)<9)sfx.baa(0.5);}
   }
   // Hühner & Eier
   for(const h of hens){
     h.wt-=dt;h.peck=Math.max(0,h.peck-dt);h.moving=0;
-    if(h.wt<=0){h.wt=2+Math.random()*3;if(Math.random()<0.35){h.tx=h.x;h.tz=h.z;h.peck=1.2;}else{const a=Math.random()*Math.PI*2,r=4+Math.random()*3;h.tx=HC.x+Math.cos(a)*r;h.tz=HC.z+Math.sin(a)*r;}}
+    if(h.wt<=0){h.wt=2+Math.random()*3;if(Math.random()<0.35){h.tx=h.x;h.tz=h.z;h.peck=1.2;}else{const a=Math.random()*Math.PI*2,r=7+Math.random()*3;h.tx=HC.x+Math.cos(a)*r;h.tz=HC.z+Math.sin(a)*r;}}
     const vx=h.tx-h.x,vz=h.tz-h.z,vl=Math.hypot(vx,vz);
     if(vl>0.2){h.x+=vx/vl*0.9*dt;h.z+=vz/vl*0.9*dt;h.face=Math.atan2(vx,vz);h.moving=1;}
-    collideTiles(h,0.25);
+    keepAway(h,6.5,dt);collideTiles(h,0.25);
     h.eggT-=dt;
     if(h.eggT<=0){h.eggT=26+Math.random()*12;if(eggs.length<4){const e={x:h.x,z:h.z,mesh:new THREE.Mesh(eggGeo,M('#fff6e0'))};e.mesh.scale.set(0.12,0.15,0.12);e.mesh.position.set(e.x,0.15,e.z);e.mesh.castShadow=true;scene.add(e.mesh);eggs.push(e);sfx.cluck();}}
   }
   for(const e of eggs.slice()){
-    if(player.down<=0&&dist2(e,player)<0.8){
+    if(players.some(p=>p.down<=0&&dist2(e,p)<0.8)){
       scene.remove(e.mesh);eggs.splice(eggs.indexOf(e),1);sfx.egg();
       eggsInv++;floatTxt(e.x,e.z,t('plusEgg'),'#fff6e0',1.8,1.2);
     }
+  }
+  for(const bn of boneDrops.slice()){
+    bn.mesh.rotation.y+=dt*1.5;bn.mesh.position.y=0.2+Math.sin(time*3+bn.x)*0.05;
+    if(players.some(p=>p.down<=0&&dist2(bn,p)<0.8)){scene.remove(bn.mesh);boneDrops.splice(boneDrops.indexOf(bn),1);bones++;sfx.egg();floatTxt(bn.x,bn.z,t('plusBone'),'#fff6e0',1.8,1.2);}
   }
   // Fackeln & Türme
   for(const b of blocks.values()){
@@ -1310,18 +1372,20 @@ function syncWorld(){
   scene.background.copy(SKY_DAY).lerp(SKY_NIGHT,nightAmt);scene.fog.color.copy(scene.background);
   hemi.intensity=0.75-0.5*nightAmt;sun.intensity=0.85-0.68*nightAmt;sun.color.copy(SUN_DAY).lerp(SUN_NIGHT,nightAmt);
   winMat.emissiveIntensity=nightAmt*0.9;
-  playerLight.intensity=nightAmt*1.1;playerLight.position.set(player.x,2.2,player.z);
+  playerLight.intensity=nightAmt*1.1;playerLight.position.set(P2?(P1.x+P2.x)/2:P1.x,2.2,P2?(P1.z+P2.z)/2:P1.z);
   zone.material.opacity=selected?0.12:0.05;zoneRing.material.opacity=selected?0.5:0.18;
   // Spieler
-  const m=player.mesh,u=m.userData;
-  m.position.set(player.x,0,player.z);turn(m,player.face,0.3);
-  const sw=player.moving?Math.sin(time*14)*0.6:0;
+  for(const pl of players){
+  const m=pl.mesh,u=m.userData;
+  m.position.set(pl.x,0,pl.z);turn(m,pl.face,0.3);
+  const sw=pl.moving?Math.sin(time*14)*0.6:0;
   u.legs[0].rotation.x=sw;u.legs[1].rotation.x=-sw;u.armL.rotation.x=-sw;
-  u.armR.rotation.x=player.swing>0?-2.4+(0.3-player.swing)/0.3*3.2:sw*0.6;
-  u.inner.rotation.x=player.down>0?-1.4:0;u.inner.position.y=player.down>0?0.3:0;
-  m.visible=!(player.inv>0&&player.down<=0&&Math.floor(time*10)%2===0);
+  u.armR.rotation.x=pl.swing>0?-2.4+(0.3-pl.swing)/0.3*3.2:sw*0.6;
+  u.inner.rotation.x=pl.down>0?-1.4:0;u.inner.position.y=pl.down>0?0.3:0;
+  m.visible=!(pl.inv>0&&pl.down<=0&&Math.floor(time*10)%2===0);
   for(const k of WORDER)u.tools[k].visible=k===weapon;
-  const inside=houseDone()&&inHouse(player);
+  }
+  const inside=houseDone()&&players.some(p=>inHouse(p));
   houseParts.roofG.visible=houseStage>=3&&!inside;
   houseParts.front.scale.y=inside?0.18:1;
   roomLight.intensity=(inside?0.9:0)+(furnBuilt('fire')&&houseDone()?0.5*nightAmt+0.2:0);
@@ -1336,6 +1400,7 @@ function syncWorld(){
   du.tail.rotation.z=Math.sin(time*(dog.friend?18:6))*0.6;
   du.inner.position.y=dog.friend?0:Math.abs(Math.sin(time*2))*0.02;
   du.head.rotation.x=dog.biteCd>0.4?0.4:0;
+  du.inner.rotation.z=dog.sleep?1.3:0;du.inner.position.y=dog.sleep?0.15:du.inner.position.y;
   // Schafe
   for(const sh of sheep){const su=sh.mesh.userData;sh.mesh.position.set(sh.x,0,sh.z);turn(sh.mesh,sh.face,0.15);
     const ss=sh.moving?Math.sin(time*10+sh.x)*0.5:0;su.legs.forEach((l,i)=>l.rotation.x=(i%2?ss:-ss)*(i<2?1:-1));
@@ -1421,7 +1486,7 @@ function hint(){
     if(!f)return null;}
   if(!houseDone()&&dist2(player,HC)<4.3){const st=HSTAGES[houseStage],ok=wood>=st.w&&stone>=st.s;
     return ok?{t:t('hStage',{st:t('st_'+st.k),c:stageCost(st)}),c:'#7fd16b'}:{t:t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),c:'#ff6b6b'};}
-  if(!dog.friend&&dist2(player,dog)<1.7)return {t:t('hDog'),c:'#ffb340'};
+  if(!dog.friend&&dist2(player,dog)<1.7)return bones>0?{t:t('hDog'),c:'#ffb340'}:{t:t('dogWantsBone'),c:'#ff6b6b'};
   const sh=nearestSheep();
   if(sh)return sh.wool?{t:t('hShear'),c:'#ffffff'}:{t:t('sheepBare'),c:'#aab2d6'};
   if(nearestBush())return {t:t('hBerries'),c:'#ff7a9a'};
@@ -1436,8 +1501,10 @@ function drawLabels(){
   if(phase==='play'&&houseDone()&&!inHouse(player)&&dist2(player,HC)<8)lab(t('door'),HC.x,0.7,HC.z+HOUSE_HALF+0.6,'#ffd9a0',13);
   if(phase==='play'&&houseDone()&&inHouse(player))for(const f of FURN)if(!f.built)lab(t('f_'+f.k),HC.x+f.x,0.9,HC.z+f.z,'#ffffff',11);
   if(phase==='play'&&!houseDone()){lab(t('siteLabel'),HC.x,houseStage>=2?3.4:2.0,HC.z,'#ffd9a0',14);lab((houseStage+1)+'/3 · '+t('st_'+HSTAGES[houseStage].k)+' · '+stageCost(HSTAGES[houseStage]),HC.x,houseStage>=2?2.9:1.5,HC.z,'#ffffff',12);}
-  if(phase==='play')lab(dog.friend?t('dogName'):'?',dog.x,1.5,dog.z,dog.friend?'#ffd9a0':'#ffb340',dog.friend?11:18);
-  const h=hint();if(h)lab(h.t,player.x,2.8,player.z,h.c,13,true);
+  if(phase==='play'&&dog.sleep)lab('Zzz',dog.x,1.1,dog.z,'#c9b8ff',13);
+  if(phase==='play')lab(dog.friend?t('dogName')+(dogHut()?' ♥':''):'?',dog.x,1.5,dog.z,dog.friend?'#ffd9a0':'#ffb340',dog.friend?11:18);
+  for(const pl of players){player=pl;const h=hint();if(h)lab(h.t,pl.x,2.8,pl.z,h.c,13,true);if(P2)lab(t('pl',{n:pl.name}),pl.x,2.25,pl.z,pl===P1?'#ffd23f':'#7be0ff',11);}
+  player=P1;
   for(const mo of monsters)if(mo.hp<mo.max){const k=Math.max(0,mo.hp/mo.max);lab('▮'.repeat(Math.ceil(k*5))+'▯'.repeat(5-Math.ceil(k*5)),mo.x,mo.y+(mo.type==='grummel'?2.3:mo.type==='bat'?0.6:1.2),mo.z,k>0.5?'#7fd16b':'#ff6b6b',10);}
   for(let i=li;i<pool.length;i++){if(!pool[i]._s.h){pool[i].hidden=true;pool[i]._s.h=true;}}
 }
@@ -1455,7 +1522,8 @@ function drawMini(){
   mc.fillStyle='#ff6b8b';for(const b of bushes)if(b.full){mc.beginPath();mc.arc(b.x+GW/2,b.z+GH/2,0.45,0,7);mc.fill();}
   mc.fillStyle='#e8a060';mc.beginPath();mc.arc(dog.x+GW/2,dog.z+GH/2,0.6,0,7);mc.fill();
   mc.fillStyle='#ffffff';for(const e of eggs){mc.beginPath();mc.arc(e.x+GW/2,e.z+GH/2,0.4,0,7);mc.fill();}
-  mc.fillStyle='#ffd23f';mc.strokeStyle='#171a33';mc.lineWidth=0.3;mc.beginPath();mc.arc(player.x+GW/2,player.z+GH/2,0.8,0,7);mc.fill();mc.stroke();
+  for(const pl of players){mc.fillStyle=pl===P1?'#ffd23f':'#7be0ff';mc.strokeStyle='#171a33';mc.lineWidth=0.3;mc.beginPath();mc.arc(pl.x+GW/2,pl.z+GH/2,0.8,0,7);mc.fill();mc.stroke();}
+  mc.fillStyle='#fff6e0';for(const bn of boneDrops){mc.fillRect(bn.x+GW/2-0.5,bn.z+GH/2-0.2,1,0.4);}
 }
 function hud(){
   const ph=$('hPhase');
@@ -1465,7 +1533,8 @@ function hud(){
   $('hWood').textContent=wood;$('hStone').textContent=stone;
   const more=t('hudMore',{st:sticks,wo:wool,f:foodCount()});if($('hMore').textContent!==more)$('hMore').textContent=more;
   $('eatBtn').disabled=phase!=='play'||foodCount()<1;
-  const hh=$('hHearts');hh.textContent='♥'.repeat(Math.max(0,player.hearts))+'♡'.repeat(Math.max(0,maxHearts()-player.hearts));hh.setAttribute('aria-label',player.hearts+'/'+maxHearts());
+  const hh=$('hHearts');const hs=pl=>'♥'.repeat(Math.max(0,pl.hearts))+'♡'.repeat(Math.max(0,maxHearts()-pl.hearts));
+  hh.textContent=P2?'1 '+hs(P1)+'  2 '+hs(P2):hs(P1);hh.setAttribute('aria-label',player.hearts+'/'+maxHearts());
   const bar=$('hHouseBar');
   if(!houseDone()){$('hHouseName').textContent=t('site');$('hHouse').textContent=houseStage+' / 3';bar.style.width=(houseStage/3*100).toFixed(0)+'%';bar.style.background='#ffb340';}
   else{const k=Math.max(0,houseHp/HOUSE_MAX);$('hHouseName').textContent=t('house');$('hHouse').textContent=Math.ceil(houseHp)+' / '+HOUSE_MAX;
@@ -1487,8 +1556,8 @@ function loop(now){
   acc+=dt;let steps=0;while(acc>=STEP&&steps<6){update(STEP);acc-=STEP;steps++;}if(steps>=6)acc=0;
   syncWorld();
   if(phase==='start'){camT.set(HC.x+Math.sin(time*0.15)*5,0,HC.z+Math.cos(time*0.15)*3);}
-  else camT.lerp(tmpV.set(player.x,0,player.z),0.12);
-  const narrow=stage.clientWidth<640,inside2=phase==='play'&&houseDone()&&inHouse(player),zf=inside2?0.62:1,dz=(narrow?12:9.5)*zoom*zf,dy=(narrow?17:14)*zoom*zf;
+  else{let ax=0,az=0;for(const pl of players){ax+=pl.x;az+=pl.z;}camT.lerp(tmpV.set(ax/players.length,0,az/players.length),0.12);}
+  const narrow=stage.clientWidth<640,inside2=phase==='play'&&houseDone()&&players.every(p=>inHouse(p)),spread=P2?Math.max(1,Math.min(1.7,1+(dist2(P1,P2)-5)/14)):1,zf=(inside2?0.62:1)*spread,dz=(narrow?12:9.5)*zoom*zf,dy=(narrow?17:14)*zoom*zf;
   camera.position.lerp(tmpV.set(camT.x,dy,camT.z+dz),0.1);
   camera.lookAt(camT.x,0.8,camT.z);
   renderer.render(scene,camera);
@@ -1498,7 +1567,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={players,toggleP2,get P2(){return P2},get bones(){return bones},get boneDrops(){return boneDrops},dogHut,sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
