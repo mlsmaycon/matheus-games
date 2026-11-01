@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffcf70" stop-opacity=".8"/><stop offset="1" stop-color="#ffb340" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="640" height="400" fill="#121733"/>
+  <circle cx="90" cy="70" r="34" fill="#f2ecd0"/><circle cx="104" cy="60" r="30" fill="#121733"/>
+  <g fill="#f6f1e4"><circle cx="220" cy="40" r="2"/><circle cx="350" cy="70" r="1.5"/><circle cx="470" cy="30" r="2"/><circle cx="590" cy="80" r="1.5"/><circle cx="170" cy="120" r="1.5"/></g>
+  <path d="M0 300Q320 250 640 300V400H0z" fill="#22402a"/>
+  <!-- Wald -->
+  <g fill="#1a3324"><path d="M10 300l30-90 30 90zM50 300l26-70 26 70zM560 300l30-90 30 90zM600 300l24-70 24 70z"/></g>
+  <!-- Haus -->
+  <g transform="translate(320 220)">
+    <path d="M-80-10L0-80 80-10z" fill="#b8452a"/>
+    <rect x="-66" y="-10" width="132" height="90" fill="#e8d2a8"/>
+    <rect x="-16" y="30" width="32" height="50" fill="#5a3a22"/>
+    <rect x="-52" y="10" width="24" height="22" fill="#ffc860"/><rect x="28" y="10" width="24" height="22" fill="#ffc860"/>
+  </g>
+  <!-- Mauern -->
+  <g fill="#8e939e" stroke="#5a5f6a" stroke-width="3">
+    <path d="M130 330v-60h20v-12h18v12h18v-12h18v12h18v-12h18v12h12v60z"/>
+    <path d="M420 330v-60h12v-12h18v12h18v-12h18v12h18v-12h18v12h20v60z"/>
+  </g>
+  <!-- Fackeln -->
+  <g><circle cx="110" cy="240" r="40" fill="url(#g)"/><rect x="106" y="244" width="8" height="70" fill="#7a4a2a"/><path d="M110 222q12 14 0 26q-12-12 0-26z" fill="#ffb340"/></g>
+  <g><circle cx="530" cy="240" r="40" fill="url(#g)"/><rect x="526" y="244" width="8" height="70" fill="#7a4a2a"/><path d="M530 222q12 14 0 26q-12-12 0-26z" fill="#ffb340"/></g>
+  <!-- Baumeister mit Hammer -->
+  <g transform="translate(320 330)">
+    <rect x="-16" y="-36" width="32" height="38" rx="10" fill="#ff8a2a"/>
+    <circle cy="-50" r="16" fill="#ffd9b8"/><path d="M-18-54a18 18 0 0 1 36 0z" fill="#ffd23f"/>
+    <path d="M14-30l26-26" stroke="#7a4a2a" stroke-width="6" stroke-linecap="round"/>
+    <rect x="30" y="-70" width="24" height="16" rx="3" fill="#6c717c" transform="rotate(-45 42 -62)"/>
+  </g>
+  <!-- Monster -->
+  <g transform="translate(60 360)"><path d="M-34 0a34 34 0 0 1 68 0z" fill="#5fd35a" stroke="#1f6a1a" stroke-width="4"/><circle cx="-10" cy="-18" r="7" fill="#fff"/><circle cx="10" cy="-18" r="7" fill="#fff"/><circle cx="-9" cy="-17" r="3" fill="#171a33"/><circle cx="11" cy="-17" r="3" fill="#171a33"/></g>
+  <g transform="translate(590 340)">
+    <ellipse rx="42" ry="46" fill="#8a5ad8" stroke="#2a1050" stroke-width="4"/>
+    <path d="M-24-36l-10-26 18 14zM24-36l10-26-18 14z" fill="#fff3c4"/>
+    <circle cx="-14" cy="-12" r="8" fill="#fff"/><circle cx="14" cy="-12" r="8" fill="#fff"/><circle cx="-13" cy="-11" r="4" fill="#ff3a3a"/><circle cx="15" cy="-11" r="4" fill="#ff3a3a"/>
+    <path d="M-24-24l14 6M24-24l-14 6" stroke="#171a33" stroke-width="4" stroke-linecap="round"/>
+    <rect x="-16" y="12" width="32" height="8" rx="3" fill="#171a33"/>
+  </g>
+  <g transform="translate(470 110)" fill="#4a3a6a"><circle r="12"/><path d="M-10 0q-24-18-40 4q14-4 20 6q10-8 20-10zM10 0q24-18 40 4q-14-4-20 6q-10-8-20-10z"/><circle cx="-4" cy="-2" r="2.5" fill="#ff4a4a"/><circle cx="4" cy="-2" r="2.5" fill="#ff4a4a"/></g>
+</svg>

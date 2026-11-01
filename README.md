@@ -12,6 +12,7 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 | Versteck-Alarm / Hide Alarm | [`games/versteck-alarm/de`](games/versteck-alarm/de/index.html) | [`games/versteck-alarm/en`](games/versteck-alarm/en/index.html) | 0 |
 | Kürbisnacht / Pumpkin Night | [`games/kuerbisnacht/de`](games/kuerbisnacht/de/index.html) | [`games/kuerbisnacht/en`](games/kuerbisnacht/en/index.html) | 6 |
 | Hühnerchaos / Chicken Chaos | [`games/huehnerchaos/de`](games/huehnerchaos/de/index.html) | [`games/huehnerchaos/en`](games/huehnerchaos/en/index.html) | 0 |
+| Nachtburg / Night Fort | [`games/nachtburg/de`](games/nachtburg/de/index.html) | [`games/nachtburg/en`](games/nachtburg/en/index.html) | 6 |
 
 **Brainrot-Raub:** buy creatures off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
@@ -20,6 +21,8 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 **Kürbisnacht:** Halloween trick-or-treating in a spooky neighbourhood. Choose a costume, ring at lit doors for candy (or a trick), avoid the ghosts, and stay safe in the light of the street lamps until midnight.
 
 **Hühnerchaos:** catch escaped chickens on a farm and stack them on your head. Bigger stacks score more but wobble more, and sharp turns, mud or an angry goose send them flying.
+
+**Nachtburg:** gather wood and stone by day, build walls, torches and arrow towers around your house, then defend it at night against slimes, grumbles and wall-flying bats. Monsters find the weakest path with a flow field and break through walls.
 
 ## How the site works
 

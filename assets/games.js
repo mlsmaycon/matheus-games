@@ -74,5 +74,22 @@ window.MW_GAMES = [
       de: 'Lustiger Bauernhof-Spaß ohne Gewalt. Die Gans schubst dich nur um.',
       en: 'Funny farmyard fun without violence. The goose only knocks you over.'
     }
+  },
+  {
+    slug: 'nachtburg',
+    fsk: 6,
+    added: '2026-11-01',
+    cover: 'games/nachtburg/cover.svg',
+    title: { de: 'Nachtburg', en: 'Night Fort' },
+    tagline: { de: 'Bau tagsüber, verteidige nachts.', en: 'Build by day, defend by night.' },
+    desc: {
+      de: 'Hack Holz, bau Stein ab und bau Mauern, Fackeln und Türme um dein Haus. Wenn es dunkel wird, kommen Schleime, Grummel und Fledermäuse. Wie viele Nächte hältst du durch?',
+      en: 'Chop wood, mine stone and build walls, torches and towers around your house. When it gets dark, slimes, grumbles and bats arrive. How many nights can you last?'
+    },
+    tags: { de: ['3D', 'Bauen', 'Verteidigen'], en: ['3D', 'Building', 'Defence'] },
+    fskReason: {
+      de: 'Comic-Monster werden mit einem Hammer verscheucht und lösen sich in Rauch auf. Kein Blut, nichts Gruseliges im Detail.',
+      en: 'Cartoon monsters are chased off with a hammer and vanish in a puff of smoke. No blood, nothing frightening in detail.'
+    }
   }
 ];
