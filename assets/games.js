@@ -83,13 +83,13 @@ window.MW_GAMES = [
     title: { de: 'Nachtburg', en: 'Night Fort' },
     tagline: { de: 'Bau tagsüber, verteidige nachts.', en: 'Build by day, defend by night.' },
     desc: {
-      de: 'Hack Holz, bau Stein ab und bau zuerst dein Haus: Fundament, Wände, Dach. Drinnen baust du Bett (braucht Wolle vom Schaf), Tisch, Kamin, Truhe und einen Spielautomaten. Pflück Beeren und Äpfel, gib Hund Bello einen Knochen und bau ihm eine Hütte. Zu zweit spielbar an einer Tastatur. Bau dir Schwert oder Bogen, freunde dich mit Hund Bello an und sammel Eier. Wenn es dunkel wird, kommen Schleime, Grummel und Fledermäuse.',
-      en: 'Chop wood, mine stone and build your house first: foundation, walls, roof. Inside you build a bed (needs wool from the sheep), table, fireplace, chest and an arcade machine. Pick berries and apples, give Bello the dog a bone and build him a dog house. Two players can play on one keyboard. Craft a sword or bow, make friends with Bello the dog and collect eggs. When it gets dark, slimes, grumbles and bats arrive.'
+      de: 'Hack Holz, bau Stein ab und bau zuerst dein Haus: Fundament, Wände, Dach. Drinnen baust du Bett (braucht Wolle vom Schaf), Tisch, Kamin, Truhe und einen Spielautomaten. Bau eine zweite Etage, jag Hasen und Wildschweine, verbessere Hammer, Schwert und Bogen mit Monster-Beute und schlaf im Bett. Gib Hund Bello einen Knochen. Zu zweit spielbar an einer Tastatur. Bau dir Schwert oder Bogen, freunde dich mit Hund Bello an und sammel Eier. Wenn es dunkel wird, kommen Schleime, Grummel und Fledermäuse.',
+      en: 'Chop wood, mine stone and build your house first: foundation, walls, roof. Inside you build a bed (needs wool from the sheep), table, fireplace, chest and an arcade machine. Add a second floor, hunt rabbits and boars, upgrade your hammer, sword and bow with monster loot and sleep in your bed. Give Bello the dog a bone. Two players can play on one keyboard. Craft a sword or bow, make friends with Bello the dog and collect eggs. When it gets dark, slimes, grumbles and bats arrive.'
     },
     tags: { de: ['3D', 'Bauen', 'Tiere', '2 Spieler'], en: ['3D', 'Building', 'Animals', '2 players'] },
     fskReason: {
-      de: 'Comic-Monster werden mit Hammer, Schwert oder Bogen verscheucht und lösen sich in Rauch auf. Kein Blut, Tiere werden nie angegriffen.',
-      en: 'Cartoon monsters are chased off with a hammer, sword or bow and vanish in a puff of smoke. No blood, and animals are never attacked.'
+      de: 'Comic-Monster und Wildtiere werden mit Hammer, Schwert oder Bogen besiegt und verschwinden in einer Rauchwolke. Kein Blut. Die eigenen Haustiere kann man nicht angreifen.',
+      en: 'Cartoon monsters and wild animals are defeated with a hammer, sword or bow and vanish in a puff of smoke. No blood. Your own pets can’t be attacked.'
     }
   }
 ];
