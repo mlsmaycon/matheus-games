@@ -279,6 +279,7 @@ const TXT={
     followOn:'Folgt mir! · G',followOff:'Wieder arbeiten · G',followStart:'Lena, Tom und Ali folgen dir jetzt überallhin!',followStop:'Lena, Tom und Ali arbeiten wieder selbst.',
     f_ladder2:'Leiter & 3. Etage',fBuilt_ladder2:'Die dritte Etage ist fertig! Dein Haus ist jetzt richtig hoch und hält noch mehr aus.',upstairs3:'Du bist ganz oben in der 3. Etage!',
     botBedWake:'{n} wacht im eigenen Bett auf und kommt gleich wieder raus.',
+    farmerName:'Bauer Ben',hFarmer:'E: Mit Bauer Ben reden',farmerGift:'Bauer Ben schenkt dir {c}!',farmerTip1:'Pass nachts gut auf meine Tiere auf!',farmerTip2:'Morgen habe ich wieder was für dich.',farmerTip3:'Die Kühe mögen es, wenn du sie melkst.',farmerFight:'Bauer Ben verjagt ein Monster!',
     f_bedK:'Bett für Koch Karl',fBuilt_bedK:'Koch Karl hat jetzt ein Bett! Nachts schläft er darin, und morgens kocht er dir einen Eintopf.',karlMorning:'Karl hat ausgeschlafen und dir einen Eintopf gekocht!',
     f_kitchen:'Küche',fBuilt_kitchen:'Küche gebaut! Koch Karl ist eingezogen. Gib ihm Wolle, dann kocht er für euch.',
     f_bedL:'Bett für Lena',f_bedT:'Bett für Tom',f_bedA:'Bett für Ali',fBuilt_bedL:'Lena hat jetzt ein Bett! Sie hat ein Herz mehr und steht schneller wieder auf.',fBuilt_bedT:'Tom hat jetzt ein Bett! Er hat ein Herz mehr und steht schneller wieder auf.',fBuilt_bedA:'Ali hat jetzt ein Bett! Er hat ein Herz mehr und steht schneller wieder auf.',
@@ -378,6 +379,7 @@ const TXT={
     followOn:'Follow me! · G',followOff:'Back to work · G',followStart:'Lena, Tom and Ali follow you everywhere now!',followStop:'Lena, Tom and Ali work on their own again.',
     f_ladder2:'Ladder & 3rd floor',fBuilt_ladder2:'The third floor is done! Your house is really tall now and even tougher.',upstairs3:'You are at the very top on the 3rd floor!',
     botBedWake:'{n} wakes up in bed and will be right back out.',
+    farmerName:'Farmer Ben',hFarmer:'E: Talk to Farmer Ben',farmerGift:'Farmer Ben gives you {c}!',farmerTip1:'Please look after my animals at night!',farmerTip2:'Come back tomorrow, I will have something for you.',farmerTip3:'The cows like being milked.',farmerFight:'Farmer Ben chases off a monster!',
     f_bedK:'Bed for Chef Karl',fBuilt_bedK:'Chef Karl has a bed now! He sleeps in it at night and cooks you a stew every morning.',karlMorning:'Karl slept well and cooked you a stew!',
     f_kitchen:'Kitchen',fBuilt_kitchen:'Kitchen built! Chef Karl moved in. Give him wool and he cooks for you.',
     f_bedL:'Bed for Lena',f_bedT:'Bed for Tom',f_bedA:'Bed for Ali',fBuilt_bedL:'Lena has a bed now! She gets one more heart and gets back up faster.',fBuilt_bedT:'Tom has a bed now! He gets one more heart and gets back up faster.',fBuilt_bedA:'Ali has a bed now! He gets one more heart and gets back up faster.',
@@ -1565,6 +1567,35 @@ function botFollow(b,i,dt){
   if(!zone&&dist2(b,L)>24){b.x=L.x+off[0];b.z=L.z+off[1];collideTiles(b,0.32);b.path=null;puff(b.x,0.6,b.z,5,'#ffffff');}
 }
 
+/* ---------- Bauer Ben ---------- */
+const farmer={x:FARM.cx,z:FARM.cz,face:0,tx:FARM.cx,tz:FARM.cz,wt:0,moving:0,cd:0,swing:0,giftDay:0,tip:0};
+farmer.mesh=npc('#3f6ad8','#e8c060');
+{const u=farmer.mesh.userData;u.inner.add(part(G.cyl,'#e8c060',0.62,0.04,0.62,0,1.74,0),part(G.box,'#c0392b',0.5,0.12,0.04,0,1.12,0.2,false));
+  const fork=new THREE.Group();fork.position.set(0,-0.55,0.1);u.armR.add(fork);
+  fork.add(part(G.cyl,'#8c5e3a',0.04,1.2,0.04,0,0,0.35).rotateX(Math.PI/2));for(const x of [-0.1,0,0.1])fork.add(part(G.cyl,'#9aa0ab',0.02,0.3,0.02,x,0,1.05).rotateX(Math.PI/2));
+  fork.add(part(G.box,'#9aa0ab',0.24,0.03,0.03,0,0,0.92));}
+function updateFarmer(dt){
+  const f=farmer;f.moving=0;f.cd=Math.max(0,f.cd-dt);f.swing=Math.max(0,f.swing-dt);
+  let tg=null,bd=1e9;
+  for(const m of monsters){if(m.castle)continue;if(!inFarm(m.x,m.z,2.5))continue;const d=dist2(m,f);if(d<bd){bd=d;tg=m;}}
+  let gx,gz,sp;
+  if(tg){gx=tg.x;gz=tg.z;sp=3.4;
+    if(bd<1.4&&f.cd<=0){f.cd=0.8;f.swing=0.3;const vx=tg.x-f.x,vz=tg.z-f.z,vl=Math.hypot(vx,vz)||1;tg.hp-=12;tg.hit=0.15;tg.kx=vx/vl*5;tg.kz=vz/vl*5;
+      if(dist2(f,P1)<10)sfx.swing();if(tg.hp<=0){killMonster(tg);if(dist2(f,P1)<14)floatTxt(f.x,f.z,t('farmerFight'),'#7fd16b',2.6,1.4);}}}
+  else{f.wt-=dt;if(f.wt<=0){f.wt=3+Math.random()*4;const a=farmPresent()[(Math.random()*farmPresent().length)|0];if(a&&Math.random()<0.6){f.tx=a.x+0.9;f.tz=a.z;}else{const sp2=farmSpot();f.tx=sp2.x;f.tz=sp2.z;}}
+    gx=f.tx;gz=f.tz;sp=1.3;}
+  const vx=gx-f.x,vz=gz-f.z,vl=Math.hypot(vx,vz);
+  if(vl>(tg?1.1:0.3)){f.x+=vx/vl*sp*dt;f.z+=vz/vl*sp*dt;f.face=Math.atan2(vx,vz);f.moving=1;}
+  else if(!tg){const pl=players.find(p=>dist2(p,f)<3);if(pl)f.face=Math.atan2(pl.x-f.x,pl.z-f.z);}
+  f.x=Math.max(FARM.x0-1.5,Math.min(FARM.x1+1.5,f.x));f.z=Math.max(FARM.z0-1.5,Math.min(FARM.z1+1.5,f.z));
+}
+function farmerAction(){
+  actCd=0.5;player.face=Math.atan2(farmer.x-player.x,farmer.z-player.z);
+  if(farmer.giftDay!==day){farmer.giftDay=day;const g=[['eggs',3],['milk',2],['carrot',3],['wool',2],['bread',1]][(Math.random()*5)|0];RES[g[0]][1](RES[g[0]][0]()+g[1]);
+    sfx.coin();const c=g[1]+' '+t('inv_'+g[0]);toast(t('farmerGift',{c}),'#e8c08a');floatTxt(farmer.x,farmer.z,'+'+c,'#e8c08a',2.4,1.4);return;}
+  farmer.tip=(farmer.tip%3)+1;floatTxt(farmer.x,farmer.z,t('farmerTip'+farmer.tip),'#e8c08a',2.4,1.8);sfx.cluck();
+}
+
 /* ---------- Koch Karl ---------- */
 const cookNpc={x:HC.x+0.6,z:HC.z-1.2,face:0};
 cookNpc.mesh=buildPlayer('#f4f1ea','#ffffff');for(const k in cookNpc.mesh.userData.tools)cookNpc.mesh.userData.tools[k].visible=false;
@@ -1815,7 +1846,7 @@ function startGame(){
   day=1;nights=0;kills=0;dayT=50;isNight=false;spawnQueue=[];duskToast=false;
   HOUSE_MAX=400;lookOut=false;
   wood=6;stone=0;sticks=0;wool=0;berries=0;apples=0;eggsInv=0;stew=0;hasBag=false;coins=0;bread=0;iceT=0;shopFixed=false;showShop();milk=0;carrot=0;saplings=0;coal=0;gold=0;cmeat=0;cegg=0;hasPick=false;goldArmor=false;houseHp=HOUSE_MAX;select(null);refillBushes();
-  resetFarm();sheep.forEach(sh=>{sh.wool=true;sh.regrow=0;});houseStage=0;showHouse();
+  resetFarm();sheep.forEach(sh=>{sh.wool=true;sh.regrow=0;});Object.assign(farmer,{x:FARM.cx,z:FARM.cz,tx:FARM.cx,tz:FARM.cz,giftDay:0,wt:0});houseStage=0;showHouse();
   Object.assign(player,{x:HC.x,z:HC.z+4,face:0,hearts:5,down:0,inv:0,swing:0});
   FURN.forEach(f=>f.built=false);restCd=0;
   if(P2)Object.assign(P2,{x:HC.x+1.2,z:HC.z+4.4,hearts:5,down:0,inv:0,swing:0,actCd:0,sleeping:null,floor:0});
@@ -2107,6 +2138,7 @@ function action(){
     bones--;dog.friend=true;sfx.bark();toast(t('dogFriend'),'#7fd16b');floatTxt(dog.x,dog.z,'♥','#ff6b6b',1.6,1.4);
     return;
   }
+  if(!player.cave&&!player.castle&&(player.floor||0)===0&&dist2(player,farmer)<1.5){farmerAction();return;}
   {const fa=nearestFarmAnimal(player,1.5,['cow','pig']);if(fa){farmAction(fa);return;}}
   const sh=nearestSheep();
   if(sh){
@@ -2316,7 +2348,7 @@ function update(dt){
     keepAway(a,8,dt);if(inFarm(a.x,a.z,0.6)){a.x+=(a.x-FARM.cx)*dt*1.5;a.z+=(a.z-FARM.cz)*dt*1.5;}collideTiles(a,S.r);
   }
   // Schafe
-  farmWarnCd=Math.max(0,farmWarnCd-dt);
+  farmWarnCd=Math.max(0,farmWarnCd-dt);if(phase==='play')updateFarmer(dt);
   for(const a of farmAnimals){if(a.gone)continue;farmWander(a,dt,a.type==='cow'?0.6:0.8,3);a.milkT=Math.max(0,a.milkT-dt);a.digT=Math.max(0,a.digT-dt);
     a.sound-=dt;if(a.sound<=0){a.sound=12+Math.random()*14;if(dist2(a,player)<8)sfx.cluck();}}
   for(const sh of sheep){
@@ -2444,6 +2476,8 @@ function syncWorld(){
     if(wu.legs){const s2=a.moving?Math.sin(time*16)*0.6:0;wu.legs.forEach((l,i)=>l.rotation.x=(i%2?s2:-s2)*(i<2?1:-1));}
     wu.inner.scale.setScalar(a.hit>0?0.85:1);}
   // Schafe
+  {const f=farmer,m=f.mesh,u=m.userData;m.position.set(f.x,0,f.z);turn(m,f.face,0.2);const sw=f.moving?Math.sin(time*11)*0.5:0;
+    u.legs[0].rotation.x=sw;u.legs[1].rotation.x=-sw;u.armL.rotation.x=-sw;u.armR.rotation.x=f.swing>0?-2.0+(0.3-f.swing)/0.3*2.4:-0.4+sw*0.3;}
   for(const a of farmAnimals){if(a.gone)continue;const u=a.mesh.userData;a.mesh.position.set(a.x,0,a.z);turn(a.mesh,a.face,0.15);
     const s2=a.moving?Math.sin(time*(a.scared>0?18:9)+a.x)*0.5:0;u.legs.forEach((l,i)=>l.rotation.x=(i%2?s2:-s2)*(i<2?1:-1));
     u.head.rotation.x=!a.moving?Math.max(0,Math.sin(time*1.3+a.z))*0.4:0;u.inner.position.y=a.scared>0?Math.abs(Math.sin(time*16))*0.1:0;}
@@ -2554,6 +2588,7 @@ function hint(){
     if(meat>0||eggsInv>0)return {t:t('hFireCook',{f:t(meat>0?'inv_meat':'inv_eggs')}),c:'#ffb340'};return {t:t('hFireOk',{n:Math.ceil(cf.fuel)}),c:'#ffd23f'};}}
   if(!dog.friend&&dist2(player,dog)<1.7)return bones>0?{t:t('hDog'),c:'#ffb340'}:{t:t('dogWantsBone'),c:'#ff6b6b'};
   if((player.floor||0)===0&&!monsters.length){const pr=wildInReach(wStat(weapon).reach||1.9);if(pr.length&&!wStat(weapon).ranged)return {t:t(pr[0].type==='boar'?'hBoar':'hRabbit'),c:'#ff9a8a'};}
+  if(!player.cave&&!player.castle&&(player.floor||0)===0&&dist2(player,farmer)<1.5)return {t:t('hFarmer'),c:'#e8c08a'};
   {const fa=nearestFarmAnimal(player,1.5,['cow','pig']);if(fa)return fa.type==='cow'?(fa.milkT>0?{t:t('cowEmpty'),c:'#aab2d6'}:{t:t('hMilk'),c:'#ffffff'}):{t:t('hPig'),c:'#ffb0c0'};}
   const sh=nearestSheep();
   if(sh)return sh.wool?{t:t('hShear'),c:'#ffffff'}:{t:t('sheepBare'),c:'#aab2d6'};
@@ -2573,6 +2608,7 @@ function drawLabels(){
   if(phase==='play'&&dog.sleep)lab('Zzz',dog.x,1.1,dog.z,'#c9b8ff',13);
   if(phase==='play'&&!P1.cave&&dist2(P1,CE)<13)lab(t('cave'),CE.x,2.9,CE.z-1.4,'#c9b8ff',13);
   if(phase==='play'&&!P1.castle&&!P1.cave&&Math.hypot(P1.x-FARM.cx,P1.z-FARM.cz)<16){const pr=farmPresent().length,tot=allFarm().length;lab(t('farm')+' · '+pr+'/'+tot,FARM.cx,2.6,FARM.z0+0.2,pr<tot?'#ff6b6b':'#e8c08a',13);}
+  if(phase==='play'&&!P1.castle&&!P1.cave&&dist2(P1,farmer)<7)lab(t('farmerName'),farmer.x,2.3,farmer.z,'#e8c08a',11);
   if(phase==='play'&&!P1.castle&&!P1.cave&&dist2(P1,SH)<14)lab(t(shopFixed?'shop':'shopBroken'),cx(45),shopFixed?3.4:2.0,cz(12.5),shopFixed?'#7fd16b':'#aab2d6',13);
   if(phase==='play'&&!P1.castle&&!P1.cave&&dist2(P1,RS)<14)lab(t('restaurant'),RS.x,3.9,cz(12.5),'#ffb340',13);
   if(phase==='play'&&iceT>0)lab(t('m_ice')+' · '+Math.ceil(iceT)+' s',P1.x,3.2,P1.z,'#9ae0ff',11);
@@ -2605,6 +2641,7 @@ function drawMini(){
   for(const a of wild){mc.fillStyle=a.type==='boar'?'#8a5a3a':'#d8c8b0';mc.beginPath();mc.arc(a.x+GW/2,a.z+GH/2,0.5,0,7);mc.fill();}
   mc.fillStyle='#2a2024';mc.fillRect(4,3,3,2);mc.fillStyle='#a2a2ae';mc.fillRect(53,39,6,4);mc.fillStyle=shopFixed?'#7fd16b':'#8a6a4a';mc.fillRect(44,12,3,2);mc.fillStyle='#d8324a';mc.fillRect(48,12,4,2);
   mc.strokeStyle='#e8c08a';mc.lineWidth=0.35;mc.strokeRect(FARM.x0+GW/2,FARM.z0+GH/2,FARM.x1-FARM.x0,FARM.z1-FARM.z0);
+  mc.fillStyle='#3f6ad8';mc.beginPath();mc.arc(farmer.x+GW/2,farmer.z+GH/2,0.6,0,7);mc.fill();
   for(const a of farmAnimals)if(!a.gone){mc.fillStyle=a.type==='pig'?'#ffb0c0':'#2a2a2a';mc.beginPath();mc.arc(a.x+GW/2,a.z+GH/2,0.55,0,7);mc.fill();}mc.fillStyle='#d8324a';mc.fillRect(55.6,42.3,0.8,0.7);mc.fillStyle='#c9b8ff';mc.fillRect(5.2,4.6,0.6,0.5);
   if(merchant.state!=='away'){mc.fillStyle='#ffd23f';mc.strokeStyle='#7a3aa8';mc.lineWidth=0.3;mc.fillRect(merchant.x+GW/2-0.7,merchant.z+GH/2-0.7,1.4,1.4);mc.strokeRect(merchant.x+GW/2-0.7,merchant.z+GH/2-0.7,1.4,1.4);}
   if(botsOn)for(const b of bots){mc.fillStyle=b.vest;mc.beginPath();mc.arc(b.x+GW/2,b.z+GH/2,0.6,0,7);mc.fill();}
@@ -2662,7 +2699,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={CE,CAVE,FARM,farmAnimals,allFarm,hurtAnimal,farmDawn,CLV,goLevel,castleUpOf,castleExitOf,get castleStock(){return castleStock},get milk(){return milk},get carrot(){return carrot},SH,RS,openShop,closeShop,shopAction,toggleFollow,get followMe(){return followMe},get coins(){return coins},get bread(){return bread},get iceT(){return iceT},get shopFixed(){return shopFixed},get dayT(){return dayT},cookNpc,buyBag,get houseParts(){return houseParts},setCr(n){crystals=n;},get stew(){return stew},get wool(){return wool},setWool(n){wool=n;},get owned(){return owned},CS,CASTLE,CASTLE_EXIT,castleChests,enterCastle,leaveCastle,resetCastle,get castleStock(){return castleStock},CAVE_EXIT,caveOres,enterCave,leaveCave,buyPick,buyArmor,nearCampfire,maxHearts,get extra(){return {saplings,coal,gold,cmeat,cegg,hasPick,goldArmor,meat,eggsInv,sticks}},setExtra(o){if('saplings'in o)saplings=o.saplings;if('coal'in o)coal=o.coal;if('gold'in o)gold=o.gold;if('meat'in o)meat=o.meat;if('eggs'in o)eggsInv=o.eggs;if('sticks'in o)sticks=o.sticks;},get WILD(){return WILD},get bots(){return bots},get botsOn(){return botsOn},setBots,toggleBots,merchant,merchantCome,merchantLeave,openTrade,closeTrade,doTrade,RES,bfsPath,climb,get HOUSE_MAX(){return HOUSE_MAX},get houseHp2(){return houseHp},get wild(){return wild},startSleep,wakeUp,get loot(){return {slimeBalls,crystals,meat,bones}},setLoot(o){if('slime'in o)slimeBalls=o.slime;if('crystal'in o)crystals=o.crystal;if('meat'in o)meat=o.meat;},get wlvl(){return wlvl},upgradeWeapon,dropLoot,players,toggleP2,get P2(){return P2},get bones(){return bones},get boneDrops(){return boneDrops},dogHut,sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={farmer,CAVE,FARM,farmAnimals,allFarm,hurtAnimal,farmDawn,CLV,goLevel,castleUpOf,castleExitOf,get castleStock(){return castleStock},get milk(){return milk},get carrot(){return carrot},SH,RS,openShop,closeShop,shopAction,toggleFollow,get followMe(){return followMe},get coins(){return coins},get bread(){return bread},get iceT(){return iceT},get shopFixed(){return shopFixed},get dayT(){return dayT},cookNpc,buyBag,get houseParts(){return houseParts},setCr(n){crystals=n;},get stew(){return stew},get wool(){return wool},setWool(n){wool=n;},get owned(){return owned},CS,CASTLE,CASTLE_EXIT,castleChests,enterCastle,leaveCastle,resetCastle,get castleStock(){return castleStock},CAVE_EXIT,caveOres,enterCave,leaveCave,buyPick,buyArmor,nearCampfire,maxHearts,get extra(){return {saplings,coal,gold,cmeat,cegg,hasPick,goldArmor,meat,eggsInv,sticks}},setExtra(o){if('saplings'in o)saplings=o.saplings;if('coal'in o)coal=o.coal;if('gold'in o)gold=o.gold;if('meat'in o)meat=o.meat;if('eggs'in o)eggsInv=o.eggs;if('sticks'in o)sticks=o.sticks;},get WILD(){return WILD},get bots(){return bots},get botsOn(){return botsOn},setBots,toggleBots,merchant,merchantCome,merchantLeave,openTrade,closeTrade,doTrade,RES,bfsPath,climb,get HOUSE_MAX(){return HOUSE_MAX},get houseHp2(){return houseHp},get wild(){return wild},startSleep,wakeUp,get loot(){return {slimeBalls,crystals,meat,bones}},setLoot(o){if('slime'in o)slimeBalls=o.slime;if('crystal'in o)crystals=o.crystal;if('meat'in o)meat=o.meat;},get wlvl(){return wlvl},upgradeWeapon,dropLoot,players,toggleP2,get P2(){return P2},get bones(){return bones},get boneDrops(){return boneDrops},dogHut,sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
