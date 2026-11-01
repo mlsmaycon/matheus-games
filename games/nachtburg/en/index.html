@@ -65,6 +65,9 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 .slot button{font-family:var(--display);font-weight:800;font-size:14px;border:0;border-radius:10px;padding:6px 12px;cursor:pointer;background:var(--moss);color:#171a33;margin-top:2px}
 .slot button:disabled{opacity:.4;cursor:not-allowed}
 .slot button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.slot .tr{display:flex;align-items:center;gap:2px;font-family:var(--display);font-size:20px}
+.slot .tr svg{width:38px;height:38px}
+.slot.sold{opacity:.5}
 .house{position:absolute;left:12px;bottom:12px;width:min(200px,46%);background:#171a33e6;border-radius:14px;padding:8px 12px;pointer-events:none;font-family:var(--display);font-weight:800;font-size:14px;display:flex;flex-direction:column;gap:6px}
 .house .row{display:flex;justify-content:space-between;gap:8px}
 .house .bar{height:10px;border-radius:999px;background:#ffffff26;overflow:hidden}
@@ -168,6 +171,12 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
       </ol>
       <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
     </div>
+    <div class="screen" id="tradeScreen" hidden>
+      <h2 data-t="tradeTitle">Wanderhändler</h2>
+      <p data-t="tradeText"></p>
+      <div class="inv" id="tradeGrid"></div>
+      <button class="go alt" type="button" id="tradeClose" data-t="arcClose">Zurück ins Spiel</button>
+    </div>
     <div class="screen" id="invScreen" hidden>
       <h2 data-t="invTitle">Deine Truhe</h2>
       <p data-t="invText"></p>
@@ -199,6 +208,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
     <button class="btn" id="act" type="button" data-t="act">Aktion · E</button>
     <button class="btn moss" id="night" type="button" data-t="startNight">Nacht starten · N</button>
     <button class="btn alt" id="p2Btn" type="button" data-t="p2Join">2. Spieler · P</button>
+    <button class="btn alt" id="botBtn" type="button" data-t="botsOnBtn">Computer-Spieler: an · C</button>
     <button class="btn alt" id="invBtn" type="button" data-t="invBtn">Truhe · I</button>
     <button class="btn alt" id="eatBtn" type="button" data-t="eatBtn">Essen · F</button>
     <button class="btn alt" id="sound" type="button" aria-pressed="true" data-t="soundOn">Ton an · M</button>
@@ -220,7 +230,7 @@ const TXT={
     step3:'<b>Nacht:</b> Hau die Monster mit dem Hammer (<b>E</b>). Fackeln brennen sie, Türme schießen.',
     go:'Los geht’s',again:'Nochmal',endTitle:'Das Haus ist gefallen!',
     act:'Aktion · E',actShort:'Aktion',startNight:'Nacht starten · N',soundOn:'Ton an · M',soundOff:'Ton aus · M',
-    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe, <b>F</b> isst etwas, <b>I</b> öffnet die Truhe. <b>N</b> startet die Nacht früher. <b>P</b> holt einen 2. Spieler dazu: Pfeiltasten zum Laufen, <b>Enter</b> für Aktion.',
+    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–5</b> wählt ein Bauteil, <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe, <b>F</b> isst etwas, <b>I</b> öffnet die Truhe. <b>N</b> startet die Nacht früher. <b>P</b> holt einen 2. Spieler dazu: Pfeiltasten zum Laufen, <b>Enter</b> für Aktion. <b>C</b> schaltet die Computer-Spieler an oder aus. Manchmal kommt ein Händler: Drück <b>E</b> bei ihm zum Tauschen.',
     noload:'3D konnte nicht geladen werden.',
     i_wood:'Holzwand',i_stone:'Steinmauer',i_torch:'Fackel',i_tower:'Turm',i_demolish:'Abreißen',
     c_w:'{n} Holz',c_s:'{n} Stein',c_ws:'{w} Holz + {s} Stein',c_refund:'gibt die Hälfte zurück',
@@ -241,6 +251,11 @@ const TXT={
     hBig:'[E] Große Eiche hacken (noch {n} Schläge)',bigFall:'Die große Eiche fällt! Viel Holz!',longerDay:'Du wirst stärker: Der Tag dauert jetzt {n} Sekunden.',
     i_doghouse:'Hundehütte',inv_bones:'Knochen',plusBone:'+1 Knochen',dogWantsBone:'Bello möchte einen Knochen!',
     oneDoghouse:'Bello hat schon eine Hütte.',doghouseBuilt:'Hundehütte gebaut! Bello ist glücklich und beißt kräftiger.',doghouseBuiltNoDog:'Hundehütte gebaut! Jetzt fehlt nur noch ein Hund …',
+    botsOnBtn:'Computer-Spieler: an · C',botsOffBtn:'Computer-Spieler: aus · C',botsJoin:'Lena, Tom und Ali helfen mit! Lena holt Holz, Tom Stein und Ali Essen. Nachts kämpfen sie.',botsLeave:'Die Computer-Spieler machen Pause.',
+    botTag:'{n} · Computer',botDown:'{n} ist umgefallen und steht gleich wieder auf.',botJob_wood:'Holz',botJob_stone:'Stein',botJob_food:'Essen',
+    merchant:'Händler',merchantHere:'Ein Wanderhändler ist da! Geh zu ihm und drück E zum Tauschen.',merchantBye:'Der Händler zieht weiter. Vielleicht kommt er bald wieder.',
+    hTrade:'E: Tauschen',tradeTitle:'Wanderhändler',tradeText:'Tausch deine Sachen gegen andere! Jedes Angebot geht 3-mal, heute Abend zieht der Händler weiter.',
+    tradeBtn:'Tauschen',tradeLeft:'noch {n}×',tradeSold:'Ausverkauft',tradeDone:'Getauscht: {c}',
     p2Join:'2. Spieler · P',p2Leave:'Spieler 2 raus · P',p2Joined:'Spieler 2 ist da! Pfeiltasten zum Laufen, Enter für Aktion.',p2Left:'Spieler 2 hat aufgehört.',pl:'Spieler {n}',
     invTitle:'Deine Truhe',invText:'Hier sind alle deine Sachen. Essen gibt dir ein Herz zurück.',invBtn:'Truhe · I',eatBtn:'Essen · F',eatOne:'Essen',
     inv_wood:'Holz',inv_stone:'Stein',inv_sticks:'Äste',inv_wool:'Wolle',inv_berries:'Beeren',inv_apples:'Äpfel',inv_eggs:'Eier',
@@ -280,7 +295,7 @@ const TXT={
     step3:'<b>Night:</b> Bonk the monsters with your hammer (<b>E</b>). Torches burn them, towers shoot.',
     go:'Let’s go',again:'Play again',endTitle:'The house has fallen!',
     act:'Action · E',actShort:'Action',startNight:'Start night · N',soundOn:'Sound on · M',soundOff:'Sound off · M',
-    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early. <b>P</b> adds player 2: arrow keys to walk, <b>Enter</b> for action.',
+    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–5</b> picks a building part, <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early. <b>P</b> adds player 2: arrow keys to walk, <b>Enter</b> for action. <b>C</b> turns the computer players on or off. Sometimes a merchant visits: press <b>E</b> next to him to trade.',
     noload:'3D could not be loaded.',
     i_wood:'Wood wall',i_stone:'Stone wall',i_torch:'Torch',i_tower:'Tower',i_demolish:'Demolish',
     c_w:'{n} wood',c_s:'{n} stone',c_ws:'{w} wood + {s} stone',c_refund:'refunds half',
@@ -301,6 +316,11 @@ const TXT={
     hBig:'[E] Chop the big oak ({n} hits left)',bigFall:'The big oak falls! Lots of wood!',longerDay:'You’re getting stronger: the day now lasts {n} seconds.',
     i_doghouse:'Dog house',inv_bones:'Bones',plusBone:'+1 bone',dogWantsBone:'Bello wants a bone!',
     oneDoghouse:'Bello already has a dog house.',doghouseBuilt:'Dog house built! Bello is happy and bites harder.',doghouseBuiltNoDog:'Dog house built! Now you just need a dog …',
+    botsOnBtn:'Computer players: on · C',botsOffBtn:'Computer players: off · C',botsJoin:'Lena, Tom and Ali are helping! Lena gets wood, Tom stone and Ali food. At night they fight.',botsLeave:'The computer players are taking a break.',
+    botTag:'{n} · computer',botDown:'{n} fell over and will get back up soon.',botJob_wood:'wood',botJob_stone:'stone',botJob_food:'food',
+    merchant:'Merchant',merchantHere:'A travelling merchant is here! Walk over and press E to trade.',merchantBye:'The merchant moves on. Maybe he comes back soon.',
+    hTrade:'E: Trade',tradeTitle:'Travelling merchant',tradeText:'Swap your things for other things! Each offer works 3 times. Tonight the merchant moves on.',
+    tradeBtn:'Trade',tradeLeft:'{n}× left',tradeSold:'Sold out',tradeDone:'Traded: {c}',
     p2Join:'Player 2 · P',p2Leave:'Player 2 out · P',p2Joined:'Player 2 is here! Arrow keys to walk, Enter for action.',p2Left:'Player 2 stopped playing.',pl:'Player {n}',
     invTitle:'Your chest',invText:'All your things are in here. Food gives you a heart back.',invBtn:'Chest · I',eatBtn:'Eat · F',eatOne:'Eat',
     inv_wood:'Wood',inv_stone:'Stone',inv_sticks:'Sticks',inv_wool:'Wool',inv_berries:'Berries',inv_apples:'Apples',inv_eggs:'Eggs',
@@ -914,7 +934,7 @@ function saveRec(){try{localStorage.setItem('nachtburg-v1',JSON.stringify({best}
 $('sBest').textContent=best;
 let player={x:HC.x,z:HC.z+4,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,name:'1'};
 const P1=player;let P2=null;const players=[P1];
-function nearestPlayer(e,fly){let best=null,bd=1e9;for(const p of players){if(p.down>0)continue;if(!fly&&(p.floor||0)===1)continue;const d=dist2(e,p);if(d<bd){bd=d;best=p;}}return best;}
+function nearestPlayer(e,fly,withBots){let best=null,bd=1e9;for(const p of (withBots&&botsOn?players.concat(bots):players)){if(p.down>0)continue;if(!fly&&(p.floor||0)===1)continue;const d=dist2(e,p);if(d<bd){bd=d;best=p;}}return best;}
 function actAs(p){if(p===P1){action();return;}const keep=actCd;player=p;actCd=p.actCd||0;action();p.actCd=actCd;player=P1;actCd=keep;}
 function toggleP2(){
   if(phase!=='play')return;
@@ -925,6 +945,190 @@ function toggleP2(){
 player.mesh=buildPlayer();
 $('p2Btn').addEventListener('click',toggleP2);
 const playerLight=new THREE.PointLight(0xffd090,0,10,1.4);scene.add(playerLight);
+
+/* ---------- Wegsuche (Breitensuche im Raster) ---------- */
+const bfsQ=new Int32Array(N),bfsPrev=new Int32Array(N);
+function bfsPath(e,goal){
+  const si=Math.max(0,Math.min(GW-1,ti(e.x))),sj=Math.max(0,Math.min(GH-1,tj(e.z))),st=idx(si,sj);
+  bfsPrev.fill(-2);let h=0,tl=0;bfsQ[tl++]=st;bfsPrev[st]=-1;
+  while(h<tl){const c=bfsQ[h++];
+    if(goal(c)){const out=[];let k=c;while(k!==st&&k>=0){out.push(k);k=bfsPrev[k];}return out.reverse();}
+    const i=c%GW,j=(c/GW)|0;
+    for(const [di,dj] of [[1,0],[-1,0],[0,1],[0,-1]]){const a=i+di,b=j+dj;if(!inb(a,b))continue;const n=idx(a,b);if(bfsPrev[n]!==-2||kind[n]!==EMPTY)continue;bfsPrev[n]=c;bfsQ[tl++]=n;}
+  }
+  return null;
+}
+// läuft einen Pfad ab; gibt true zurück, wenn das Ende erreicht ist
+function followPath(e,sp,dt){
+  if(!e.path||!e.path.length)return true;
+  const n=e.path[0];if(kind[n]!==EMPTY){e.path=null;return true;}
+  const tx=cx(n%GW),tz=cz((n/GW)|0),vx=tx-e.x,vz=tz-e.z,vl=Math.hypot(vx,vz);
+  if(vl<0.12){e.path.shift();return !e.path.length;}
+  const st=Math.min(vl,sp*dt);e.x+=vx/vl*st;e.z+=vz/vl*st;e.face=Math.atan2(vx,vz);e.moving=1;return false;
+}
+const tileNear=(n,o)=>Math.abs((n%GW)-o.i)+Math.abs(((n/GW)|0)-o.j)===1;
+
+/* ---------- Wanderhändler ---------- */
+const RES={wood:[()=>wood,v=>wood=v],stone:[()=>stone,v=>stone=v],sticks:[()=>sticks,v=>sticks=v],wool:[()=>wool,v=>wool=v],berries:[()=>berries,v=>berries=v],
+  apples:[()=>apples,v=>apples=v],eggs:[()=>eggsInv,v=>eggsInv=v],bones:[()=>bones,v=>bones=v],slime:[()=>slimeBalls,v=>slimeBalls=v],crystal:[()=>crystals,v=>crystals=v],meat:[()=>meat,v=>meat=v]};
+const TRADES=[['wood',5,'stone',2],['stone',3,'wood',4],['berries',4,'wool',1],['bones',2,'crystal',1],['slime',3,'crystal',1],['wood',6,'apples',4],
+  ['stone',8,'eggs',3],['meat',2,'slime',2],['sticks',4,'wool',1],['apples',3,'sticks',4],['wood',8,'bones',1],['wool',2,'stone',5]];
+function buildCart(){const g=new THREE.Group();
+  g.add(part(G.box,'#8a5a32',0.95,0.5,1.3,0,0.68,0),part(G.box,'#6a4024',1.05,0.08,1.4,0,0.4,0));
+  for(const x of [-0.56,0.56])g.add(part(G.cyl,'#4a3020',0.34,0.08,0.34,x,0.34,-0.15).rotateZ(Math.PI/2));
+  g.add(part(G.half,'#e84a4a',0.55,0.55,0.72,0,0.93,0));
+  g.add(part(G.box,'#ffd23f',0.2,0.2,0.2,-0.25,1.0,0.55),part(G.sph,'#b08aff',0.11,0.15,0.11,0.25,1.0,0.6),part(G.sph,'#e8322a',0.1,0.1,0.1,0.05,0.98,0.62));
+  g.add(part(G.cyl,'#6a4024',0.04,0.9,0.04,-0.3,0.55,1.05).rotateX(Math.PI/2),part(G.cyl,'#6a4024',0.04,0.9,0.04,0.3,0.55,1.05).rotateX(Math.PI/2));
+  scene.add(g);return g;}
+const merchant={state:'away',x:0,z:0,face:0,moving:0,offers:[],path:null};
+merchant.mesh=buildPlayer('#7a3aa8','#3a2a6a');merchant.mesh.visible=false;
+for(const k of WORDER)merchant.mesh.userData.tools[k].visible=false;
+merchant.cart=buildCart();merchant.cart.visible=false;
+function merchantCome(){
+  if(merchant.state!=='away')return;
+  let spot=null;
+  for(let k=0;k<400&&!spot;k++){const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0,d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);
+    if(d<5||d>8||cz(j)<HC.z+1.5||kind[idx(i,j)]!==EMPTY)continue;
+    let ok=true;for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++)if(!inb(i+a,j+b)||kind[idx(i+a,j+b)]!==EMPTY)ok=false;
+    if(ok)spot=idx(i,j);}
+  if(spot===null)return;
+  // Start am unteren Kartenrand, von dort einen Weg suchen
+  let start=null;for(let k=0;k<60&&!start;k++){const i=4+((Math.random()*(GW-8))|0),n=idx(i,GH-1);if(kind[n]===EMPTY)start=n;}
+  if(start===null)return;
+  merchant.x=cx(start%GW);merchant.z=cz(GH-1)+0.4;
+  merchant.path=bfsPath(merchant,n=>n===spot);
+  if(!merchant.path){merchant.x=cx(spot%GW);merchant.z=cz((spot/GW)|0);merchant.path=[];}
+  merchant.state='in';merchant.mesh.visible=true;merchant.cart.visible=true;
+  const pool=TRADES.slice();for(let i=pool.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[pool[i],pool[j]]=[pool[j],pool[i]];}
+  merchant.offers=pool.slice(0,5).map(tr=>({tr,left:3}));
+}
+function merchantLeave(){
+  if(merchant.state==='away'||merchant.state==='out')return;
+  if(!$('tradeScreen').hidden)closeTrade();
+  merchant.state='out';merchant.path=bfsPath(merchant,n=>((n/GW)|0)===GH-1)||[];
+  toast(t('merchantBye'),'#c9b8ff');
+}
+function merchantGone(){merchant.state='away';merchant.mesh.visible=false;merchant.cart.visible=false;merchant.path=null;}
+function nearMerchant(p){return merchant.state==='stay'&&(p.floor||0)===0&&dist2(p,merchant)<1.9;}
+function tradeLabel(k,n){return n+' '+t('inv_'+k);}
+function invSvg(k){const it=INV.find(i=>i.k===k);return it?it.svg:'';}
+function renderTrade(){
+  const grid=$('tradeGrid');grid.innerHTML='';
+  merchant.offers.forEach((o,i)=>{const [gk,gn,rk,rn]=o.tr,ok=RES[gk][0]()>=gn&&o.left>0;
+    const d=document.createElement('div');d.className='slot'+(o.left>0?'':' sold');
+    d.innerHTML='<div class="tr">'+invSvg(gk)+'<span>→</span>'+invSvg(rk)+'</div><b></b><span></span>';
+    d.querySelector('b').textContent=gn+' → '+rn;
+    d.querySelector(':scope > span').textContent=tradeLabel(gk,gn)+' → '+tradeLabel(rk,rn)+' · '+(o.left>0?t('tradeLeft',{n:o.left}):t('tradeSold'));
+    const b=document.createElement('button');b.type='button';b.textContent=t('tradeBtn');b.disabled=!ok;b.dataset.i=i;
+    b.addEventListener('click',()=>{doTrade(i);renderTrade();const nb=$('tradeGrid').querySelector('button[data-i="'+i+'"]');if(nb&&!nb.disabled)nb.focus();else $('tradeClose').focus();});
+    d.appendChild(b);grid.appendChild(d);});
+}
+function doTrade(i){
+  const o=merchant.offers[i];if(!o||o.left<=0)return false;const [gk,gn,rk,rn]=o.tr;
+  if(RES[gk][0]()<gn){sfx.denied();return false;}
+  RES[gk][1](RES[gk][0]()-gn);RES[rk][1](RES[rk][0]()+rn);o.left--;sfx.coin();
+  toast(t('tradeDone',{c:tradeLabel(gk,gn)+' → '+tradeLabel(rk,rn)}),'#ffd23f');return true;
+}
+function openTrade(){
+  if(phase!=='play'||merchant.state!=='stay')return;
+  paused=true;for(const k in keys)keys[k]=false;holdAct=false;renderTrade();$('tradeScreen').hidden=false;sfx.coin();
+  setTimeout(()=>{const b=$('tradeGrid').querySelector('button:not(:disabled)');(b||$('tradeClose')).focus();},30);
+}
+function closeTrade(){$('tradeScreen').hidden=true;paused=false;last=performance.now();}
+$('tradeClose').addEventListener('click',closeTrade);
+function updateMerchant(dt){
+  if(merchant.state==='away')return;
+  merchant.moving=0;
+  if(merchant.state==='in'){if(followPath(merchant,2.6,dt)){merchant.state='stay';toast(t('merchantHere'),'#ffd23f');sfx.coin();}}
+  else if(merchant.state==='out'){if(followPath(merchant,3,dt)){
+    if(merchant.z<cz(GH-1)+1.2){merchant.z+=3*dt;merchant.face=0;merchant.moving=1;}else merchantGone();}}
+  else{const p=players.reduce((a,b)=>dist2(a,merchant)<dist2(b,merchant)?a:b);if(dist2(p,merchant)<6)merchant.face=Math.atan2(p.x-merchant.x,p.z-merchant.z);}
+  if(merchant.moving){merchant.cart.position.set(merchant.x-Math.sin(merchant.face)*1.35,0,merchant.z-Math.cos(merchant.face)*1.35);merchant.cart.rotation.y=merchant.face;}
+}
+
+/* ---------- Computer-Spieler ---------- */
+const BOTDEF=[{name:'Lena',vest:'#d84a8a',helmet:'#7be0ff',job:'wood'},{name:'Tom',vest:'#3fa84a',helmet:'#ff8a2a',job:'stone'},{name:'Ali',vest:'#e8b030',helmet:'#5a6ad8',job:'food'}];
+let botsOn=true;
+const bots=BOTDEF.map((d,i)=>{const b=Object.assign({bot:true,x:HC.x-2+i*2,z:HC.z+5.5,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,floor:0,path:null,tgt:null,cd:0,think:0,stuck:0,lx:0,lz:0},d);b.mesh=buildPlayer(d.vest,d.helmet);return b;});
+function botHome(b,i){return {x:HC.x-2.5+i*2.5,z:HC.z+HOUSE_HALF+1.6};}
+function resetBots(){bots.forEach((b,i)=>{const h=botHome(b,i);Object.assign(b,{x:h.x,z:h.z+1,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,path:null,tgt:null,cd:0,think:0,stuck:0});b.mesh.visible=botsOn;});}
+function setBots(on){botsOn=on;bots.forEach(b=>{b.mesh.visible=on;b.path=null;b.tgt=null;});$('botBtn').textContent=t(on?'botsOnBtn':'botsOffBtn');$('botBtn').setAttribute('aria-pressed',on?'true':'false');}
+function toggleBots(){setBots(!botsOn);if(phase==='play'){toast(t(botsOn?'botsJoin':'botsLeave'),botsOn?'#7be0ff':'#aab2d6');sfx.coin();}}
+$('botBtn').addEventListener('click',toggleBots);
+function botPickTarget(b){
+  const cand=[];
+  const want=b.job==='food'?'food':b.job;
+  if(want==='food'){
+    for(const bu of bushes)if(bu.full)cand.push({kind:'bush',o:bu,x:bu.x,z:bu.z});
+    for(const o of nature.values())if(o.alive&&o.type==='tree'&&o.apples>0)cand.push({kind:'apple',o,x:cx(o.i),z:cz(o.j)});
+  }
+  if(want==='wood'||(want==='food'&&!cand.length))for(const o of nature.values())if(o.alive&&o.type==='tree'&&!(o.apples>0)&&(o.grow||0)<=0)cand.push({kind:'tree',o,x:cx(o.i),z:cz(o.j)});
+  if(want==='stone')for(const o of nature.values())if(o.alive&&o.type==='rock'&&(o.grow||0)<=0)cand.push({kind:'rock',o,x:cx(o.i),z:cz(o.j)});
+  // nicht alle drei an denselben Baum
+  const taken=bots.filter(q=>q!==b&&q.tgt).map(q=>q.tgt.o);
+  cand.sort((a,c)=>dist2(b,a)-dist2(b,c));
+  for(const c of cand.slice(0,6)){
+    if(taken.includes(c.o))continue;
+    let path;
+    if(c.kind==='bush')path=bfsPath(b,n=>Math.hypot(cx(n%GW)-c.x,cz((n/GW)|0)-c.z)<1.2);
+    else path=bfsPath(b,n=>tileNear(n,c.o));
+    if(path){b.tgt=c;b.path=path;return;}
+  }
+  b.tgt=null;b.path=null;b.think=2;
+}
+function botGather(b){
+  const c=b.tgt,o=c.o;b.face=Math.atan2(c.x-b.x,c.z-b.z);b.swing=0.3;b.cd=0.85;
+  const near=dist2(b,player)<9;
+  if(c.kind==='bush'){if(!o.full){b.tgt=null;return;}o.full=false;o.mesh.userData.berries.visible=false;berries+=3;if(near)sfx.egg();floatTxt(o.x,o.z,t('plusBerries',{n:3}),'#ff7a9a',1.4,1);b.tgt=null;return;}
+  if(!o.alive){b.tgt=null;return;}
+  if(c.kind==='apple'){if(o.apples<=0){b.tgt=null;return;}const n=o.apples;apples+=n;o.apples=0;o.mesh.userData.apples.visible=false;o.shake=0.3;floatTxt(c.x,c.z,t('plusApples',{n}),'#ff6b6b',2.6,1);b.tgt=null;return;}
+  o.shake=0.25;o.hits--;
+  if(o.type==='tree'){wood++;if(near)sfx.chop();floatTxt(c.x,c.z,t('plusW',{n:1}),'#e8b07a',2.4,0.7);}
+  else{stone++;if(near)sfx.mine();floatTxt(c.x,c.z,t('plusS',{n:1}),'#c7ccd8',1.6,0.7);}
+  puff(c.x,o.type==='tree'?1.2:0.5,c.z,2,o.type==='tree'?'#b8e0a0':'#c7ccd8');
+  if(o.hits<=0){o.alive=false;kind[o.n]=EMPTY;flowDirty=true;o.fall=1;
+    if(o.type==='tree'){const bw=o.big?8:2,bs=o.big?4:2;wood+=bw;sticks+=bs;floatTxt(c.x,c.z,t('plusW',{n:bw})+' · '+t('plusSticks',{n:bs}),'#e8b07a',3,1.2);}else stone+=1;
+    if(near)sfx.breakw();b.tgt=null;}
+}
+function updateBots(dt){
+  if(!botsOn||phase!=='play')return;
+  bots.forEach((b,bi)=>{
+    b.inv=Math.max(0,b.inv-dt);b.swing=Math.max(0,b.swing-dt);b.cd=Math.max(0,b.cd-dt);b.think=Math.max(0,b.think-dt);b.moving=0;
+    if(b.down>0){b.down-=dt;if(b.down<=0){const h=botHome(b,bi);b.x=h.x;b.z=h.z+0.6;b.hearts=5;b.inv=2;b.path=null;b.tgt=null;puff(b.x,0.6,b.z,6,'#ffffff');}return;}
+    const ox=b.x,oz=b.z;
+    if(isNight){
+      // Monster in der Nähe des Hauses jagen
+      let tg=null,bd=1e9;
+      for(const m of monsters){const dh=dist2(m,HC),d=dist2(m,b);if(dh>15&&d>6)continue;if(d<bd){bd=d;tg=m;}}
+      if(b.tgt&&b.tgt.kind!=='mon')b.tgt=null;
+      if(tg){
+        if(bd<1.9){const vx=tg.x-b.x,vz=tg.z-b.z,vl=Math.hypot(vx,vz)||1;b.face=Math.atan2(vx,vz);b.path=null;
+          if(bd>1.15){b.x+=vx/vl*4.2*dt;b.z+=vz/vl*4.2*dt;b.moving=1;}
+          if(bd<1.45&&b.cd<=0){b.cd=0.6;b.swing=0.3;tg.hp-=18;tg.hit=0.15;tg.kx=vx/vl*4;tg.kz=vz/vl*4;if(dist2(b,player)<9)sfx.swing();if(tg.hp<=0)killMonster(tg);}
+        } else {
+          if(!b.path||b.think<=0||!b.tgt||b.tgt.o!==tg){b.tgt={kind:'mon',o:tg};b.think=0.7;const gx=tg.x,gz=tg.z;b.path=bfsPath(b,n=>Math.hypot(cx(n%GW)-gx,cz((n/GW)|0)-gz)<1.3)||null;}
+          followPath(b,4.2,dt);
+        }
+      } else {
+        b.tgt=null;const h=botHome(b,bi);
+        if(dist2(b,h)>1){if(!b.path||!b.path.length){if(b.think<=0){b.think=1;b.path=bfsPath(b,n=>Math.hypot(cx(n%GW)-h.x,cz((n/GW)|0)-h.z)<1);}}followPath(b,3.8,dt);}
+        else b.face=Math.PI*0;
+      }
+    } else {
+      if(b.tgt&&b.tgt.kind==='mon')b.tgt=null;
+      if(!b.tgt){if(b.think<=0)botPickTarget(b);}
+      else if(followPath(b,3.6,dt)){
+        const c=b.tgt,reach=c.kind==='bush'?1.3:1.6;
+        if(dist2(b,c)<=reach){if(b.cd<=0)botGather(b);}
+        else{b.tgt=null;b.think=0.3;}
+      }
+    }
+    collideTiles(b,0.32);
+    // festgefahren? neu planen
+    if(b.moving){if(Math.hypot(b.x-ox,b.z-oz)<dt*0.8)b.stuck+=dt;else b.stuck=Math.max(0,b.stuck-dt);}
+    if(b.stuck>1.5){b.stuck=0;b.path=null;b.tgt=null;b.think=0.5;b.x+=(Math.random()-.5)*0.4;b.z+=(Math.random()-.5)*0.4;collideTiles(b,0.32);}
+  });
+}
 
 const toastBox=$('toasts');
 function toast(msg,col){const d=document.createElement('div');d.className='toast';d.textContent=msg;if(col)d.style.setProperty('--c',col);toastBox.prepend(d);while(toastBox.children.length>3)toastBox.lastChild.remove();setTimeout(()=>d.remove(),2800);}
@@ -1026,6 +1230,7 @@ function startGame(){
   if(P2)Object.assign(P2,{x:HC.x+1.2,z:HC.z+4.4,hearts:5,down:0,inv:0,swing:0,actCd:0,sleeping:null,floor:0});
   Object.assign(P1,{sleeping:null,floor:0});
   wild.forEach(a=>scene.remove(a.mesh));wild=[];refillWild();
+  merchantGone();resetBots();if(!$('tradeScreen').hidden)closeTrade();
   bones=0;slimeBalls=0;crystals=0;meat=0;boneDrops.forEach(bn=>scene.remove(bn.mesh));boneDrops=[];
   wlvl={hammer:1,sword:1,bow:1};
   {let pt=null;for(let k2=0;k2<200&&!pt;k2++){const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d>7&&d<11&&kind[idx(i,j)]===EMPTY)pt={x:cx(i),z:cz(j)};}if(pt)dropBone(pt.x,pt.z);}arcRewardDay={whack:0,memory:0};
@@ -1048,7 +1253,7 @@ $('go').addEventListener('click',startGame);$('again').addEventListener('click',
 function startNight(){
   if(phase!=='play'||isNight)return;
   if(!houseDone()){toast(t('needHouse'),'#ffb340');sfx.denied();return;}
-  isNight=true;duskToast=true;select(null);
+  isNight=true;duskToast=true;select(null);merchantLeave();
   const n=day;
   const q=[];
   for(let i=0;i<3+2*n;i++)q.push('slime');
@@ -1067,6 +1272,7 @@ function startDay(){
   houseHp=Math.min(HOUSE_MAX,houseHp+80);
   if(furnBuilt('chest')){wood+=5;stone+=3;setTimeout(()=>phase==='play'&&toast(t('chestGift'),'#ffd23f'),1800);}
   refillBushes();refillWild();
+  if(day===2||Math.random()<0.6)setTimeout(()=>{if(phase==='play'&&!isNight)merchantCome();},2500);
   for(const o of nature.values())if(o.alive&&o.apple){o.apples=3;o.mesh.userData.apples.visible=true;}
   for(const o of nature.values())if(!o.alive&&kind[o.n]===EMPTY&&dist2(player,{x:cx(o.i),z:cz(o.j)})>1.2){placeNature(o.type,o.i,o.j);o.mesh.scale.setScalar(0.01);o.grow=1;}
   flowDirty=true;
@@ -1275,6 +1481,7 @@ function action(){
     else toast(t('stageDone',{st:t('st_'+st.k)}),'#7fd16b');
     return;
   }
+  if(nearMerchant(player)){actCd=0.3;openTrade();return;}
   if(!dog.friend&&dist2(player,dog)<1.7){
     actCd=0.4;
     if(bones<1){sfx.denied();floatTxt(dog.x,dog.z,t('dogWantsBone'),'#ffb340',1.8,1.6);return;}
@@ -1330,11 +1537,12 @@ window.addEventListener('keydown',e=>{
     if(k==='q')cycleWeapon();
     if(k==='u')upgradeWeapon();
     if(k==='p')toggleP2();
+    if(k==='c')toggleBots();
     if(k==='enter'&&P2&&!paused){e.preventDefault();actAs(P2);}
     if(k==='f')eat();
     if(k==='i'){if($('invScreen').hidden){if(!paused)openInv();}else closeInv();}
     if(k==='b'||k==='escape')select(null);
-    if(k==='escape'&&paused){if(!$('invScreen').hidden)closeInv();else closeArcade();}
+    if(k==='escape'&&paused){if(!$('invScreen').hidden)closeInv();else if(!$('tradeScreen').hidden)closeTrade();else closeArcade();}
     const num=parseInt(k,10);if(num>=1&&num<=6)select(selected===ORDER[num-1]?null:ORDER[num-1]);
   }
   keys[k]=true;
@@ -1406,7 +1614,7 @@ function update(dt){
     const S=MONSTER[m.type];
     m.atkCd=Math.max(0,m.atkCd-dt);m.hit=Math.max(0,m.hit-dt);m.moving=0;
     m.x+=m.kx*dt;m.z+=m.kz*dt;m.kx*=Math.pow(0.02,dt);m.kz*=Math.pow(0.02,dt);
-    const tp=nearestPlayer(m,S.fly),dp=tp?dist2(m,tp):1e9,alive=!!tp&&tp.down<=0;
+    const tp=nearestPlayer(m,S.fly,true),dp=tp?dist2(m,tp):1e9,alive=!!tp&&tp.down<=0;
     let gx=null,gz=null;
     if(S.fly){
       if(alive&&dp<2.5){gx=tp.x;gz=tp.z;}else{gx=HC.x;gz=HC.z;}
@@ -1432,8 +1640,8 @@ function update(dt){
     // Spieler verletzen
     if(alive&&tp.inv<=0&&dp<S.r+0.45&&m.atkCd<=0){
       m.atkCd=1.1;tp.hearts-=S.hurt;tp.inv=0.9;sfx.hurt();m.bite=0.25;
-      const d=dp||1;tp.x+=(tp.x-m.x)/d*0.8;tp.z+=(tp.z-m.z)/d*0.8;collidePlayer(tp,0.32);
-      if(tp.hearts<=0){tp.hearts=0;tp.down=3;toast(t('down')+(P2?' ('+t('pl',{n:tp.name})+')':''),'#ff6b6b');}
+      const d=dp||1;tp.x+=(tp.x-m.x)/d*0.8;tp.z+=(tp.z-m.z)/d*0.8;if(tp.bot){collideTiles(tp,0.32);tp.path=null;}else collidePlayer(tp,0.32);
+      if(tp.hearts<=0){tp.hearts=0;tp.down=tp.bot?5:3;if(tp.bot)toast(t('botDown',{n:tp.name}),'#aab2d6');else toast(t('down')+(P2?' ('+t('pl',{n:tp.name})+')':''),'#ff6b6b');}
     }
     if(!S.fly){
       for(const o of monsters){if(o===m||MONSTER[o.type].fly)continue;const dx=m.x-o.x,dz=m.z-o.z,d=Math.hypot(dx,dz),mm=S.r+MONSTER[o.type].r-0.2;if(d<mm&&d>1e-4){m.x+=dx/d*(mm-d)*0.5;m.z+=dz/d*(mm-d)*0.5;}}
@@ -1462,6 +1670,7 @@ function update(dt){
   } else {
     const d=dist2(dog,player);if(d<6)dog.face=Math.atan2(player.x-dog.x,player.z-dog.z);
   }
+  updateMerchant(dt);updateBots(dt);
   // Wildtiere
   for(const a of wild.slice()){
     const S=WILD[a.type];a.hit=Math.max(0,a.hit-dt);a.atkCd=Math.max(0,a.atkCd-dt);a.moving=0;
@@ -1582,6 +1791,15 @@ function syncWorld(){
   du.inner.position.y=dog.friend?0:Math.abs(Math.sin(time*2))*0.02;
   du.head.rotation.x=dog.biteCd>0.4?0.4:0;
   du.inner.rotation.z=dog.sleep?1.3:0;du.inner.position.y=dog.sleep?0.15:du.inner.position.y;
+  // Händler + Computer-Spieler
+  if(merchant.state!=='away'){const m=merchant.mesh,u=m.userData;m.position.set(merchant.x,0,merchant.z);turn(m,merchant.face,0.2);
+    const sw=merchant.moving?Math.sin(time*12)*0.6:0;u.legs[0].rotation.x=sw;u.legs[1].rotation.x=-sw;u.armL.rotation.x=merchant.moving?-0.9:-sw;u.armR.rotation.x=merchant.moving?-0.9:Math.sin(time*2)*0.15;}
+  for(const b of bots){const m=b.mesh,u=m.userData;m.visible=botsOn&&!(b.inv>0&&b.down<=0&&Math.floor(time*10)%2===0);if(!botsOn)continue;
+    m.position.set(b.x,0,b.z);turn(m,b.face,0.3);
+    const sw=b.moving?Math.sin(time*14+b.x)*0.6:0;u.legs[0].rotation.x=sw;u.legs[1].rotation.x=-sw;u.armL.rotation.x=-sw;
+    u.armR.rotation.x=b.swing>0?-2.4+(0.3-b.swing)/0.3*3.2:sw*0.6;
+    u.inner.rotation.x=b.down>0?-1.5:0;u.inner.position.y=b.down>0?0.3:0;
+    u.tools.hammer.visible=!isNight;u.tools.sword.visible=isNight;u.tools.bow.visible=false;}
   for(const a of wild){const wu=a.mesh.userData;a.mesh.position.set(a.x,a.type==='rabbit'&&a.moving?Math.abs(Math.sin(time*14+a.seed))*0.25:0,a.z);turn(a.mesh,a.face,0.25);
     if(wu.legs){const s2=a.moving?Math.sin(time*16)*0.6:0;wu.legs.forEach((l,i)=>l.rotation.x=(i%2?s2:-s2)*(i<2?1:-1));}
     wu.inner.scale.setScalar(a.hit>0?0.85:1);}
@@ -1673,6 +1891,7 @@ function hint(){
     if(!f)return null;}
   if(!houseDone()&&dist2(player,HC)<4.3){const st=HSTAGES[houseStage],ok=wood>=st.w&&stone>=st.s;
     return ok?{t:t('hStage',{st:t('st_'+st.k),c:stageCost(st)}),c:'#7fd16b'}:{t:t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),c:'#ff6b6b'};}
+  if(nearMerchant(player))return {t:t('hTrade'),c:'#ffd23f'};
   if(!dog.friend&&dist2(player,dog)<1.7)return bones>0?{t:t('hDog'),c:'#ffb340'}:{t:t('dogWantsBone'),c:'#ff6b6b'};
   if((player.floor||0)===0&&!monsters.length){const pr=wildInReach(wStat(weapon).reach||1.9);if(pr.length&&!wStat(weapon).ranged)return {t:t(pr[0].type==='boar'?'hBoar':'hRabbit'),c:'#ff9a8a'};}
   const sh=nearestSheep();
@@ -1690,6 +1909,8 @@ function drawLabels(){
   if(phase==='play'&&houseDone()&&inHouse(player))for(const f of FURN)if(!f.built&&f.ghost.visible&&(f.fl||0)===(P1.floor||0))lab(t('f_'+f.k),HC.x+f.x,(f.fl?UPPER_Y:0)+0.9,HC.z+f.z,'#ffffff',11);
   if(phase==='play'&&!houseDone()){lab(t('siteLabel'),HC.x,houseStage>=2?3.4:2.0,HC.z,'#ffd9a0',14);lab((houseStage+1)+'/3 · '+t('st_'+HSTAGES[houseStage].k)+' · '+stageCost(HSTAGES[houseStage]),HC.x,houseStage>=2?2.9:1.5,HC.z,'#ffffff',12);}
   if(phase==='play'&&dog.sleep)lab('Zzz',dog.x,1.1,dog.z,'#c9b8ff',13);
+  if(phase==='play'&&merchant.state!=='away')lab(t('merchant'),merchant.x,2.3,merchant.z,'#ffd23f',12);
+  if(phase==='play'&&botsOn)for(const b of bots){lab(t('botTag',{n:b.name}),b.x,2.25,b.z,b.vest,10);if(b.hearts<5&&b.down<=0)lab('♥'.repeat(b.hearts),b.x,2.6,b.z,'#ff6b6b',9);if(b.down>0)lab('Zzz',b.x,1.0,b.z,'#c9b8ff',11);}
   if(phase==='play')lab(dog.friend?t('dogName')+(dogHut()?' ♥':''):'?',dog.x,1.5,dog.z,dog.friend?'#ffd9a0':'#ffb340',dog.friend?11:18);
   for(const pl of players){player=pl;const fy=(pl.floor||0)*UPPER_Y;const h=hint();if(h)lab(h.t,pl.x,2.8+fy,pl.z,h.c,13,true);if(P2)lab(t('pl',{n:pl.name}),pl.x,2.25+fy,pl.z,pl===P1?'#ffd23f':'#7be0ff',11);}
   player=P1;
@@ -1707,6 +1928,8 @@ function drawMini(){
   mc.fillStyle='#b8452a';mc.fillRect(HOUSE_T.i0,HOUSE_T.j0,5,5);
   for(const m of monsters){mc.fillStyle=m.type==='slime'?'#5fd35a':m.type==='grummel'?'#b08aff':'#ff6b6b';mc.beginPath();mc.arc(m.x+GW/2,m.z+GH/2,0.6,0,7);mc.fill();}
   for(const a of wild){mc.fillStyle=a.type==='boar'?'#8a5a3a':'#d8c8b0';mc.beginPath();mc.arc(a.x+GW/2,a.z+GH/2,0.5,0,7);mc.fill();}
+  if(merchant.state!=='away'){mc.fillStyle='#ffd23f';mc.strokeStyle='#7a3aa8';mc.lineWidth=0.3;mc.fillRect(merchant.x+GW/2-0.7,merchant.z+GH/2-0.7,1.4,1.4);mc.strokeRect(merchant.x+GW/2-0.7,merchant.z+GH/2-0.7,1.4,1.4);}
+  if(botsOn)for(const b of bots){mc.fillStyle=b.vest;mc.beginPath();mc.arc(b.x+GW/2,b.z+GH/2,0.6,0,7);mc.fill();}
   mc.fillStyle='#ffffff';for(const sh of sheep){mc.beginPath();mc.arc(sh.x+GW/2,sh.z+GH/2,0.6,0,7);mc.fill();}
   mc.fillStyle='#ff6b8b';for(const b of bushes)if(b.full){mc.beginPath();mc.arc(b.x+GW/2,b.z+GH/2,0.45,0,7);mc.fill();}
   mc.fillStyle='#e8a060';mc.beginPath();mc.arc(dog.x+GW/2,dog.z+GH/2,0.6,0,7);mc.fill();
@@ -1758,7 +1981,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={climb,get HOUSE_MAX(){return HOUSE_MAX},get houseHp2(){return houseHp},get wild(){return wild},startSleep,wakeUp,get loot(){return {slimeBalls,crystals,meat,bones}},setLoot(o){if('slime'in o)slimeBalls=o.slime;if('crystal'in o)crystals=o.crystal;if('meat'in o)meat=o.meat;},get wlvl(){return wlvl},upgradeWeapon,dropLoot,players,toggleP2,get P2(){return P2},get bones(){return bones},get boneDrops(){return boneDrops},dogHut,sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={get bots(){return bots},get botsOn(){return botsOn},setBots,toggleBots,merchant,merchantCome,merchantLeave,openTrade,closeTrade,doTrade,RES,bfsPath,climb,get HOUSE_MAX(){return HOUSE_MAX},get houseHp2(){return houseHp},get wild(){return wild},startSleep,wakeUp,get loot(){return {slimeBalls,crystals,meat,bones}},setLoot(o){if('slime'in o)slimeBalls=o.slime;if('crystal'in o)crystals=o.crystal;if('meat'in o)meat=o.meat;},get wlvl(){return wlvl},upgradeWeapon,dropLoot,players,toggleP2,get P2(){return P2},get bones(){return bones},get boneDrops(){return boneDrops},dogHut,sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
