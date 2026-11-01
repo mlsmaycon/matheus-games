@@ -68,6 +68,8 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 .slot .tr{display:flex;align-items:center;gap:2px;font-family:var(--display);font-size:20px}
 .slot .tr svg{width:38px;height:38px}
 .slot.sold{opacity:.5}
+.coins{font-family:var(--display);font-size:20px;color:#ffd23f;margin:0}
+.slot small{font-size:12px;opacity:.85}
 .house{position:absolute;left:12px;bottom:12px;width:min(200px,46%);background:#171a33e6;border-radius:14px;padding:8px 12px;pointer-events:none;font-family:var(--display);font-weight:800;font-size:14px;display:flex;flex-direction:column;gap:6px}
 .house .row{display:flex;justify-content:space-between;gap:8px}
 .house .bar{height:10px;border-radius:999px;background:#ffffff26;overflow:hidden}
@@ -175,6 +177,13 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
       </ol>
       <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
     </div>
+    <div class="screen" id="shopScreen" hidden>
+      <h2 id="shopTitle">Laden</h2>
+      <p id="shopText"></p>
+      <p class="coins" id="shopCoins"></p>
+      <div class="inv" id="shopGrid"></div>
+      <button class="go alt" type="button" id="shopClose" data-t="arcClose">Zurück ins Spiel</button>
+    </div>
     <div class="screen" id="tradeScreen" hidden>
       <h2 data-t="tradeTitle">Wanderhändler</h2>
       <p data-t="tradeText"></p>
@@ -212,6 +221,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
     <button class="btn" id="act" type="button" data-t="act">Aktion · E</button>
     <button class="btn moss" id="night" type="button" data-t="startNight">Nacht starten · N</button>
     <button class="btn alt" id="p2Btn" type="button" data-t="p2Join">2. Spieler · P</button>
+    <button class="btn alt" id="followBtn" type="button" data-t="followOn">Folgt mir! · G</button>
     <button class="btn alt" id="botBtn" type="button" data-t="botsOnBtn">Computer-Spieler: an · C</button>
     <button class="btn alt" id="invBtn" type="button" data-t="invBtn">Truhe · I</button>
     <button class="btn alt" id="eatBtn" type="button" data-t="eatBtn">Essen · F</button>
@@ -234,7 +244,7 @@ const TXT={
     step3:'<b>Nacht:</b> Hau die Monster mit dem Hammer (<b>E</b>). Fackeln brennen sie, Türme schießen.',
     go:'Los geht’s',again:'Nochmal',endTitle:'Das Haus ist gefallen!',
     act:'Aktion · E',actShort:'Aktion',startNight:'Nacht starten · N',soundOn:'Ton an · M',soundOff:'Ton aus · M',
-    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–8</b> wählt ein Bauteil (auch Lagerfeuer und Setzlinge), <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe, <b>F</b> isst etwas, <b>I</b> öffnet die Truhe. <b>N</b> startet die Nacht früher. <b>P</b> holt einen 2. Spieler dazu: Pfeiltasten zum Laufen, <b>Enter</b> für Aktion. <b>C</b> schaltet die Computer-Spieler an oder aus. Manchmal kommt ein Händler: Drück <b>E</b> bei ihm zum Tauschen. Im Wald ist eine Höhle mit Kohle und Gold, und in der alten Burg warten Schatztruhen und Monster.',
+    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen, Mausrad zoomt. <b>E</b> hackt, baut oder kämpft (gedrückt halten geht auch). <b>1–8</b> wählt ein Bauteil (auch Lagerfeuer und Setzlinge), <b>B</b> oder <b>Esc</b> beendet das Bauen. <b>Q</b> wechselt die Waffe, <b>F</b> isst etwas, <b>I</b> öffnet die Truhe. <b>N</b> startet die Nacht früher. <b>P</b> holt einen 2. Spieler dazu: Pfeiltasten zum Laufen, <b>Enter</b> für Aktion. <b>C</b> schaltet die Computer-Spieler an oder aus. Manchmal kommt ein Händler: Drück <b>E</b> bei ihm zum Tauschen. Im Wald ist eine Höhle mit Kohle und Gold, und in der alten Burg warten Schatztruhen und Monster. <b>G</b>: Die Computer-Spieler folgen dir. Oben rechts gibt es einen Laden und ein Restaurant, dort zahlst du mit Münzen (die bekommst du für Gold).',
     noload:'3D konnte nicht geladen werden.',
     i_wood:'Holzwand',i_stone:'Steinmauer',i_torch:'Fackel',i_tower:'Turm',i_demolish:'Abreißen',
     c_w:'{n} Holz',c_s:'{n} Stein',c_ws:'{w} Holz + {s} Stein',c_refund:'gibt die Hälfte zurück',
@@ -255,6 +265,13 @@ const TXT={
     hBig:'[E] Große Eiche hacken (noch {n} Schläge)',bigFall:'Die große Eiche fällt! Viel Holz!',longerDay:'Du wirst stärker: Der Tag dauert jetzt {n} Sekunden.',
     i_doghouse:'Hundehütte',inv_bones:'Knochen',plusBone:'+1 Knochen',dogWantsBone:'Bello möchte einen Knochen!',
     oneDoghouse:'Bello hat schon eine Hütte.',doghouseBuilt:'Hundehütte gebaut! Bello ist glücklich und beißt kräftiger.',doghouseBuiltNoDog:'Hundehütte gebaut! Jetzt fehlt nur noch ein Hund …',
+    shop:'Laden',shopBroken:'Kaputter Laden',hShopFix:'E: Laden reparieren ({c})',hShopFixPoor:'Laden reparieren braucht {c}',shopFixed:'Der Laden ist repariert! Rosa verkauft jetzt Essen und mehr. Bezahlt wird mit Münzen.',hShop:'E: Einkaufen',
+    restaurant:'Restaurant',hResto:'E: Ins Restaurant',shopTitle:'Rosas Laden',shopText:'Hier kaufst du mit Münzen ein. Münzen bekommst du für Gold.',
+    restTitle:'Restaurant „Goldener Löffel“',restText:'Lass es dir schmecken! Bezahlt wird mit Münzen. Münzen bekommst du für Gold.',coinsHave:'Du hast {n} Münzen',
+    buy:'Kaufen',exchange:'Tauschen',exName:'5 Münzen',exInfo:'für 1 Gold',inv_coins:'Münzen',inv_bread:'Brot',
+    m_burger:'Burger',m_burgerInfo:'+3 Herzen sofort',m_pizza:'Pizza',m_pizzaInfo:'alle Herzen voll, für alle Spieler',m_ice:'Eis',m_iceInfo:'+1 Herz und 40 s schneller laufen',m_stew:'Eintopf zum Mitnehmen',m_stewInfo:'kommt in die Truhe',
+    priceCoins:'{n} Münzen',bought:'Gekauft: {x}',yum:'Mmh, lecker! {x}',poorCoins:'Zu wenig Münzen. Tausch Gold gegen Münzen!',noGold:'Du hast kein Gold. Gold findest du in der Höhle und in der Burg.',
+    followOn:'Folgt mir! · G',followOff:'Wieder arbeiten · G',followStart:'Lena, Tom und Ali folgen dir jetzt überallhin!',followStop:'Lena, Tom und Ali arbeiten wieder selbst.',
     f_ladder2:'Leiter & 3. Etage',fBuilt_ladder2:'Die dritte Etage ist fertig! Dein Haus ist jetzt richtig hoch und hält noch mehr aus.',upstairs3:'Du bist ganz oben in der 3. Etage!',
     f_kitchen:'Küche',fBuilt_kitchen:'Küche gebaut! Koch Karl ist eingezogen. Gib ihm Wolle, dann kocht er für euch.',
     f_bedL:'Bett für Lena',f_bedT:'Bett für Tom',f_bedA:'Bett für Ali',fBuilt_bedL:'Lena hat jetzt ein Bett! Sie hat ein Herz mehr und steht schneller wieder auf.',fBuilt_bedT:'Tom hat jetzt ein Bett! Er hat ein Herz mehr und steht schneller wieder auf.',fBuilt_bedA:'Ali hat jetzt ein Bett! Er hat ein Herz mehr und steht schneller wieder auf.',
@@ -319,7 +336,7 @@ const TXT={
     step3:'<b>Night:</b> Bonk the monsters with your hammer (<b>E</b>). Torches burn them, towers shoot.',
     go:'Let’s go',again:'Play again',endTitle:'The house has fallen!',
     act:'Action · E',actShort:'Action',startNight:'Start night · N',soundOn:'Sound on · M',soundOff:'Sound off · M',
-    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–8</b> picks a building part (also campfire and saplings), <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early. <b>P</b> adds player 2: arrow keys to walk, <b>Enter</b> for action. <b>C</b> turns the computer players on or off. Sometimes a merchant visits: press <b>E</b> next to him to trade. There is a cave in the forest with coal and gold, and the old castle has treasure chests and monsters.',
+    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–8</b> picks a building part (also campfire and saplings), <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early. <b>P</b> adds player 2: arrow keys to walk, <b>Enter</b> for action. <b>C</b> turns the computer players on or off. Sometimes a merchant visits: press <b>E</b> next to him to trade. There is a cave in the forest with coal and gold, and the old castle has treasure chests and monsters. <b>G</b>: the computer players follow you. In the top right there is a shop and a restaurant where you pay with coins (you get them for gold).',
     noload:'3D could not be loaded.',
     i_wood:'Wood wall',i_stone:'Stone wall',i_torch:'Torch',i_tower:'Tower',i_demolish:'Demolish',
     c_w:'{n} wood',c_s:'{n} stone',c_ws:'{w} wood + {s} stone',c_refund:'refunds half',
@@ -340,6 +357,13 @@ const TXT={
     hBig:'[E] Chop the big oak ({n} hits left)',bigFall:'The big oak falls! Lots of wood!',longerDay:'You’re getting stronger: the day now lasts {n} seconds.',
     i_doghouse:'Dog house',inv_bones:'Bones',plusBone:'+1 bone',dogWantsBone:'Bello wants a bone!',
     oneDoghouse:'Bello already has a dog house.',doghouseBuilt:'Dog house built! Bello is happy and bites harder.',doghouseBuiltNoDog:'Dog house built! Now you just need a dog …',
+    shop:'Shop',shopBroken:'Broken shop',hShopFix:'E: Repair the shop ({c})',hShopFixPoor:'Repairing the shop needs {c}',shopFixed:'The shop is repaired! Rosa now sells food and more. You pay with coins.',hShop:'E: Go shopping',
+    restaurant:'Restaurant',hResto:'E: Go into the restaurant',shopTitle:'Rosa’s Shop',shopText:'Buy things with coins here. You get coins for gold.',
+    restTitle:'Restaurant “Golden Spoon”',restText:'Enjoy your meal! You pay with coins. You get coins for gold.',coinsHave:'You have {n} coins',
+    buy:'Buy',exchange:'Swap',exName:'5 coins',exInfo:'for 1 gold',inv_coins:'Coins',inv_bread:'Bread',
+    m_burger:'Burger',m_burgerInfo:'+3 hearts right away',m_pizza:'Pizza',m_pizzaInfo:'all hearts full, for every player',m_ice:'Ice cream',m_iceInfo:'+1 heart and walk faster for 40 s',m_stew:'Stew to go',m_stewInfo:'goes into your chest',
+    priceCoins:'{n} coins',bought:'Bought: {x}',yum:'Yum! {x}',poorCoins:'Not enough coins. Swap gold for coins!',noGold:'You have no gold. You find gold in the cave and in the castle.',
+    followOn:'Follow me! · G',followOff:'Back to work · G',followStart:'Lena, Tom and Ali follow you everywhere now!',followStop:'Lena, Tom and Ali work on their own again.',
     f_ladder2:'Ladder & 3rd floor',fBuilt_ladder2:'The third floor is done! Your house is really tall now and even tougher.',upstairs3:'You are at the very top on the 3rd floor!',
     f_kitchen:'Kitchen',fBuilt_kitchen:'Kitchen built! Chef Karl moved in. Give him wool and he cooks for you.',
     f_bedL:'Bed for Lena',f_bedT:'Bed for Tom',f_bedA:'Bed for Ali',fBuilt_bedL:'Lena has a bed now! She gets one more heart and gets back up faster.',fBuilt_bedT:'Tom has a bed now! He gets one more heart and gets back up faster.',fBuilt_bedA:'Ali has a bed now! He gets one more heart and gets back up faster.',
@@ -418,6 +442,9 @@ const CE={x:cx(5),z:cz(5)};
 // Alte Burg (4×3 Felder, Tor vorne)
 for(let j=22;j<=24;j++)for(let i=32;i<=35;i++)kind[idx(i,j)]=ROCK;
 const CS={x:cx(33)+0.5,z:cz(25)};
+// Laden (3×2) und Restaurant (4×2) oben rechts
+for(let j=2;j<=3;j++){for(let i=29;i<=31;i++)kind[idx(i,j)]=ROCK;for(let i=33;i<=36;i++)kind[idx(i,j)]=ROCK;}
+const SH={x:cx(30),z:cz(4)+0.3},RS={x:cx(34)+0.5,z:cz(4)+0.3};
 const BUILD_R=10;
 const ITEMS={
   wood:{w:3,s:0,hp:60},stone:{w:0,s:3,hp:170},torch:{w:0,s:0,st:2,hp:30},tower:{w:5,s:5,hp:130},doghouse:{w:5,s:0,hp:90},campfire:{w:2,s:3,st:2,hp:80},sapling:{sa:1},demolish:{}
@@ -600,18 +627,18 @@ FURN.forEach(f=>{
 });
 const roomLight=new THREE.PointLight(0xffc070,0,7,1.5);roomLight.position.set(HC.x,2.2,HC.z);scene.add(roomLight);
 /* ---------- Essen & Truhe (Inventar) ---------- */
-function foodCount(){return apples+berries+eggsInv+meat+cmeat+cegg+stew;}
+function foodCount(){return apples+berries+eggsInv+meat+cmeat+cegg+stew+bread;}
 function eat(kind){
   audioInit();
   const who=players.filter(p=>p.down<=0).sort((a,b)=>a.hearts-b.hearts)[0];
   if(phase!=='play'||!who)return false;
   if(who.hearts>=maxHearts()){toast(t('full'),'#7fd16b');return false;}
   let k=kind;
-  const cnt={apples,berries,eggs:eggsInv,meat,cmeat,cegg,stew},miss=maxHearts()-who.hearts;
-  if(!k)k=(stew>0&&miss>=4)?'stew':(cmeat>0&&miss>=3)?'cmeat':(cegg>0&&miss>=2)?'cegg':apples>0?'apples':berries>0?'berries':cegg>0?'cegg':cmeat>0?'cmeat':eggsInv>0?'eggs':meat>0?'meat':null;
+  const cnt={apples,berries,eggs:eggsInv,meat,cmeat,cegg,stew,bread},miss=maxHearts()-who.hearts;
+  if(!k)k=(stew>0&&miss>=4)?'stew':(cmeat>0&&miss>=3)?'cmeat':(cegg>0&&miss>=2)?'cegg':(bread>0&&miss>=2)?'bread':apples>0?'apples':berries>0?'berries':cegg>0?'cegg':bread>0?'bread':cmeat>0?'cmeat':eggsInv>0?'eggs':meat>0?'meat':null;
   if(!k||!(cnt[k]>0)){toast(t('noFood'),'#ff6b6b');sfx.denied();return false;}
-  const plus={apples:1,berries:1,eggs:1,meat:1,cmeat:3,cegg:2,stew:4}[k];
-  if(k==='apples')apples--;else if(k==='berries')berries--;else if(k==='meat')meat--;else if(k==='eggs')eggsInv--;else if(k==='cmeat')cmeat--;else if(k==='stew')stew--;else cegg--;
+  const plus={apples:1,berries:1,eggs:1,meat:1,cmeat:3,cegg:2,stew:4,bread:2}[k];
+  if(k==='apples')apples--;else if(k==='berries')berries--;else if(k==='meat')meat--;else if(k==='eggs')eggsInv--;else if(k==='cmeat')cmeat--;else if(k==='stew')stew--;else if(k==='bread')bread--;else cegg--;
   who.hearts=Math.min(maxHearts(),who.hearts+plus);sfx.eat();floatTxt(who.x,who.z,'+'+'♥'.repeat(plus),'#ff6b6b',2.6,1.2);
   return true;
 }
@@ -628,6 +655,8 @@ const INV=[
   {k:'bones',get:()=>bones,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M16 24a6 6 0 1 1 6-8l16 16a6 6 0 1 1 8 6 6 6 0 1 1-6 8L24 30a6 6 0 1 1-8-6z" fill="#fff6e0" stroke="#c8b890" stroke-width="3"/></svg>'},
   {k:'cmeat',food:true,get:()=>cmeat,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><ellipse cx="26" cy="30" rx="16" ry="13" fill="#8a4a24" stroke="#4a2410" stroke-width="3"/><path d="M18 26l14 8M20 34l10 4" stroke="#c8784a" stroke-width="3" stroke-linecap="round"/><path d="M38 38l10 10" stroke="#fff6e0" stroke-width="6" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#fff6e0"/></svg>'},
   {k:'cegg',food:true,get:()=>cegg,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 32c0-12 10-18 20-16 6-6 20-2 20 10 6 8-2 20-14 18-6 6-24 2-26-12z" fill="#fffaf0" stroke="#d8ccb0" stroke-width="3"/><circle cx="30" cy="31" r="8" fill="#ffc21a"/></svg>'},
+  {k:'coins',get:()=>coins,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="24" cy="34" r="14" fill="#ffd23f" stroke="#a87a00" stroke-width="3"/><circle cx="36" cy="26" r="14" fill="#ffe27a" stroke="#a87a00" stroke-width="3"/><text x="36" y="32" font-size="16" text-anchor="middle" fill="#a87a00" font-weight="bold">M</text></svg>'},
+  {k:'bread',food:true,get:()=>bread,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M8 38c0-14 10-20 22-20s22 6 22 20z" fill="#d8a050" stroke="#8a5a20" stroke-width="3"/><path d="M20 26l4 8M30 24v9M40 26l-4 8" stroke="#8a5a20" stroke-width="2.5" stroke-linecap="round"/></svg>'},
   {k:'stew',food:true,get:()=>stew,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 30h40c0 12-8 20-20 20S10 42 10 30z" fill="#c8584a" stroke="#7a2a20" stroke-width="3"/><ellipse cx="30" cy="30" rx="20" ry="5" fill="#e8a040" stroke="#7a2a20" stroke-width="3"/><circle cx="24" cy="29" r="2.5" fill="#7fd16b"/><circle cx="35" cy="30" r="2.5" fill="#ff8a2a"/><path d="M22 20q2-6 0-10M32 20q2-6 0-10" stroke="#ffffff" stroke-width="2" fill="none" opacity=".7"/></svg>'},
   {k:'sapling',get:()=>saplings,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 52V26" stroke="#7a4a2a" stroke-width="4" stroke-linecap="round"/><path d="M30 32c-12 0-16-10-14-16 10 0 16 6 14 16zM30 26c10 0 16-8 14-16-10 0-16 6-14 16z" fill="#4caf50" stroke="#2f7a3c" stroke-width="2"/><path d="M18 52h24" stroke="#6a4024" stroke-width="5" stroke-linecap="round"/></svg>'},
   {k:'coal',get:()=>coal,svg:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M12 42l6-16 14-8 14 6 4 18z" fill="#2a2a30" stroke="#0e0e12" stroke-width="3" stroke-linejoin="round"/><circle cx="26" cy="32" r="2.5" fill="#5a5a66"/><circle cx="38" cy="36" r="2" fill="#5a5a66"/></svg>'},
@@ -804,6 +833,7 @@ function placeNature(type,i,j){
     const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<6)continue;
     if(i===0||j===0||i===GW-1||j===GH-1)continue;
     if(Math.hypot(cx(i)-CE.x,cz(j)-CE.z)<2.6)continue;
+    if(i>=27&&i<=38&&j<=5)continue;
     if(Math.abs(cx(i)-CS.x)<3.6&&cz(j)>CS.z-4.8&&cz(j)<CS.z+2)continue;
     let near=0;for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){if(inb(i+a,j+b)&&solid(kind[idx(i+a,j+b)]))near++;}
     if(near>1)continue;
@@ -818,7 +848,7 @@ function buildBush(){const g=new THREE.Group();
   const b=new THREE.Group();[[0.3,0.6,0.35],[-0.25,0.55,0.4],[0.05,0.8,0.3],[0.45,0.45,0],[-0.4,0.4,0.2],[0.1,0.5,-0.45]].forEach(([x,y,z],i)=>b.add(part(G.sph,i%2?'#3a4ad8':'#d8324a',0.07,0.07,0.07,x,y,z,false)));
   g.add(b);g.userData.berries=b;scene.add(g);return g;}
 (()=>{let tries=0;while(bushes.length<9&&tries<2000){tries++;const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;
-  if(kind[idx(i,j)]!==EMPTY||i<1||j<1||i>GW-2||j>GH-2)continue;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<6||d>15)continue;if(Math.hypot(cx(i)-CS.x,cz(j)-CS.z)<2.5)continue;
+  if(kind[idx(i,j)]!==EMPTY||i<1||j<1||i>GW-2||j>GH-2)continue;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<6||d>15)continue;if(Math.hypot(cx(i)-CS.x,cz(j)-CS.z)<2.5)continue;if(i>=27&&j<=5)continue;
   if(bushes.some(b=>Math.hypot(b.x-cx(i),b.z-cz(j))<3))continue;
   const b={x:cx(i)+(Math.random()-.5)*0.3,z:cz(j)+(Math.random()-.5)*0.3,full:true,mesh:buildBush()};b.mesh.position.set(b.x,0,b.z);bushes.push(b);}})();
 function refillBushes(){bushes.forEach(b=>{b.full=true;b.mesh.userData.berries.visible=true;});}
@@ -1015,7 +1045,7 @@ const arrowMat=new THREE.MeshBasicMaterial({color:'#5a3a22'});
 let phase='start',time=0,day=1,nights=0,kills=0,dayT=50,isNight=false,nightAmt=0,spawnQueue=[],spawnT=0,duskToast=false;
 let wood=6,stone=0,houseHp=400,HOUSE_MAX=400;
 let sticks=0,wool=0,berries=0,apples=0,eggsInv=0;
-let saplings=0,coal=0,gold=0,cmeat=0,cegg=0,hasPick=false,goldArmor=false,stew=0,hasBag=false;
+let saplings=0,coal=0,gold=0,cmeat=0,cegg=0,hasPick=false,goldArmor=false,stew=0,hasBag=false,coins=0,bread=0,iceT=0,shopFixed=false,followMe=false;
 function have(c){return crystals>=(c.cr||0)&&wood>=(c.w||0)&&stone>=(c.s||0)&&sticks>=(c.st||0)&&wool>=(c.wo||0)&&saplings>=(c.sa||0)&&coal>=(c.co||0)&&gold>=(c.go||0);}
 function pay(c){crystals-=c.cr||0;wood-=c.w||0;stone-=c.s||0;sticks-=c.st||0;wool-=c.wo||0;saplings-=c.sa||0;coal-=c.co||0;gold-=c.go||0;}
 function costStr(c){const p=[];if(c.w)p.push(c.w+' '+t('wood'));if(c.s)p.push(c.s+' '+t('stone'));if(c.st)p.push(c.st+' '+t('sticks'));if(c.wo)p.push(c.wo+' '+t('wool'));
@@ -1098,7 +1128,7 @@ const tileNear=(n,o)=>Math.abs((n%GW)-o.i)+Math.abs(((n/GW)|0)-o.j)===1;
 
 /* ---------- Wanderhändler ---------- */
 const RES={wood:[()=>wood,v=>wood=v],stone:[()=>stone,v=>stone=v],sticks:[()=>sticks,v=>sticks=v],wool:[()=>wool,v=>wool=v],berries:[()=>berries,v=>berries=v],
-  apples:[()=>apples,v=>apples=v],stew:[()=>stew,v=>stew=v],sapling:[()=>saplings,v=>saplings=v],coal:[()=>coal,v=>coal=v],gold:[()=>gold,v=>gold=v],eggs:[()=>eggsInv,v=>eggsInv=v],bones:[()=>bones,v=>bones=v],slime:[()=>slimeBalls,v=>slimeBalls=v],crystal:[()=>crystals,v=>crystals=v],meat:[()=>meat,v=>meat=v]};
+  apples:[()=>apples,v=>apples=v],stew:[()=>stew,v=>stew=v],coins:[()=>coins,v=>coins=v],bread:[()=>bread,v=>bread=v],sapling:[()=>saplings,v=>saplings=v],coal:[()=>coal,v=>coal=v],gold:[()=>gold,v=>gold=v],eggs:[()=>eggsInv,v=>eggsInv=v],bones:[()=>bones,v=>bones=v],slime:[()=>slimeBalls,v=>slimeBalls=v],crystal:[()=>crystals,v=>crystals=v],meat:[()=>meat,v=>meat=v]};
 const TRADES=[['wood',5,'stone',2],['stone',3,'wood',4],['berries',4,'wool',1],['bones',2,'crystal',1],['slime',3,'crystal',1],['wood',6,'apples',4],
   ['stone',8,'eggs',3],['meat',2,'slime',2],['sticks',4,'wool',1],['apples',3,'sticks',4],['wood',8,'bones',1],['wool',2,'stone',5],
   ['apples',2,'sapling',2],['stone',5,'coal',2],['coal',3,'crystal',1],['gold',1,'stone',8],['crystal',2,'gold',1],['crystal',2,'wool',3],['crystal',1,'meat',3]];
@@ -1296,13 +1326,13 @@ function collideCastle(e,r){r=r||0.32;
   for(const [x,z] of PILLARS)push(CASTLE.x+x,CASTLE.z+z,0.5+r);
   for(const c of castleChests)push(c.x,c.z,c.r+r);}
 function castleMonAI(m,S,dt){
-  let tp=null,bd=1e9;for(const p of players){if(!p.castle||p.down>0)continue;const d=dist2(m,p);if(d<bd){bd=d;tp=p;}}
+  let tp=null,bd=1e9;for(const p of (botsOn?players.concat(bots):players)){if(!p.castle||p.down>0)continue;const d=dist2(m,p);if(d<bd){bd=d;tp=p;}}
   m.moving=0;
   if(tp&&bd<13){const vx=tp.x-m.x,vz=tp.z-m.z,vl=Math.hypot(vx,vz)||1;m.face=Math.atan2(vx,vz);
     if(bd>S.r+0.35){m.x+=vx/vl*S.speed*dt;m.z+=vz/vl*S.speed*dt;m.moving=1;}
     if(tp.inv<=0&&bd<S.r+0.5&&m.atkCd<=0){m.atkCd=m.type==='knight'?1.6:1.2;tp.hearts-=S.hurt;tp.inv=0.9;sfx.hurt();m.bite=0.25;
       tp.x+=vx/vl*0.8;tp.z+=vz/vl*0.8;collideCastle(tp);
-      if(tp.hearts<=0){tp.hearts=0;tp.down=3;toast(t('down')+(P2?' ('+t('pl',{n:tp.name})+')':''),'#ff6b6b');}}}
+      if(tp.hearts<=0){tp.hearts=0;if(tp.bot){tp.down=botBed(tp)?2.5:5;toast(t('botDown',{n:tp.name}),'#aab2d6');}else{tp.down=3;toast(t('down')+(P2?' ('+t('pl',{n:tp.name})+')':''),'#ff6b6b');}}}}
   for(const o of monsters){if(o===m||!o.castle)continue;const dx=m.x-o.x,dz=m.z-o.z,d=Math.hypot(dx,dz),mm=S.r+MONSTER[o.type].r-0.1;if(d<mm&&d>1e-4){m.x+=dx/d*(mm-d)*0.5;m.z+=dz/d*(mm-d)*0.5;}}
   collideCastle(m,S.r);m.bite=Math.max(0,(m.bite||0)-dt);
 }
@@ -1325,6 +1355,104 @@ function castleAction(){
   const extra=[['sapling',2],['slime',2],['bones',1],['meat',2]][(Math.random()*4)|0];loot[extra[0]]=(loot[extra[0]]||0)+extra[1];
   const parts=[];for(const k in loot){if(!loot[k])continue;RES[k][1](RES[k][0]()+loot[k]);parts.push(loot[k]+' '+t('inv_'+k));}
   toast(t('chestLoot',{c:parts.join(' + ')}),'#ffd23f');floatTxt(c.x,c.z,'★ '+parts[0],'#ffd23f',1.8,1.6);return true;
+}
+
+/* ---------- Laden + Restaurant ---------- */
+function npc(vest,hat){const m=buildPlayer(vest,hat);for(const k in m.userData.tools)m.userData.tools[k].visible=false;return m;}
+const shopG={broken:new THREE.Group(),fixed:new THREE.Group()};
+(()=>{const x0=cx(30),z0=(cz(2)+cz(3))/2;
+  const b=shopG.broken;b.position.set(x0,0,z0);scene.add(b);const wd='#8a6a4a',gr='#8e8a86';
+  b.add(part(G.box,gr,3.0,1.5,0.2,0,0.75,-0.9),part(G.box,gr,0.2,1.1,1.9,-1.4,0.55,0),part(G.box,gr,0.2,0.6,1.1,1.4,0.3,-0.4));
+  const p1=part(G.box,wd,1.6,0.08,0.3,-0.5,0.9,0.2);p1.rotation.z=0.5;b.add(p1);const p2=part(G.box,wd,1.4,0.08,0.3,0.6,0.35,0.5);p2.rotation.z=-0.3;p2.rotation.y=0.4;b.add(p2);
+  const p3=part(G.box,wd,1.2,0.08,0.25,0.2,0.1,0.85);p3.rotation.y=1.1;b.add(p3);
+  for(let k=0;k<6;k++)b.add(part(G.dodec,gr,0.18+Math.random()*0.12,0.15,0.2,-1+Math.random()*2,0.1,-0.3+Math.random()*1.1));
+  const sg=part(G.box,'#c8a040',1.0,0.35,0.06,0.3,0.7,0.98);sg.rotation.z=-0.35;b.add(sg);b.add(part(G.cyl,wd,0.05,1.0,0.05,-0.2,0.5,0.98));
+  const f=shopG.fixed;f.position.set(x0,0,z0);scene.add(f);f.visible=false;const wm='#f0e0c0';
+  f.add(part(G.box,wm,3.0,2.1,0.2,0,1.05,-0.9),part(G.box,wm,0.2,2.1,1.9,-1.4,1.05,0),part(G.box,wm,0.2,2.1,1.9,1.4,1.05,0),part(G.box,wm,3.0,0.5,0.2,0,1.85,0.9));
+  const roof=part(G.cone4,'#3f8ad8',2.6,1.0,1.9,0,2.6,0);roof.rotation.y=Math.PI/4;roof.scale.set(2.4,1.0,1.7);f.add(roof);
+  for(let k=0;k<6;k++){const a=part(G.box,k%2?'#ffffff':'#e84a4a',0.5,0.05,0.7,-1.25+k*0.5,1.62,1.2);a.rotation.x=0.35;f.add(a);}
+  f.add(part(G.box,'#a8724a',2.6,0.85,0.35,0,0.43,0.95),part(G.box,'#8c5e3a',2.7,0.07,0.42,0,0.88,0.95));
+  for(let k=0;k<4;k++)f.add(part(G.sph,'#e8322a',0.09,0.09,0.09,-1.0+k*0.12,0.97,0.95,false));
+  for(let k=0;k<3;k++)f.add(part(G.box,'#d8a050',0.22,0.12,0.12,0.2+k*0.25,0.97,0.95,false));
+  f.add(part(G.box,'#ffd23f',1.2,0.35,0.06,0,2.3,1.02,false));
+  const keeper=npc('#3fa84a','#c04a5a');keeper.position.set(0,0,0.25);f.add(keeper);
+  // Restaurant
+  const rx=cx(34)+0.5,r=new THREE.Group();r.position.set(rx,0,z0);scene.add(r);const rw='#ffe9c4';
+  r.add(part(G.box,rw,3.9,2.4,1.9,0,1.2,0));const rr=part(G.cone4,'#d8324a',2.8,1.2,2.0,0,2.95,0);rr.rotation.y=Math.PI/4;rr.scale.set(3.1,1.2,1.75);r.add(rr);
+  r.add(part(G.box,'#6a4024',0.8,1.5,0.06,0,0.75,0.96),part(G.box,'#ffd23f',0.08,0.08,0.04,0.25,0.75,1.0,false));
+  [-1.3,1.3].forEach(x=>r.add(part(G.box,winMat,0.9,0.7,0.06,x,1.3,0.96,false),part(G.box,'#ffffff',1.0,0.08,0.08,x,0.92,1.0,false)));
+  r.add(part(G.box,'#d8324a',2.2,0.45,0.06,0,2.15,0.98,false),part(G.box,'#ffd23f',1.8,0.12,0.07,0,2.15,1.0,false));
+  for(const tx of [-2.6,2.6]){const tg=new THREE.Group();tg.position.set(tx,0,0.6);r.add(tg);
+    tg.add(part(G.cyl,'#f4f1ea',0.35,0.06,0.35,0,0.7,0),part(G.cyl,'#8c5e3a',0.05,0.7,0.05,0,0.35,0),part(G.cyl,'#8c5e3a',0.03,1.6,0.03,0,1.2,0),part(G.cone,tx<0?'#3f8ad8':'#7fd16b',0.75,0.35,0.75,0,2.0,0));}
+  const chef=npc('#ffffff','#ffffff');chef.userData.inner.add(part(G.cyl,'#ffffff',0.3,0.42,0.3,0,2.05,0),part(G.sph,'#ffffff',0.36,0.2,0.36,0,2.28,0));chef.position.set(0.9,0,1.25);r.add(chef);
+  shopG.rest=r;
+})();
+function showShop(){shopG.broken.visible=!shopFixed;shopG.fixed.visible=shopFixed;}
+const SHOP_FIX={w:10,s:6};
+let shopKind=null;
+const exOffer={icon:'coins',name:()=>t('exName'),info:()=>t('exInfo'),price:()=>'1 '+t('inv_gold'),btn:'exchange',can:()=>gold>=1,
+  buy:()=>{if(gold<1){toast(t('noGold'),'#ff6b6b');return false;}gold--;coins+=5;return t('exName');}};
+const item=(k,n,c)=>({icon:k,name:()=>n+' '+t('inv_'+k),price:()=>t('priceCoins',{n:c}),can:()=>coins>=c,buy:()=>{coins-=c;RES[k][1](RES[k][0]()+n);return n+' '+t('inv_'+k);}});
+function hungriest(){return players.filter(p=>p.down<=0).sort((a,b)=>a.hearts-b.hearts)[0]||P1;}
+const meal=(k,c,fn)=>({icon:k==='stew'?'stew':'bread',meal:k,name:()=>t('m_'+k),info:()=>t('m_'+k+'Info'),price:()=>t('priceCoins',{n:c}),can:()=>coins>=c,buy:()=>{coins-=c;fn();sfx.eat();return t('m_'+k);}});
+const MEALSVG={burger:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 28c0-12 40-12 40 0z" fill="#e8a040" stroke="#8a5a20" stroke-width="3"/><rect x="9" y="29" width="42" height="5" rx="2" fill="#7fd16b"/><rect x="9" y="34" width="42" height="7" rx="3" fill="#8a4a24"/><path d="M10 43h40c0 6-40 6-40 0z" fill="#e8a040" stroke="#8a5a20" stroke-width="3"/></svg>',
+  pizza:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 8L8 50h44z" fill="#ffd23f" stroke="#c8781a" stroke-width="3" stroke-linejoin="round"/><circle cx="28" cy="34" r="4" fill="#d8324a"/><circle cx="36" cy="42" r="4" fill="#d8324a"/><circle cx="22" cy="44" r="3.5" fill="#d8324a"/><path d="M8 50h44" stroke="#c8781a" stroke-width="6"/></svg>',
+  ice:'<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M20 30l10 24 10-24z" fill="#e8a040" stroke="#8a5a20" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="24" r="9" fill="#ff9ac8"/><circle cx="36" cy="24" r="9" fill="#9ae0ff"/><circle cx="30" cy="15" r="8" fill="#fff6e0"/></svg>'};
+function shopOffers(){
+  if(shopKind==='shop')return [exOffer,item('bread',2,3),item('apples',3,2),item('berries',5,2),item('eggs',3,3),item('meat',2,3),item('wool',2,4),item('sticks',5,2),item('sapling',2,3)];
+  return [exOffer,meal('burger',4,()=>{const p=hungriest();p.hearts=Math.min(maxHearts(),p.hearts+3);floatTxt(p.x,p.z,'+♥♥♥','#ff6b6b',2.6,1.2);}),
+    meal('pizza',7,()=>{players.forEach(p=>{if(p.down<=0){p.hearts=maxHearts();floatTxt(p.x,p.z,'♥ ♥ ♥','#ff6b6b',2.6,1.4);}});}),
+    meal('ice',3,()=>{const p=hungriest();p.hearts=Math.min(maxHearts(),p.hearts+1);iceT=40;}),
+    meal('stew',5,()=>{stew++;})];
+}
+function renderShop(){
+  $('shopTitle').textContent=t(shopKind==='shop'?'shopTitle':'restTitle');$('shopText').textContent=t(shopKind==='shop'?'shopText':'restText');
+  $('shopCoins').textContent=t('coinsHave',{n:coins})+' · '+gold+' '+t('inv_gold');
+  const grid=$('shopGrid');grid.innerHTML='';
+  shopOffers().forEach((o,i)=>{const d=document.createElement('div');d.className='slot';
+    d.innerHTML=(o.meal&&MEALSVG[o.meal]?MEALSVG[o.meal]:invSvg(o.icon))+'<b></b><small></small><span></span>';
+    d.querySelector('b').textContent=o.name();d.querySelector('small').textContent=o.info?o.info():'';d.querySelector(':scope > span').textContent=o.price();
+    const bt=document.createElement('button');bt.type='button';bt.textContent=t(o.btn||'buy');bt.disabled=!o.can();bt.dataset.i=i;
+    bt.addEventListener('click',()=>{const r=o.buy();if(r){sfx.coin();toast(t(o.meal?'yum':'bought',{x:r}),'#ffd23f');}renderShop();
+      const nb=$('shopGrid').querySelector('button[data-i="'+i+'"]');if(nb&&!nb.disabled)nb.focus();else $('shopClose').focus();});
+    d.appendChild(bt);grid.appendChild(d);});
+}
+function openShop(kind){if(phase!=='play')return;shopKind=kind;paused=true;for(const k in keys)keys[k]=false;holdAct=false;renderShop();$('shopScreen').hidden=false;sfx.coin();
+  setTimeout(()=>{const b=$('shopGrid').querySelector('button:not(:disabled)');(b||$('shopClose')).focus();},30);}
+function closeShop(){$('shopScreen').hidden=true;paused=false;last=performance.now();}
+$('shopClose').addEventListener('click',closeShop);
+function shopAction(){
+  if(!shopFixed){actCd=0.5;if(!have(SHOP_FIX)){sfx.denied();toast(t('hShopFixPoor',{c:missStr(SHOP_FIX)}),'#ff6b6b');return;}
+    pay(SHOP_FIX);shopFixed=true;showShop();puff(cx(30),1,cz(2.5),16,'#e8dcc4');sfx.build();toast(t('shopFixed'),'#7fd16b');return;}
+  actCd=0.3;openShop('shop');
+}
+
+/* ---------- Folgt mir! ---------- */
+function setFollow(on){followMe=on;$('followBtn').textContent=t(on?'followOff':'followOn');$('followBtn').setAttribute('aria-pressed',on?'true':'false');
+  bots.forEach(b=>{b.path=null;b.tgt=null;});}
+function toggleFollow(){if(phase!=='play')return;if(!botsOn)setBots(true);setFollow(!followMe);toast(t(followMe?'followStart':'followStop'),'#7be0ff');sfx.coin();}
+$('followBtn').addEventListener('click',toggleFollow);
+function botFollow(b,i,dt){
+  const L=P1,zone=L.cave?'cave':L.castle?'castle':null,bz=b.cave?'cave':b.castle?'castle':null;
+  if(zone!==bz){b.cave=zone==='cave';b.castle=zone==='castle';b.path=null;b.tgt=null;b.x=L.x-1+i;b.z=L.z+0.9;
+    if(!zone)collideTiles(b,0.32);puff(b.x,0.6,b.z,5,'#ffffff');}
+  let tg=null,bd=6.5;
+  if(zone!=='cave')for(const m of monsters){if(!!m.castle!==(zone==='castle'))continue;const d=dist2(m,b);if(d<bd){bd=d;tg=m;}}
+  const off=[[-1.2,1.0],[1.2,1.0],[0,1.7]][i];
+  let gx,gz;
+  if(tg){gx=tg.x;gz=tg.z;}
+  else if(!zone&&houseDone()&&inHouse(L)){gx=HC.x-2+i*2;gz=HC.z+HOUSE_HALF+1.3;}
+  else{gx=L.x+off[0];gz=L.z+off[1];}
+  if(tg&&bd<1.45&&b.cd<=0){const vx=tg.x-b.x,vz=tg.z-b.z,vl=Math.hypot(vx,vz)||1;b.cd=0.6;b.swing=0.3;b.face=Math.atan2(vx,vz);tg.hp-=18;tg.hit=0.15;tg.kx=vx/vl*4;tg.kz=vz/vl*4;if(dist2(b,player)<9)sfx.swing();if(tg.hp<=0)killMonster(tg);}
+  const d=Math.hypot(gx-b.x,gz-b.z),near=tg?1.15:0.7,sp=d>4?5.6:4.6;
+  if(d>near){
+    let direct=!!zone||d<2.2;
+    if(!direct){if(!b.path||!b.path.length||b.think<=0){b.think=0.6;b.path=bfsPath(b,n=>Math.hypot(cx(n%GW)-gx,cz((n/GW)|0)-gz)<1.4);}
+      if(b.path&&b.path.length)followPath(b,sp,dt);else direct=true;}
+    if(direct){const vx=gx-b.x,vz=gz-b.z;b.x+=vx/d*sp*dt;b.z+=vz/d*sp*dt;b.face=Math.atan2(vx,vz);b.moving=1;}
+  } else if(!tg)b.face=L.face;
+  if(zone==='cave')collideCave(b);else if(zone==='castle')collideCastle(b);else collideTiles(b,0.32);
+  if(!zone&&dist2(b,L)>24){b.x=L.x+off[0];b.z=L.z+off[1];collideTiles(b,0.32);b.path=null;puff(b.x,0.6,b.z,5,'#ffffff');}
 }
 
 /* ---------- Koch Karl ---------- */
@@ -1362,7 +1490,7 @@ const bots=BOTDEF.map((d,i)=>{const b=Object.assign({bot:true,x:HC.x-2+i*2,z:HC.
 function botBed(b){return furnBuilt('bed'+b.name[0]);}
 function botMax(b){return botBed(b)?6:5;}
 function botHome(b,i){return {x:HC.x-2.5+i*2.5,z:HC.z+HOUSE_HALF+1.6};}
-function resetBots(){bots.forEach((b,i)=>{const h=botHome(b,i);Object.assign(b,{x:h.x,z:h.z+1,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,path:null,tgt:null,cd:0,think:0,stuck:0});b.mesh.visible=botsOn;});}
+function resetBots(){bots.forEach((b,i)=>{const h=botHome(b,i);Object.assign(b,{cave:false,castle:false,x:h.x,z:h.z+1,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,path:null,tgt:null,cd:0,think:0,stuck:0});b.mesh.visible=botsOn;});}
 function setBots(on){botsOn=on;bots.forEach(b=>{b.mesh.visible=on;b.path=null;b.tgt=null;});$('botBtn').textContent=t(on?'botsOnBtn':'botsOffBtn');$('botBtn').setAttribute('aria-pressed',on?'true':'false');}
 function toggleBots(){setBots(!botsOn);if(phase==='play'){toast(t(botsOn?'botsJoin':'botsLeave'),botsOn?'#7be0ff':'#aab2d6');sfx.coin();}}
 $('botBtn').addEventListener('click',toggleBots);
@@ -1405,7 +1533,9 @@ function updateBots(dt){
   if(!botsOn||phase!=='play')return;
   bots.forEach((b,bi)=>{
     b.inv=Math.max(0,b.inv-dt);b.swing=Math.max(0,b.swing-dt);b.cd=Math.max(0,b.cd-dt);b.think=Math.max(0,b.think-dt);b.moving=0;
-    if(b.down>0){b.down-=dt;if(b.down<=0){const h=botHome(b,bi);b.x=h.x;b.z=h.z+0.6;b.hearts=botMax(b);b.inv=2;b.path=null;b.tgt=null;puff(b.x,0.6,b.z,6,'#ffffff');}return;}
+    if(b.down>0){b.down-=dt;if(b.down<=0){const h=botHome(b,bi);b.x=h.x;b.z=h.z+0.6;b.hearts=botMax(b);b.inv=2;b.path=null;b.cave=false;b.castle=false;b.tgt=null;puff(b.x,0.6,b.z,6,'#ffffff');}return;}
+    if(followMe){botFollow(b,bi,dt);return;}
+    if(b.cave||b.castle){const h=botHome(b,bi);b.cave=false;b.castle=false;b.x=h.x;b.z=h.z+0.6;b.path=null;b.tgt=null;}
     const ox=b.x,oz=b.z;
     if(isNight){
       // Monster in der Nähe des Hauses jagen
@@ -1546,7 +1676,7 @@ function startGame(){
   $('startScreen').hidden=true;$('endScreen').hidden=true;
   day=1;nights=0;kills=0;dayT=50;isNight=false;spawnQueue=[];duskToast=false;
   HOUSE_MAX=400;lookOut=false;
-  wood=6;stone=0;sticks=0;wool=0;berries=0;apples=0;eggsInv=0;stew=0;hasBag=false;saplings=0;coal=0;gold=0;cmeat=0;cegg=0;hasPick=false;goldArmor=false;houseHp=HOUSE_MAX;select(null);refillBushes();
+  wood=6;stone=0;sticks=0;wool=0;berries=0;apples=0;eggsInv=0;stew=0;hasBag=false;coins=0;bread=0;iceT=0;shopFixed=false;showShop();saplings=0;coal=0;gold=0;cmeat=0;cegg=0;hasPick=false;goldArmor=false;houseHp=HOUSE_MAX;select(null);refillBushes();
   sheep.forEach((sh,i)=>{const a=i*2.1+0.6;sh.x=HC.x+Math.cos(a)*11;sh.z=HC.z+Math.sin(a)*8.5;sh.tx=sh.x;sh.tz=sh.z;sh.wool=true;sh.regrow=0;});houseStage=0;showHouse();
   Object.assign(player,{x:HC.x,z:HC.z+4,face:0,hearts:5,down:0,inv:0,swing:0});
   FURN.forEach(f=>f.built=false);restCd=0;
@@ -1554,7 +1684,7 @@ function startGame(){
   Object.assign(P1,{sleeping:null,floor:0});
   wild.forEach(a=>scene.remove(a.mesh));wild=[];refillWild();
   merchantGone();resetBots();if(!$('tradeScreen').hidden)closeTrade();
-  resetCave();resetCastle();players.forEach(p=>{p.cave=false;p.castle=false;p.pickT=0;});camSnap=true;
+  resetCave();resetCastle();if(followMe)setFollow(false);players.forEach(p=>{p.cave=false;p.castle=false;p.pickT=0;});camSnap=true;
   bones=0;slimeBalls=0;crystals=0;meat=0;boneDrops.forEach(bn=>scene.remove(bn.mesh));boneDrops=[];
   wlvl={hammer:1,sword:1,bow:1,blaster:1};
   {let pt=null;for(let k2=0;k2<200&&!pt;k2++){const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d>7&&d<11&&kind[idx(i,j)]===EMPTY)pt={x:cx(i),z:cz(j)};}if(pt)dropBone(pt.x,pt.z);}arcRewardDay={whack:0,memory:0};
@@ -1592,7 +1722,7 @@ function startNight(){
   if(n===3)setTimeout(()=>phase==='play'&&toast(t('bats'),'#c9b8ff'),2500);
 }
 function startDay(){
-  isNight=false;nights=day;day++;dayT=Math.min(100,40+nights*10);
+  isNight=false;nights=day;day++;dayT=Math.min(180,45+nights*15);
   setTimeout(()=>phase==='play'&&toast(t('longerDay',{n:Math.round(dayT)}),'#ffd23f'),3600);duskToast=false;
   for(const b of blocks.values())b.hp=Math.min(b.max,b.hp+(b.max-b.hp)*0.5);
   houseHp=Math.min(HOUSE_MAX,houseHp+80);
@@ -1733,6 +1863,8 @@ function action(){
   if(player.castle&&castleAction())return;
   if(!player.castle&&(player.floor||0)===0&&dist2(player,CE)<1.6){actCd=0.5;enterCave();return;}
   if(!player.castle&&(player.floor||0)===0&&dist2(player,CS)<1.7){actCd=0.5;enterCastle();return;}
+  if(!player.castle&&!player.cave&&(player.floor||0)===0&&dist2(player,SH)<1.7){shopAction();return;}
+  if(!player.castle&&!player.cave&&(player.floor||0)===0&&dist2(player,RS)<1.7){actCd=0.3;openShop('rest');return;}
   // Monster zuerst
   const W=wStat(weapon),fighting=!(selected&&!isNight);
   if(W.ranged&&fighting){
@@ -1885,11 +2017,12 @@ window.addEventListener('keydown',e=>{
     if(k==='u')upgradeWeapon();
     if(k==='p')toggleP2();
     if(k==='c')toggleBots();
+    if(k==='g')toggleFollow();
     if(k==='enter'&&P2&&!paused){e.preventDefault();actAs(P2);}
     if(k==='f')eat();
     if(k==='i'){if($('invScreen').hidden){if(!paused)openInv();}else closeInv();}
     if(k==='b'||k==='escape')select(null);
-    if(k==='escape'&&paused){if(!$('invScreen').hidden)closeInv();else if(!$('tradeScreen').hidden)closeTrade();else closeArcade();}
+    if(k==='escape'&&paused){if(!$('invScreen').hidden)closeInv();else if(!$('tradeScreen').hidden)closeTrade();else if(!$('shopScreen').hidden)closeShop();else closeArcade();}
     const num=parseInt(k,10);if(num>=1&&num<=ORDER.length)select(selected===ORDER[num-1]?null:ORDER[num-1]);
   }
   keys[k]=true;
@@ -1952,7 +2085,7 @@ function update(dt){
       player.moving=0;continue;}
   }
   if(il>0.05&&pl===P1)lookOut=false;
-  if(player.down<=0&&il>0.05){const spd=hasBag?5.8:5;player.x+=ix*spd*dt;player.z+=iz*spd*dt;player.face=Math.atan2(ix,iz);player.moving=Math.min(1,il);}
+  if(player.down<=0&&il>0.05){const spd=(hasBag?5.8:5)*(iceT>0?1.25:1);player.x+=ix*spd*dt;player.z+=iz*spd*dt;player.face=Math.atan2(ix,iz);player.moving=Math.min(1,il);}
   if(player.cave)collideCave(player);else if(player.castle)collideCastle(player);else collidePlayer(player,0.32);
   }
   player=P1;
@@ -2020,7 +2153,7 @@ function update(dt){
   } else {
     const d=dist2(dog,player);if(d<6)dog.face=Math.atan2(player.x-dog.x,player.z-dog.z);
   }
-  updateMerchant(dt);updateBots(dt);
+  updateMerchant(dt);updateBots(dt);iceT=Math.max(0,iceT-dt);
   // Wildtiere
   for(const a of wild.slice()){
     const S=WILD[a.type];a.hit=Math.max(0,a.hit-dt);a.atkCd=Math.max(0,a.atkCd-dt);a.moving=0;
@@ -2266,6 +2399,8 @@ function hint(){
     return ok?{t:t('hStage',{st:t('st_'+st.k),c:stageCost(st)}),c:'#7fd16b'}:{t:t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),c:'#ff6b6b'};}
   if(nearMerchant(player))return {t:t('hTrade'),c:'#ffd23f'};
   if((player.floor||0)===0&&dist2(player,CE)<1.6)return {t:t('hCaveIn'),c:'#c9b8ff'};
+  if((player.floor||0)===0&&dist2(player,SH)<1.7)return shopFixed?{t:t('hShop'),c:'#7fd16b'}:have(SHOP_FIX)?{t:t('hShopFix',{c:costStr(SHOP_FIX)}),c:'#7fd16b'}:{t:t('hShopFixPoor',{c:costStr(SHOP_FIX)}),c:'#ff6b6b'};
+  if((player.floor||0)===0&&dist2(player,RS)<1.7)return {t:t('hResto'),c:'#ffb340'};
   if((player.floor||0)===0&&dist2(player,CS)<1.7)return {t:t('hCastleIn'),c:'#ffb340'};
   {const cf=nearCampfire(player);if(cf){if(!(cf.fuel>0))return (sticks||coal)?{t:t('hFireFuel'),c:'#ffb340'}:{t:t('hFireNoFuel'),c:'#ff6b6b'};
     if(meat>0||eggsInv>0)return {t:t('hFireCook',{f:t(meat>0?'inv_meat':'inv_eggs')}),c:'#ffb340'};return {t:t('hFireOk',{n:Math.ceil(cf.fuel)}),c:'#ffd23f'};}}
@@ -2288,6 +2423,9 @@ function drawLabels(){
   if(phase==='play'&&!houseDone()){lab(t('siteLabel'),HC.x,houseStage>=2?3.4:2.0,HC.z,'#ffd9a0',14);lab((houseStage+1)+'/3 · '+t('st_'+HSTAGES[houseStage].k)+' · '+stageCost(HSTAGES[houseStage]),HC.x,houseStage>=2?2.9:1.5,HC.z,'#ffffff',12);}
   if(phase==='play'&&dog.sleep)lab('Zzz',dog.x,1.1,dog.z,'#c9b8ff',13);
   if(phase==='play'&&!P1.cave&&dist2(P1,CE)<13)lab(t('cave'),CE.x,2.9,CE.z-1.4,'#c9b8ff',13);
+  if(phase==='play'&&!P1.castle&&!P1.cave&&dist2(P1,SH)<14)lab(t(shopFixed?'shop':'shopBroken'),cx(30),shopFixed?3.4:2.0,cz(2.5),shopFixed?'#7fd16b':'#aab2d6',13);
+  if(phase==='play'&&!P1.castle&&!P1.cave&&dist2(P1,RS)<14)lab(t('restaurant'),RS.x,3.9,cz(2.5),'#ffb340',13);
+  if(phase==='play'&&iceT>0)lab(t('m_ice')+' · '+Math.ceil(iceT)+' s',P1.x,3.2,P1.z,'#9ae0ff',11);
   if(phase==='play'&&!P1.castle&&dist2(P1,CS)<14)lab(t('castle'),CS.x,5.6,CS.z-2.2,'#ffd9a0',14);
   if(phase==='play'&&cookNpc.mesh.visible&&(P1.floor||0)===1&&dist2(P1,cookNpc)<5)lab(t('cookName'),cookNpc.x,UPPER_Y+2.75,cookNpc.z,'#ffb340',11);
   if(phase==='play'&&P1.castle)lab(t('castleExit'),CASTLE_EXIT.x,1.5,CASTLE_EXIT.z+0.3,'#ffe9a0',13);
@@ -2312,7 +2450,7 @@ function drawMini(){
   mc.fillStyle='#b8452a';mc.fillRect(HOUSE_T.i0,HOUSE_T.j0,5,5);
   for(const m of monsters){mc.fillStyle=m.type==='slime'?'#5fd35a':m.type==='grummel'?'#b08aff':'#ff6b6b';mc.beginPath();mc.arc(m.x+GW/2,m.z+GH/2,0.6,0,7);mc.fill();}
   for(const a of wild){mc.fillStyle=a.type==='boar'?'#8a5a3a':'#d8c8b0';mc.beginPath();mc.arc(a.x+GW/2,a.z+GH/2,0.5,0,7);mc.fill();}
-  mc.fillStyle='#2a2024';mc.fillRect(4,3,3,2);mc.fillStyle='#a2a2ae';mc.fillRect(32,22,4,3);mc.fillStyle='#d8324a';mc.fillRect(33.6,24.3,0.8,0.7);mc.fillStyle='#c9b8ff';mc.fillRect(5.2,4.6,0.6,0.5);
+  mc.fillStyle='#2a2024';mc.fillRect(4,3,3,2);mc.fillStyle='#a2a2ae';mc.fillRect(32,22,4,3);mc.fillStyle=shopFixed?'#7fd16b':'#8a6a4a';mc.fillRect(29,2,3,2);mc.fillStyle='#d8324a';mc.fillRect(33,2,4,2);mc.fillStyle='#d8324a';mc.fillRect(33.6,24.3,0.8,0.7);mc.fillStyle='#c9b8ff';mc.fillRect(5.2,4.6,0.6,0.5);
   if(merchant.state!=='away'){mc.fillStyle='#ffd23f';mc.strokeStyle='#7a3aa8';mc.lineWidth=0.3;mc.fillRect(merchant.x+GW/2-0.7,merchant.z+GH/2-0.7,1.4,1.4);mc.strokeRect(merchant.x+GW/2-0.7,merchant.z+GH/2-0.7,1.4,1.4);}
   if(botsOn)for(const b of bots){mc.fillStyle=b.vest;mc.beginPath();mc.arc(b.x+GW/2,b.z+GH/2,0.6,0,7);mc.fill();}
   mc.fillStyle='#ffffff';for(const sh of sheep){mc.beginPath();mc.arc(sh.x+GW/2,sh.z+GH/2,0.6,0,7);mc.fill();}
@@ -2328,7 +2466,7 @@ function hud(){
   else if(!houseDone()){ph.textContent=t('dayBuild');ph.className='pill phase day';}
   else{const s=Math.max(0,Math.ceil(dayT));ph.textContent=t('day',{n:day,t:Math.floor(s/60)+':'+String(s%60).padStart(2,'0')});ph.className='pill phase day';}
   $('hWood').textContent=wood;$('hStone').textContent=stone;
-  const more=t('hudMore',{st:sticks,wo:wool,f:foodCount()})+(coal?' · '+coal+' '+t('inv_coal'):'')+(gold?' · '+gold+' '+t('inv_gold'):'');if($('hMore').textContent!==more)$('hMore').textContent=more;
+  const more=t('hudMore',{st:sticks,wo:wool,f:foodCount()})+(coal?' · '+coal+' '+t('inv_coal'):'')+(gold?' · '+gold+' '+t('inv_gold'):'')+(coins?' · '+coins+' '+t('inv_coins'):'');if($('hMore').textContent!==more)$('hMore').textContent=more;
   $('eatBtn').disabled=phase!=='play'||foodCount()<1;
   const hh=$('hHearts');const hs=pl=>'♥'.repeat(Math.max(0,pl.hearts))+'♡'.repeat(Math.max(0,maxHearts()-pl.hearts));
   hh.textContent=P2?'1 '+hs(P1)+'  2 '+hs(P2):hs(P1);hh.setAttribute('aria-label',player.hearts+'/'+maxHearts());
@@ -2368,7 +2506,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={cookNpc,buyBag,get houseParts(){return houseParts},setCr(n){crystals=n;},get stew(){return stew},get wool(){return wool},setWool(n){wool=n;},get owned(){return owned},CS,CASTLE,CASTLE_EXIT,castleChests,enterCastle,leaveCastle,resetCastle,get castleStock(){return castleStock},CAVE_EXIT,caveOres,enterCave,leaveCave,buyPick,buyArmor,nearCampfire,maxHearts,get extra(){return {saplings,coal,gold,cmeat,cegg,hasPick,goldArmor,meat,eggsInv,sticks}},setExtra(o){if('saplings'in o)saplings=o.saplings;if('coal'in o)coal=o.coal;if('gold'in o)gold=o.gold;if('meat'in o)meat=o.meat;if('eggs'in o)eggsInv=o.eggs;if('sticks'in o)sticks=o.sticks;},get WILD(){return WILD},get bots(){return bots},get botsOn(){return botsOn},setBots,toggleBots,merchant,merchantCome,merchantLeave,openTrade,closeTrade,doTrade,RES,bfsPath,climb,get HOUSE_MAX(){return HOUSE_MAX},get houseHp2(){return houseHp},get wild(){return wild},startSleep,wakeUp,get loot(){return {slimeBalls,crystals,meat,bones}},setLoot(o){if('slime'in o)slimeBalls=o.slime;if('crystal'in o)crystals=o.crystal;if('meat'in o)meat=o.meat;},get wlvl(){return wlvl},upgradeWeapon,dropLoot,players,toggleP2,get P2(){return P2},get bones(){return bones},get boneDrops(){return boneDrops},dogHut,sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={SH,RS,openShop,closeShop,shopAction,toggleFollow,get followMe(){return followMe},get coins(){return coins},get bread(){return bread},get iceT(){return iceT},get shopFixed(){return shopFixed},get dayT(){return dayT},cookNpc,buyBag,get houseParts(){return houseParts},setCr(n){crystals=n;},get stew(){return stew},get wool(){return wool},setWool(n){wool=n;},get owned(){return owned},CS,CASTLE,CASTLE_EXIT,castleChests,enterCastle,leaveCastle,resetCastle,get castleStock(){return castleStock},CAVE_EXIT,caveOres,enterCave,leaveCave,buyPick,buyArmor,nearCampfire,maxHearts,get extra(){return {saplings,coal,gold,cmeat,cegg,hasPick,goldArmor,meat,eggsInv,sticks}},setExtra(o){if('saplings'in o)saplings=o.saplings;if('coal'in o)coal=o.coal;if('gold'in o)gold=o.gold;if('meat'in o)meat=o.meat;if('eggs'in o)eggsInv=o.eggs;if('sticks'in o)sticks=o.sticks;},get WILD(){return WILD},get bots(){return bots},get botsOn(){return botsOn},setBots,toggleBots,merchant,merchantCome,merchantLeave,openTrade,closeTrade,doTrade,RES,bfsPath,climb,get HOUSE_MAX(){return HOUSE_MAX},get houseHp2(){return houseHp},get wild(){return wild},startSleep,wakeUp,get loot(){return {slimeBalls,crystals,meat,bones}},setLoot(o){if('slime'in o)slimeBalls=o.slime;if('crystal'in o)crystals=o.crystal;if('meat'in o)meat=o.meat;},get wlvl(){return wlvl},upgradeWeapon,dropLoot,players,toggleP2,get P2(){return P2},get bones(){return bones},get boneDrops(){return boneDrops},dogHut,sheep,bushes,eat,openInv,closeInv,get inv(){return {wood,stone,sticks,wool,berries,apples,eggsInv}},setInv(o){if('sticks'in o)sticks=o.sticks;if('wool'in o)wool=o.wool;},openArcade,closeArcade,get paused(){return paused},FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
