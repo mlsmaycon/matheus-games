@@ -131,6 +131,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
         <li data-t="step1" data-html="1"></li>
         <li data-t="step2" data-html="1"></li>
         <li data-t="step3" data-html="1"></li>
+        <li data-t="step5" data-html="1"></li>
         <li data-t="step4" data-html="1"></li>
       </ol>
       <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
@@ -173,7 +174,12 @@ const TXT={
     day:'Tag {n} · {t}',night:'Nacht {n} · {m} Monster',
     dayBuild:'Tag 1 · Bau zuerst dein Haus!',site:'Baustelle',st_found:'Fundament',st_walls:'Wände',st_roof:'Dach',
     hStage:'[E] {st} bauen ({c})',hStagePoor:'{st}: es fehlt {c}',siteLabel:'Hier kommt dein Haus hin',
-    stageDone:'{st} fertig!',houseDone:'Dein Haus steht! In 45 Sekunden wird es dunkel. Bau Mauern drumherum!',needHouse:'Bau zuerst dein Haus!',
+    stageDone:'{st} fertig!',
+    door:'Eingang',f_bed:'Bett',f_fire:'Kamin',f_chest:'Truhe',f_table:'Tisch',f_rug:'Teppich',
+    hFurn:'[E] {f} bauen ({c})',hFurnPoor:'{f}: braucht {c}',hRest:'[E] Ausruhen – alle Herzen voll',restWait:'Noch {n} s, bis du wieder müde bist',rested:'Gut geschlafen! Alle Herzen sind voll.',
+    fBuilt_bed:'Bett gebaut! Hier ruhst du dich aus, und hier wachst du auf.',fBuilt_fire:'Kamin gebaut! Er repariert dein Haus langsam.',fBuilt_chest:'Truhe gebaut! Jeden Morgen liegt Material drin.',
+    fBuilt_table:'Tisch gebaut! Du hast jetzt ein Herz mehr.',fBuilt_rug:'Teppich gebaut! Wie gemütlich.',
+    chestGift:'Die Truhe ist voll: +5 Holz, +3 Stein!',wakeBed:'Du wachst in deinem Bett auf.',houseDone:'Dein Haus steht! Geh rein und richte es ein. In 45 Sekunden wird es dunkel!',needHouse:'Bau zuerst dein Haus!',
     hChop:'[E] Holz hacken',hMine:'[E] Stein abbauen',hBuild:'[E] {item} bauen',hPoor:'Zu wenig Material',hBad:'Hier geht nichts',hFar:'Zu weit vom Haus',hDemo:'[E] Abreißen',hNothing:'Nichts zum Abreißen',
     plusW:'+{n} Holz',plusS:'+{n} Stein',
     dusk:'Bald wird es dunkel …',nightStart:'Nacht {n}! Die Monster kommen!',dawn:'Geschafft! Nacht {n} überstanden. Alles wird etwas repariert.',
@@ -181,6 +187,7 @@ const TXT={
     bats:'Fledermäuse! Die fliegen über Mauern.',grummel:'Ein Grummel! Der ist stark.',broke:'Eine Mauer ist kaputt!',
     end:'Du hast {n} Nächte überstanden und {k} Monster besiegt.',record:' Neuer Rekord!',
     tipStart:'Hack Bäume und klopf Steine, dann bau dein Haus auf der Baustelle!',
+    step5:'<b>Drinnen:</b> Geh durch die Tür ins Haus und bau Bett, Tisch, Kamin, Truhe und Teppich. Jedes Teil hilft dir.',
     step4:'<b>Waffen & Tiere:</b> Bau dir Schwert oder Bogen (<b>Q</b> wechselt). Freunde dich mit dem Hund an, und sammel die Eier der Hühner.',
     w_hammer:'Hammer',w_sword:'Schwert',w_bow:'Bogen',wReady:'bereit',wEquip:'in der Hand',
     wBought:'{w} gebaut! Drück Q zum Wechseln.',wPoor:'Zu wenig Material für {w}.',
@@ -202,7 +209,12 @@ const TXT={
     day:'Day {n} · {t}',night:'Night {n} · {m} monsters',
     dayBuild:'Day 1 · Build your house first!',site:'Building site',st_found:'Foundation',st_walls:'Walls',st_roof:'Roof',
     hStage:'[E] Build {st} ({c})',hStagePoor:'{st}: you still need {c}',siteLabel:'Your house goes here',
-    stageDone:'{st} done!',houseDone:'Your house is built! It gets dark in 45 seconds. Build walls around it!',needHouse:'Build your house first!',
+    stageDone:'{st} done!',
+    door:'Entrance',f_bed:'Bed',f_fire:'Fireplace',f_chest:'Chest',f_table:'Table',f_rug:'Rug',
+    hFurn:'[E] Build {f} ({c})',hFurnPoor:'{f}: needs {c}',hRest:'[E] Rest – all hearts full',restWait:'{n} s until you are tired again',rested:'Slept well! All hearts are full.',
+    fBuilt_bed:'Bed built! Rest here, and this is where you wake up.',fBuilt_fire:'Fireplace built! It slowly repairs your house.',fBuilt_chest:'Chest built! Every morning there’s material inside.',
+    fBuilt_table:'Table built! You now have one more heart.',fBuilt_rug:'Rug built! How cosy.',
+    chestGift:'The chest is full: +5 wood, +3 stone!',wakeBed:'You wake up in your bed.',houseDone:'Your house is built! Go inside and furnish it. It gets dark in 45 seconds!',needHouse:'Build your house first!',
     hChop:'[E] Chop wood',hMine:'[E] Mine stone',hBuild:'[E] Build {item}',hPoor:'Not enough material',hBad:'Can’t build here',hFar:'Too far from the house',hDemo:'[E] Demolish',hNothing:'Nothing to demolish',
     plusW:'+{n} wood',plusS:'+{n} stone',
     dusk:'It’s getting dark soon …',nightStart:'Night {n}! The monsters are coming!',dawn:'You did it! Night {n} survived. Everything gets patched up a bit.',
@@ -210,6 +222,7 @@ const TXT={
     bats:'Bats! They fly over walls.',grummel:'A Grumble! That one is strong.',broke:'A wall broke!',
     end:'You survived {n} nights and defeated {k} monsters.',record:' New record!',
     tipStart:'Chop trees and break rocks, then build your house on the building site!',
+    step5:'<b>Inside:</b> Walk through the door and build a bed, table, fireplace, chest and rug. Each one helps you.',
     step4:'<b>Weapons & animals:</b> Craft a sword or bow (<b>Q</b> switches). Make friends with the dog and collect the hens’ eggs.',
     w_hammer:'Hammer',w_sword:'Sword',w_bow:'Bow',wReady:'ready',wEquip:'in hand',
     wBought:'{w} crafted! Press Q to switch.',wPoor:'Not enough material for the {w}.',
@@ -229,7 +242,7 @@ const idx=(i,j)=>j*GW+i,inb=(i,j)=>i>=0&&j>=0&&i<GW&&j<GH;
 const cx=i=>i-GW/2+0.5,cz=j=>j-GH/2+0.5,ti=x=>Math.floor(x+GW/2),tj=z=>Math.floor(z+GH/2);
 const EMPTY=0,TREE=1,ROCK=2,HOUSE=3,BLOCK=4;
 const kind=new Uint8Array(N);
-const HOUSE_T={i0:19,j0:14,i1:21,j1:16};
+const HOUSE_T={i0:18,j0:13,i1:22,j1:17};
 const HC={x:cx(20),z:cz(15)};
 for(let j=HOUSE_T.j0;j<=HOUSE_T.j1;j++)for(let i=HOUSE_T.i0;i<=HOUSE_T.i1;i++)kind[idx(i,j)]=HOUSE;
 const BUILD_R=10;
@@ -310,30 +323,78 @@ for(let i=0;i<70;i++){const a=Math.random()*Math.PI*2,rx=GW/2+2+Math.random()*14
 // Haus
 const houseMat=new THREE.MeshLambertMaterial({color:'#e8d2a8'});
 const winMat=new THREE.MeshLambertMaterial({color:'#3a3f5a',emissive:'#ffc860',emissiveIntensity:0});
+const HOUSE_HALF=2.5,WALL_T=0.25,DOOR_W=1.3;
 // Bauphasen: 0 Baustelle, 1 Fundament, 2 Wände, 3 Dach (fertig)
 const HSTAGES=[{k:'found',w:0,s:4},{k:'walls',w:10,s:0},{k:'roof',w:6,s:2}];
+const inHouse=p=>Math.abs(p.x-HC.x)<HOUSE_HALF-WALL_T&&Math.abs(p.z-HC.z)<HOUSE_HALF-WALL_T;
 let houseStage=0;
 const houseParts=(()=>{
   const g=new THREE.Group();g.position.set(HC.x,0,HC.z);scene.add(g);
   const site=new THREE.Group(),found=new THREE.Group(),walls=new THREE.Group(),roofG=new THREE.Group();g.add(site,found,walls,roofG);
+  const H=HOUSE_HALF,T=WALL_T,WH=2.4;
   // Baustelle: Pflöcke, Schnur, Schild
-  for(const [a,b] of [[-1,-1],[1,-1],[-1,1],[1,1]])site.add(part(G.cyl,'#c08a5a',0.06,0.8,0.06,a*1.55,0.4,b*1.55));
+  for(const [a,b] of [[-1,-1],[1,-1],[-1,1],[1,1]])site.add(part(G.cyl,'#c08a5a',0.06,0.8,0.06,a*H,0.4,b*H));
   const rope=M('#f6f1e4');
-  site.add(part(G.box,rope,3.1,0.03,0.03,0,0.6,-1.55,false),part(G.box,rope,3.1,0.03,0.03,0,0.6,1.55,false),part(G.box,rope,0.03,0.03,3.1,-1.55,0.6,0,false),part(G.box,rope,0.03,0.03,3.1,1.55,0.6,0,false));
-  site.add(part(G.cyl,'#7a4a2a',0.05,1.1,0.05,1.2,0.55,1.9),part(G.box,'#e8c25a',0.9,0.5,0.06,1.2,1.15,1.9));
-  // Fundament
-  found.add(part(G.box,'#8e939e',3.3,0.3,3.3,0,0.15,0));
-  // Wände mit Tür und Fenstern
-  walls.add(part(G.box,houseMat,2.9,2.2,2.9,0,1.4,0));
-  walls.add(part(G.box,'#5a3a22',0.9,1.4,0.06,0,1.0,1.46,false));
-  [-0.9,0.9].forEach(x=>{walls.add(part(G.box,winMat,0.6,0.6,0.06,x,1.7,1.46,false));walls.add(part(G.box,winMat,0.06,0.6,0.6,1.46,1.7,x*0.8,false));walls.add(part(G.box,winMat,0.06,0.6,0.6,-1.46,1.7,x*0.8,false));});
+  site.add(part(G.box,rope,H*2,0.03,0.03,0,0.6,-H,false),part(G.box,rope,H*2,0.03,0.03,0,0.6,H,false),part(G.box,rope,0.03,0.03,H*2,-H,0.6,0,false),part(G.box,rope,0.03,0.03,H*2,H,0.6,0,false));
+  site.add(part(G.cyl,'#7a4a2a',0.05,1.1,0.05,1.6,0.55,H+0.4),part(G.box,'#e8c25a',0.9,0.5,0.06,1.6,1.15,H+0.4));
+  // Fundament mit Holzboden
+  found.add(part(G.box,'#8e939e',H*2+0.2,0.3,H*2+0.2,0,0.15,0));
+  const floorTex=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g2=c.getContext('2d');g2.fillStyle='#c89a62';g2.fillRect(0,0,128,128);g2.strokeStyle='#a87a48';g2.lineWidth=3;for(let y=0;y<=128;y+=16){g2.beginPath();g2.moveTo(0,y);g2.lineTo(128,y);g2.stroke();}const tx=new THREE.CanvasTexture(c);tx.wrapS=tx.wrapT=THREE.RepeatWrapping;tx.repeat.set(2,2);return tx;})();
+  const floor=new THREE.Mesh(G.plane,new THREE.MeshLambertMaterial({map:floorTex}));
+  floor.rotation.x=-Math.PI/2;floor.scale.set(H*2-T*2,H*2-T*2,1);floor.position.y=0.31;floor.receiveShadow=true;found.add(floor);
+  // Wände: hinten, links, rechts, vorne (mit Türöffnung)
+  const back=part(G.box,houseMat,H*2,WH,T,0,0.3+WH/2,-H+T/2),left=part(G.box,houseMat,T,WH,H*2,-H+T/2,0.3+WH/2,0),right=part(G.box,houseMat,T,WH,H*2,H-T/2,0.3+WH/2,0);
+  const front=new THREE.Group();
+  const fw=(H*2-DOOR_W)/2;
+  front.add(part(G.box,houseMat,fw,WH,T,-H+fw/2,0.3+WH/2,H-T/2),part(G.box,houseMat,fw,WH,T,H-fw/2,0.3+WH/2,H-T/2));
+  front.add(part(G.box,houseMat,DOOR_W,WH-1.7,T,0,0.3+1.7+(WH-1.7)/2,H-T/2));
+  front.add(part(G.box,'#5a3a22',DOOR_W+0.1,0.12,T+0.05,0,2.0,H-T/2,false));
+  [-1.55,1.55].forEach(x=>front.add(part(G.box,winMat,0.7,0.6,0.06,x,1.7,H+0.01,false)));
+  walls.add(back,left,right,front);
+  const mat=new THREE.Mesh(G.plane,M('#7a4a2a'));mat.rotation.x=-Math.PI/2;mat.scale.set(1.3,0.8,1);mat.position.set(0,0.02,H+0.55);mat.receiveShadow=true;walls.add(mat);
+  walls.add(part(G.box,winMat,0.7,0.6,0.06,-1,1.7,-H-0.01,false),part(G.box,winMat,0.7,0.6,0.06,1,1.7,-H-0.01,false));
+  walls.add(part(G.box,winMat,0.06,0.6,0.7,H+0.01,1.7,0,false),part(G.box,winMat,0.06,0.6,0.7,-H-0.01,1.7,0,false));
   // Dach und Schornstein
-  const roof=part(G.cone4,'#b8452a',4.2,1.9,4.2,0,3.45,0);roof.rotation.y=Math.PI/4;roofG.add(roof);
-  roofG.add(part(G.box,'#7a6a5a',0.5,1.2,0.5,0.9,3.9,-0.6));
-  return {site,found,walls,roofG,pop:0};
+  const roof=part(G.cone4,'#b8452a',H*2*1.22,2.2,H*2*1.22,0,0.3+WH+1.1,0);roof.rotation.y=Math.PI/4;roofG.add(roof);
+  roofG.add(part(G.box,'#7a6a5a',0.6,1.4,0.6,1.3,0.3+WH+1.5,-1.4));
+  return {site,found,walls,roofG,front,pop:0};
 })();
+// Einrichtung: feste Plätze im Haus (relativ zur Hausmitte)
+const FURN=[
+  {k:'bed',x:-1.45,z:-1.2,w:1.1,d:1.9,cw:6,cs:0},
+  {k:'fire',x:1.2,z:-1.95,w:1.3,d:0.55,cw:0,cs:6},
+  {k:'chest',x:1.85,z:0.55,w:0.55,d:0.95,cw:5,cs:1},
+  {k:'table',x:-1.2,z:1.15,w:1.0,d:1.0,cw:4,cs:0},
+  {k:'rug',x:0.35,z:0.1,w:1.9,d:1.4,cw:2,cs:0,flat:true}
+];
+const furnG=new THREE.Group();furnG.position.set(HC.x,0.31,HC.z);scene.add(furnG);
+FURN.forEach(f=>{
+  const g=new THREE.Group();g.position.set(f.x,0,f.z);furnG.add(g);
+  if(f.k==='bed'){g.add(part(G.box,'#8c5e3a',f.w,0.35,f.d,0,0.18,0),part(G.box,'#f4f1ea',f.w-0.1,0.15,f.d-0.1,0,0.42,0),part(G.box,'#5a8ad8',f.w-0.05,0.08,f.d*0.62,0,0.52,f.d*0.17),part(G.box,'#ffffff',f.w*0.7,0.14,0.35,0,0.55,-f.d/2+0.3),part(G.box,'#8c5e3a',f.w,0.8,0.1,0,0.4,-f.d/2));}
+  if(f.k==='fire'){g.add(part(G.box,'#8e939e',f.w,1.3,f.d,0,0.65,0),part(G.box,'#2a2028',f.w*0.6,0.6,0.1,0,0.4,f.d/2),part(G.box,'#767b86',f.w+0.2,0.12,f.d+0.15,0,1.32,0));
+    const fl=part(G.cone,new THREE.MeshBasicMaterial({color:'#ffb340'}),0.2,0.4,0.2,0,0.35,f.d/2-0.05,false);g.add(fl);const gl=glow(1.6,0xffa040,0.9);gl.position.set(0,0.45,f.d/2+0.1);g.add(gl);g.userData.flame=fl;g.userData.glow=gl;}
+  if(f.k==='chest'){g.add(part(G.box,'#a8724a',f.w,0.5,f.d,0,0.25,0),part(G.box,'#8c5e3a',f.w+0.04,0.16,f.d+0.04,0,0.55,0),part(G.box,'#ffd23f',0.06,0.14,0.1,-f.w/2-0.01,0.42,0,false));}
+  if(f.k==='table'){g.add(part(G.cyl,'#a8724a',0.5,0.08,0.5,0,0.72,0),part(G.cyl,'#7d5234',0.07,0.7,0.07,0,0.36,0));
+    [[0.65,0],[-0.65,0]].forEach(([a,b])=>g.add(part(G.cyl,'#7d5234',0.2,0.05,0.2,a,0.42,b),part(G.cyl,'#7d5234',0.04,0.42,0.04,a,0.21,b)));
+    g.add(part(G.sph,'#fff6e0',0.08,0.1,0.08,0.1,0.85,0.1),part(G.cyl,'#f4f1ea',0.16,0.03,0.16,-0.15,0.78,-0.1));}
+  if(f.k==='rug'){const r=new THREE.Mesh(G.plane,M('#c04a5a'));r.rotation.x=-Math.PI/2;r.scale.set(f.w,f.d,1);r.position.y=0.01;r.receiveShadow=true;g.add(r);
+    const r2=new THREE.Mesh(G.plane,M('#ffd23f'));r2.rotation.x=-Math.PI/2;r2.scale.set(f.w*0.75,f.d*0.65,1);r2.position.y=0.015;g.add(r2);}
+  f.mesh=g;g.visible=false;
+  // Umriss für noch nicht gebaute Möbel
+  const ghost=new THREE.Mesh(G.box,new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.18,depthWrite:false}));
+  ghost.scale.set(f.w,f.flat?0.04:0.6,f.d);ghost.position.set(f.x,f.flat?0.02:0.3,f.z);furnG.add(ghost);f.ghost=ghost;
+  ghost.add(new THREE.LineSegments(new THREE.EdgesGeometry(G.box),new THREE.LineBasicMaterial({color:'#ffffff'})));
+  f.built=false;
+});
+const roomLight=new THREE.PointLight(0xffc070,0,7,1.5);roomLight.position.set(HC.x,2.2,HC.z);scene.add(roomLight);
+function furnBuilt(k){const f=FURN.find(q=>q.k===k);return !!(f&&f.built);}
+function maxHearts(){return furnBuilt('table')?6:5;}
+function nearestFurn(){let best=null,bd=1.35;for(const f of FURN){const d=Math.hypot(player.x-(HC.x+f.x),player.z-(HC.z+f.z))-Math.min(f.w,f.d)/2;if(d<bd){bd=d;best=f;}}return best;}
+function furnCost(f){if(f.cw&&f.cs)return t('c_ws',{w:f.cw,s:f.cs});return f.cw?t('c_w',{n:f.cw}):t('c_s',{n:f.cs});}
+let restCd=0;
 function showHouse(){
   houseParts.site.visible=houseStage<1;houseParts.found.visible=houseStage>=1;houseParts.walls.visible=houseStage>=2;houseParts.roofG.visible=houseStage>=3;
+  FURN.forEach(f=>{f.mesh.visible=f.built;f.ghost.visible=!f.built&&houseStage>=3;});
 }
 showHouse();
 const houseDone=()=>houseStage>=3;
@@ -356,7 +417,7 @@ function placeNature(type,i,j){
   while((trees<34||rocks<14)&&tries<5000){
     tries++;const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0,n=idx(i,j);
     if(kind[n]!==EMPTY)continue;
-    const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<5)continue;
+    const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<6)continue;
     if(i===0||j===0||i===GW-1||j===GH-1)continue;
     let near=0;for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){if(inb(i+a,j+b)&&solid(kind[idx(i+a,j+b)]))near++;}
     if(near>1)continue;
@@ -503,14 +564,14 @@ const WORDER=['hammer','sword','bow'];
 let weapon='hammer',owned={hammer:true,sword:false,bow:false};
 const dog={x:12.5,z:8.5,face:0,friend:false,moving:0,biteCd:0,stuck:0,seen:false};
 dog.mesh=buildDog();
-const hens=[0,1].map(i=>{const h={x:HC.x+(i?2.2:-2.2),z:HC.z+2,face:0,tx:0,tz:0,wt:0,moving:0,eggT:20+i*8,peck:0};h.mesh=buildHen();return h;});
+const hens=[0,1].map(i=>{const h={x:HC.x+(i?4:-4),z:HC.z+3.5,face:0,tx:0,tz:0,wt:0,moving:0,eggT:20+i*8,peck:0};h.mesh=buildHen();return h;});
 let eggs=[];
 const eggGeo=new THREE.SphereGeometry(1,12,10);
 let best=0,soundOn=true;
 try{best=(JSON.parse(localStorage.getItem('nachtburg-v1')||'{}').best)||0;}catch(e){}
 function saveRec(){try{localStorage.setItem('nachtburg-v1',JSON.stringify({best}));}catch(e){}}
 $('sBest').textContent=best;
-const player={x:HC.x,z:HC.z+3,face:0,moving:0,hearts:5,down:0,inv:0,swing:0};
+const player={x:HC.x,z:HC.z+4,face:0,moving:0,hearts:5,down:0,inv:0,swing:0};
 player.mesh=buildPlayer();
 const playerLight=new THREE.PointLight(0xffd090,0,10,1.4);scene.add(playerLight);
 
@@ -547,6 +608,7 @@ const sfx={
   hurt(){tone('square',400,180,0,0.25,0.12,1500);},
   arrow(){tone('triangle',900,400,0,0.12,0.1);},
   breakw(){noise(0,0.35,0.35,700);tone('sine',160,60,0,0.35,0.2);},
+  rest(){[523,440,392,330].forEach((f,i)=>tone('sine',f,0,i*0.18,0.3,0.12));},
   bark(){tone('square',520,320,0,0.1,0.12,1600);tone('square',560,330,0.16,0.1,0.12,1600);},
   cluck(){for(let i=0;i<2;i++)tone('square',640,380,i*0.09,0.07,0.06,1800);},
   egg(){tone('triangle',660,990,0,0.15,0.14);tone('sine',1320,0,0.12,0.2,0.1);},
@@ -602,13 +664,14 @@ function startGame(){
   $('startScreen').hidden=true;$('endScreen').hidden=true;
   day=1;nights=0;kills=0;dayT=50;isNight=false;spawnQueue=[];duskToast=false;
   wood=6;stone=0;houseHp=HOUSE_MAX;select(null);houseStage=0;showHouse();
-  Object.assign(player,{x:HC.x,z:HC.z+3,face:0,hearts:5,down:0,inv:0,swing:0});
+  Object.assign(player,{x:HC.x,z:HC.z+4,face:0,hearts:5,down:0,inv:0,swing:0});
+  FURN.forEach(f=>f.built=false);restCd=0;
   weapon='hammer';owned={hammer:true,sword:false,bow:false};
   eggs.forEach(e=>scene.remove(e.mesh));eggs=[];
   // Hund sitzt irgendwo im Wald
   for(let k=0;k<200;k++){const i=(Math.random()*GW)|0,j=(Math.random()*GH)|0;const d=Math.hypot(cx(i)-HC.x,cz(j)-HC.z);if(d<10||d>15||kind[idx(i,j)]!==EMPTY)continue;dog.x=cx(i);dog.z=cz(j);break;}
   Object.assign(dog,{friend:false,seen:false,biteCd:0,stuck:0});
-  hens.forEach((h,i)=>{h.x=HC.x+(i?2.4:-2.4);h.z=HC.z+2.2;h.eggT=18+i*9;});
+  hens.forEach((h,i)=>{h.x=HC.x+(i?4:-4);h.z=HC.z+3.5;h.eggT=18+i*9;});
   phase='play';sfx.dawn();toast(t('tipStart'),'#7fd16b');
   setTimeout(()=>{if(phase==='play'&&!dog.friend)toast(t('dogSeen'),'#ffb340');},6000);
 }
@@ -638,6 +701,7 @@ function startDay(){
   isNight=false;nights=day;day++;dayT=40;duskToast=false;
   for(const b of blocks.values())b.hp=Math.min(b.max,b.hp+(b.max-b.hp)*0.5);
   houseHp=Math.min(HOUSE_MAX,houseHp+80);
+  if(furnBuilt('chest')){wood+=5;stone+=3;setTimeout(()=>phase==='play'&&toast(t('chestGift'),'#ffd23f'),1800);}
   for(const o of nature.values())if(!o.alive&&kind[o.n]===EMPTY&&dist2(player,{x:cx(o.i),z:cz(o.j)})>1.2){placeNature(o.type,o.i,o.j);o.mesh.scale.setScalar(0.01);o.grow=1;}
   flowDirty=true;
   sfx.dawn();toast(t('dawn',{n:nights}),'#7fd16b');
@@ -661,10 +725,25 @@ function killMonster(m){
 }
 
 /* ---------- Kollision ---------- */
-function collideTiles(e,r){
+function pushRect(e,r,x0,z0,x1,z1){
+  const px=Math.max(x0,Math.min(e.x,x1)),pz=Math.max(z0,Math.min(e.z,z1)),dx=e.x-px,dz=e.z-pz,d=Math.hypot(dx,dz);
+  if(d<r){if(d<1e-4){const l=e.x-x0,rr=x1-e.x,tt=e.z-z0,bb=z1-e.z,m=Math.min(l,rr,tt,bb);if(m===l)e.x=x0-r;else if(m===rr)e.x=x1+r;else if(m===tt)e.z=z0-r;else e.z=z1+r;return;}e.x=px+dx/d*r;e.z=pz+dz/d*r;}
+}
+function houseRects(){
+  const H=HOUSE_HALF,T=WALL_T,fw=(H*2-DOOR_W)/2,X=HC.x,Z=HC.z,R=[];
+  if(houseStage<2)return R;
+  R.push([X-H,Z-H,X+H,Z-H+T],[X-H,Z-H,X-H+T,Z+H],[X+H-T,Z-H,X+H,Z+H],[X-H,Z+H-T,X-H+fw,Z+H],[X+H-fw,Z+H-T,X+H,Z+H]);
+  for(const f of FURN)if(f.built&&!f.flat)R.push([X+f.x-f.w/2,Z+f.z-f.d/2,X+f.x+f.w/2,Z+f.z+f.d/2]);
+  return R;
+}
+function collidePlayer(e,r){
+  collideTiles(e,r,true);
+  for(const q of houseRects())pushRect(e,r,q[0],q[1],q[2],q[3]);
+}
+function collideTiles(e,r,isPlayer){
   const i0=ti(e.x-r-1),i1=ti(e.x+r+1),j0=tj(e.z-r-1),j1=tj(e.z+r+1);
   for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){
-    if(!inb(i,j))continue;const k=kind[idx(i,j)];if(k===EMPTY)continue;
+    if(!inb(i,j))continue;const k=kind[idx(i,j)];if(k===EMPTY||(isPlayer&&k===HOUSE))continue;
     const minx=i-GW/2,minz=j-GH/2,px=Math.max(minx,Math.min(e.x,minx+1)),pz=Math.max(minz,Math.min(e.z,minz+1));
     const dx=e.x-px,dz=e.z-pz,d=Math.hypot(dx,dz);
     if(d<r){if(d<1e-4){e.z=minz+1+r;continue;}e.x=px+dx/d*r;e.z=pz+dz/d*r;}
@@ -724,7 +803,25 @@ function action(){
     if(!afford(selected))select(selected);
     return;
   }
-  if(!houseDone()&&dist2(player,HC)<3.6){
+  if(houseDone()&&inHouse(player)){
+    const f=nearestFurn();
+    if(f&&!f.built){
+      actCd=0.4;
+      if(wood<f.cw||stone<f.cs){sfx.denied();floatTxt(HC.x+f.x,HC.z+f.z,t('hPoor'),'#ff6b6b',1.6,1.2);return;}
+      wood-=f.cw;stone-=f.cs;f.built=true;showHouse();
+      collidePlayer(player,0.32);
+      puff(HC.x+f.x,0.6,HC.z+f.z,8,'#e8dcc4');sfx.build();toast(t('fBuilt_'+f.k),'#7fd16b');
+      if(f.k==='table')player.hearts=Math.min(maxHearts(),player.hearts+1);
+      return;
+    }
+    if(f&&f.k==='bed'&&f.built){
+      actCd=0.5;
+      if(restCd>0){floatTxt(player.x,player.z,t('restWait',{n:Math.ceil(restCd)}),'#aab2d6',2.4,1.2);return;}
+      restCd=30;player.hearts=maxHearts();sfx.rest();floatTxt(HC.x+f.x,HC.z+f.z,'Zzz','#c9b8ff',1.6,1.6);toast(t('rested'),'#c9b8ff');
+      return;
+    }
+  }
+  if(!houseDone()&&dist2(player,HC)<4.3){
     const st=HSTAGES[houseStage];actCd=0.4;
     if(wood<st.w||stone<st.s){sfx.denied();floatTxt(HC.x,HC.z,t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),'#ff6b6b',2.6,1.4);return;}
     wood-=st.w;stone-=st.s;houseStage++;showHouse();houseParts.pop=0.4;
@@ -811,7 +908,7 @@ function update(dt){
   nightAmt+=((isNight?1:0)-nightAmt)*Math.min(1,dt*0.8);
   // Spieler
   player.inv=Math.max(0,player.inv-dt);player.swing=Math.max(0,player.swing-dt);
-  if(player.down>0){player.down-=dt;if(player.down<=0){player.hearts=5;player.inv=2;player.x=HC.x;player.z=HC.z+2.6;toast(t('up'),'#7fd16b');}}
+  if(player.down>0){player.down-=dt;if(player.down<=0){player.hearts=maxHearts();player.inv=2;if(furnBuilt('bed')){player.x=HC.x-0.3;player.z=HC.z-1.2;toast(t('wakeBed'),'#7fd16b');}else{player.x=HC.x;player.z=HC.z+3.4;toast(t('up'),'#7fd16b');}}}
   let ix=0,iz=0;
   if(keys['a']||keys['arrowleft'])ix--;if(keys['d']||keys['arrowright'])ix++;
   if(keys['w']||keys['arrowup'])iz--;if(keys['s']||keys['arrowdown'])iz++;
@@ -819,7 +916,7 @@ function update(dt){
   const il=Math.hypot(ix,iz);if(il>1){ix/=il;iz/=il;}
   player.moving=0;
   if(player.down<=0&&il>0.05){player.x+=ix*5*dt;player.z+=iz*5*dt;player.face=Math.atan2(ix,iz);player.moving=Math.min(1,il);}
-  collideTiles(player,0.35);
+  collidePlayer(player,0.32);
   // Monster
   for(const m of monsters.slice()){
     const S=MONSTER[m.type];
@@ -870,16 +967,16 @@ function update(dt){
       if(bd<0.95&&dog.biteCd<=0){dog.biteCd=0.6;tg.hp-=14;tg.hit=0.15;sfx.bark();if(tg.hp<=0)killMonster(tg);}}
     else{gx=player.x-Math.sin(player.face)*1.5;gz=player.z-Math.cos(player.face)*1.5;sp=Math.min(6,dist2(dog,{x:gx,z:gz})*2.5);}
     const vx=gx-dog.x,vz=gz-dog.z,vl=Math.hypot(vx,vz);
-    if(vl>(tg?0.7:0.6)){const ox=dog.x,oz=dog.z;dog.x+=vx/vl*sp*dt;dog.z+=vz/vl*sp*dt;dog.face=Math.atan2(vx,vz);dog.moving=1;collideTiles(dog,0.3);
+    if(vl>(tg?0.7:0.6)){const ox=dog.x,oz=dog.z;dog.x+=vx/vl*sp*dt;dog.z+=vz/vl*sp*dt;dog.face=Math.atan2(vx,vz);dog.moving=1;collidePlayer(dog,0.3);
       if(Math.hypot(dog.x-ox,dog.z-oz)<sp*dt*0.3)dog.stuck+=dt;else dog.stuck=Math.max(0,dog.stuck-dt);}
-    if(dist2(dog,player)>14||dog.stuck>2.5){dog.x=player.x+0.8;dog.z=player.z+0.8;dog.stuck=0;collideTiles(dog,0.3);puff(dog.x,0.5,dog.z,4,'#e8dcc4');}
+    if(dist2(dog,player)>14||dog.stuck>2.5){dog.x=player.x+0.5;dog.z=player.z+0.5;dog.stuck=0;collidePlayer(dog,0.3);puff(dog.x,0.5,dog.z,4,'#e8dcc4');}
   } else {
     const d=dist2(dog,player);if(d<6)dog.face=Math.atan2(player.x-dog.x,player.z-dog.z);
   }
   // Hühner & Eier
   for(const h of hens){
     h.wt-=dt;h.peck=Math.max(0,h.peck-dt);h.moving=0;
-    if(h.wt<=0){h.wt=2+Math.random()*3;if(Math.random()<0.35){h.tx=h.x;h.tz=h.z;h.peck=1.2;}else{const a=Math.random()*Math.PI*2,r=1.5+Math.random()*3.5;h.tx=HC.x+Math.cos(a)*r;h.tz=HC.z+Math.sin(a)*r;}}
+    if(h.wt<=0){h.wt=2+Math.random()*3;if(Math.random()<0.35){h.tx=h.x;h.tz=h.z;h.peck=1.2;}else{const a=Math.random()*Math.PI*2,r=4+Math.random()*3;h.tx=HC.x+Math.cos(a)*r;h.tz=HC.z+Math.sin(a)*r;}}
     const vx=h.tx-h.x,vz=h.tz-h.z,vl=Math.hypot(vx,vz);
     if(vl>0.2){h.x+=vx/vl*0.9*dt;h.z+=vz/vl*0.9*dt;h.face=Math.atan2(vx,vz);h.moving=1;}
     collideTiles(h,0.25);
@@ -889,7 +986,7 @@ function update(dt){
   for(const e of eggs.slice()){
     if(player.down<=0&&dist2(e,player)<0.8){
       scene.remove(e.mesh);eggs.splice(eggs.indexOf(e),1);sfx.egg();
-      if(player.hearts<5){player.hearts++;floatTxt(e.x,e.z,'+♥','#ff6b6b',1.8,1.2);toast(t('egg'),'#fff6e0');}else{floatTxt(e.x,e.z,t('eggFull'),'#fff6e0',1.8,1.2);}
+      if(player.hearts<maxHearts()){player.hearts++;floatTxt(e.x,e.z,'+♥','#ff6b6b',1.8,1.2);toast(t('egg'),'#fff6e0');}else{floatTxt(e.x,e.z,t('eggFull'),'#fff6e0',1.8,1.2);}
     }
   }
   // Fackeln & Türme
@@ -909,6 +1006,8 @@ function update(dt){
     const s=Math.min(d,16*dt);a.x+=dx/d*s;a.y+=dy/d*s;a.z+=dz/d*s;
     a.mesh.position.set(a.x,a.y,a.z);a.mesh.lookAt(a.tgt.x,ty,a.tgt.z);
   }
+  if(furnBuilt('fire')&&houseDone()&&houseHp<HOUSE_MAX)houseHp=Math.min(HOUSE_MAX,houseHp+1.5*dt);
+  restCd=Math.max(0,restCd-dt);
   if(houseHp<=0){houseHp=0;endGame();return;}
   floats.forEach(q=>{q.life-=dt;q.h+=0.9*dt;});floats=floats.filter(q=>q.life>0);
 }
@@ -936,6 +1035,13 @@ function syncWorld(){
   u.inner.rotation.x=player.down>0?-1.4:0;u.inner.position.y=player.down>0?0.3:0;
   m.visible=!(player.inv>0&&player.down<=0&&Math.floor(time*10)%2===0);
   for(const k of WORDER)u.tools[k].visible=k===weapon;
+  const inside=houseDone()&&inHouse(player);
+  houseParts.roofG.visible=houseStage>=3&&!inside;
+  houseParts.front.scale.y=inside?0.18:1;
+  roomLight.intensity=(inside?0.9:0)+(furnBuilt('fire')&&houseDone()?0.5*nightAmt+0.2:0);
+  const fire=FURN[1];
+  if(fire.built){fire.mesh.userData.flame.scale.set(0.2,0.4+Math.sin(time*18)*0.08,0.2);fire.mesh.userData.glow.scale.setScalar(1.4+Math.sin(time*9)*0.2);
+    if(Math.random()<0.05&&!inside)puff(HC.x+1.3,4.4,HC.z-1.4,1,'#c8c8d0');}
   if(houseParts.pop>0){houseParts.pop-=1/60;const s2=1+Math.sin(Math.max(0,houseParts.pop)/0.4*Math.PI)*0.08;houseParts.found.parent.scale.set(s2,s2,s2);}
   // Hund
   const du=dog.mesh.userData;dog.mesh.position.set(dog.x,0,dog.z);turn(dog.mesh,dog.face,0.25);
@@ -1015,7 +1121,11 @@ function hint(){
     if(!afford(selected))return {t:t('hPoor'),c:'#ff6b6b'};
     return {t:t('hBuild',{item:t('i_'+selected)}),c:'#7fd16b'};
   }
-  if(!houseDone()&&dist2(player,HC)<3.6){const st=HSTAGES[houseStage],ok=wood>=st.w&&stone>=st.s;
+  if(houseDone()&&inHouse(player)){const f=nearestFurn();
+    if(f&&!f.built)return (wood>=f.cw&&stone>=f.cs)?{t:t('hFurn',{f:t('f_'+f.k),c:furnCost(f)}),c:'#7fd16b'}:{t:t('hFurnPoor',{f:t('f_'+f.k),c:furnCost(f)}),c:'#ff6b6b'};
+    if(f&&f.k==='bed')return restCd>0?{t:t('restWait',{n:Math.ceil(restCd)}),c:'#aab2d6'}:{t:t('hRest'),c:'#c9b8ff'};
+    if(!f)return null;}
+  if(!houseDone()&&dist2(player,HC)<4.3){const st=HSTAGES[houseStage],ok=wood>=st.w&&stone>=st.s;
     return ok?{t:t('hStage',{st:t('st_'+st.k),c:stageCost(st)}),c:'#7fd16b'}:{t:t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),c:'#ff6b6b'};}
   if(!dog.friend&&dist2(player,dog)<1.7)return {t:t('hDog'),c:'#ffb340'};
   const o=nearestNature();
@@ -1025,6 +1135,8 @@ function hint(){
 function drawLabels(){
   li=0;cw=stage.clientWidth;ch=stage.clientHeight;
   for(const f of floats)lab(f.txt,f.x,f.h,f.z,f.col,15);
+  if(phase==='play'&&houseDone()&&!inHouse(player)&&dist2(player,HC)<8)lab(t('door'),HC.x,0.7,HC.z+HOUSE_HALF+0.6,'#ffd9a0',13);
+  if(phase==='play'&&houseDone()&&inHouse(player))for(const f of FURN)if(!f.built)lab(t('f_'+f.k),HC.x+f.x,0.9,HC.z+f.z,'#ffffff',11);
   if(phase==='play'&&!houseDone()){lab(t('siteLabel'),HC.x,houseStage>=2?3.4:2.0,HC.z,'#ffd9a0',14);lab((houseStage+1)+'/3 · '+t('st_'+HSTAGES[houseStage].k)+' · '+stageCost(HSTAGES[houseStage]),HC.x,houseStage>=2?2.9:1.5,HC.z,'#ffffff',12);}
   if(phase==='play')lab(dog.friend?t('dogName'):'?',dog.x,1.5,dog.z,dog.friend?'#ffd9a0':'#ffb340',dog.friend?11:18);
   const h=hint();if(h)lab(h.t,player.x,2.8,player.z,h.c,13,true);
@@ -1039,7 +1151,7 @@ function drawMini(){
   mc.strokeStyle='#ffffff40';mc.lineWidth=0.2;mc.beginPath();mc.arc(HC.x+GW/2,HC.z+GH/2,BUILD_R,0,7);mc.stroke();
   for(const o of nature.values()){if(!o.alive)continue;mc.fillStyle=o.type==='tree'?'#2f7a3c':'#9aa0ab';mc.fillRect(o.i+0.15,o.j+0.15,0.7,0.7);}
   for(const b of blocks.values()){mc.fillStyle=b.type==='wood'?'#c08a5a':b.type==='stone'?'#d0d4dc':b.type==='torch'?'#ffb340':'#ffffff';mc.fillRect(b.i,b.j,1,1);}
-  mc.fillStyle='#b8452a';mc.fillRect(HOUSE_T.i0,HOUSE_T.j0,3,3);
+  mc.fillStyle='#b8452a';mc.fillRect(HOUSE_T.i0,HOUSE_T.j0,5,5);
   for(const m of monsters){mc.fillStyle=m.type==='slime'?'#5fd35a':m.type==='grummel'?'#b08aff':'#ff6b6b';mc.beginPath();mc.arc(m.x+GW/2,m.z+GH/2,0.6,0,7);mc.fill();}
   mc.fillStyle='#e8a060';mc.beginPath();mc.arc(dog.x+GW/2,dog.z+GH/2,0.6,0,7);mc.fill();
   mc.fillStyle='#ffffff';for(const e of eggs){mc.beginPath();mc.arc(e.x+GW/2,e.z+GH/2,0.4,0,7);mc.fill();}
@@ -1051,7 +1163,7 @@ function hud(){
   else if(!houseDone()){ph.textContent=t('dayBuild');ph.className='pill phase day';}
   else{const s=Math.max(0,Math.ceil(dayT));ph.textContent=t('day',{n:day,t:Math.floor(s/60)+':'+String(s%60).padStart(2,'0')});ph.className='pill phase day';}
   $('hWood').textContent=wood;$('hStone').textContent=stone;
-  const hh=$('hHearts');hh.textContent='♥'.repeat(Math.max(0,player.hearts))+'♡'.repeat(5-Math.max(0,player.hearts));hh.setAttribute('aria-label',player.hearts+'/5');
+  const hh=$('hHearts');hh.textContent='♥'.repeat(Math.max(0,player.hearts))+'♡'.repeat(Math.max(0,maxHearts()-player.hearts));hh.setAttribute('aria-label',player.hearts+'/'+maxHearts());
   const bar=$('hHouseBar');
   if(!houseDone()){$('hHouseName').textContent=t('site');$('hHouse').textContent=houseStage+' / 3';bar.style.width=(houseStage/3*100).toFixed(0)+'%';bar.style.background='#ffb340';}
   else{const k=Math.max(0,houseHp/HOUSE_MAX);$('hHouseName').textContent=t('house');$('hHouse').textContent=Math.ceil(houseHp)+' / '+HOUSE_MAX;
@@ -1074,7 +1186,7 @@ function loop(now){
   syncWorld();
   if(phase==='start'){camT.set(HC.x+Math.sin(time*0.15)*5,0,HC.z+Math.cos(time*0.15)*3);}
   else camT.lerp(tmpV.set(player.x,0,player.z),0.12);
-  const narrow=stage.clientWidth<640,dz=(narrow?12:9.5)*zoom,dy=(narrow?17:14)*zoom;
+  const narrow=stage.clientWidth<640,inside2=phase==='play'&&houseDone()&&inHouse(player),zf=inside2?0.62:1,dz=(narrow?12:9.5)*zoom*zf,dy=(narrow?17:14)*zoom*zf;
   camera.position.lerp(tmpV.set(camT.x,dy,camT.z+dz),0.1);
   camera.lookAt(camT.x,0.8,camT.z);
   renderer.render(scene,camera);
@@ -1084,7 +1196,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={FURN,inHouse,get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
