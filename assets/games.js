@@ -1,5 +1,5 @@
 /*
-  Matheus World – game registry.
+  My Craft Games – game registry.
   Every game MUST have:
     - games/<slug>/de/index.html and games/<slug>/en/index.html
     - an FSK age rating (0, 6, 12, 16 or 18) with a short reason in both languages

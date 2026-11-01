@@ -1,6 +1,6 @@
-# Adding a game to Matheus World
+# Adding a game to My Craft Games
 
-Every game on Matheus World follows the same rules. A game is not done until every box below is ticked.
+Every game on My Craft Games follows the same rules. A game is not done until every box below is ticked.
 
 ## Checklist
 

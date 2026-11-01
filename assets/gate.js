@@ -1,5 +1,5 @@
 /*
-  Matheus World – age & consent gate for game pages.
+  My Craft Games – age & consent gate for game pages.
   Include in <head> BEFORE anything else:
     <script src="../../../assets/gate.js" data-fsk="6" data-game="my-game"></script>
   If the visitor has not confirmed their age and accepted the Terms and Privacy Policy,

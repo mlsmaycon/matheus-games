@@ -1,4 +1,4 @@
-/* Matheus World – start page and legal pages logic (language, age & consent gate, game list).
+/* My Craft Games – start page and legal pages logic (language, age & consent gate, game list).
    No network requests: everything lives in this browser's localStorage. */
 (function () {
   var CONSENT_VERSION = 1;
@@ -16,7 +16,7 @@
     de: {
       'nav.age': 'Alter: {n} · ändern',
       'nav.noage': 'Alter angeben',
-      'hero.title': 'Willkommen in <em>Matheus World</em>',
+      'hero.title': 'Willkommen bei <em>My Craft Games</em>',
       'hero.text': 'Kostenlose 3D-Spiele direkt im Browser. Auf Deutsch und Englisch, für Handy und PC.',
       'fact.1': 'Keine Anmeldung', 'fact.2': 'Keine Werbung', 'fact.3': 'Kein Download', 'fact.4': 'Kein Tracking',
       'games.title': 'Spiele', 'games.sub': 'Jedes Spiel hat eine Altersempfehlung nach FSK-Stufen.',
@@ -48,7 +48,7 @@
     en: {
       'nav.age': 'Age: {n} · change',
       'nav.noage': 'Enter age',
-      'hero.title': 'Welcome to <em>Matheus World</em>',
+      'hero.title': 'Welcome to <em>My Craft Games</em>',
       'hero.text': 'Free 3D games right in your browser. In German and English, for phone and PC.',
       'fact.1': 'No sign-up', 'fact.2': 'No ads', 'fact.3': 'No download', 'fact.4': 'No tracking',
       'games.title': 'Games', 'games.sub': 'Every game has an age rating based on the German FSK levels.',

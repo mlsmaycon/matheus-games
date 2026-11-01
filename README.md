@@ -1,4 +1,4 @@
-# Matheus World
+# My Craft Games
 
 Free 3D browser games by Matheus, in German and English. A static website that runs on GitHub Pages: no build step, no server, no outside requests.
 
