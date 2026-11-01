@@ -83,8 +83,8 @@ window.MW_GAMES = [
     title: { de: 'Nachtburg', en: 'Night Fort' },
     tagline: { de: 'Bau tagsüber, verteidige nachts.', en: 'Build by day, defend by night.' },
     desc: {
-      de: 'Hack Holz, bau Stein ab und bau Mauern, Fackeln und Türme um dein Haus. Bau dir Schwert oder Bogen, freunde dich mit Hund Bello an und sammel Eier. Wenn es dunkel wird, kommen Schleime, Grummel und Fledermäuse.',
-      en: 'Chop wood, mine stone and build walls, torches and towers around your house. Craft a sword or bow, make friends with Bello the dog and collect eggs. When it gets dark, slimes, grumbles and bats arrive.'
+      de: 'Hack Holz, bau Stein ab und bau zuerst dein Haus: Fundament, Wände, Dach. Dann kommen Mauern, Fackeln und Türme drumherum. Bau dir Schwert oder Bogen, freunde dich mit Hund Bello an und sammel Eier. Wenn es dunkel wird, kommen Schleime, Grummel und Fledermäuse.',
+      en: 'Chop wood, mine stone and build your house first: foundation, walls, roof. Then add walls, torches and towers around it. Craft a sword or bow, make friends with Bello the dog and collect eggs. When it gets dark, slimes, grumbles and bats arrive.'
     },
     tags: { de: ['3D', 'Bauen', 'Waffen', 'Tiere'], en: ['3D', 'Building', 'Weapons', 'Animals'] },
     fskReason: {

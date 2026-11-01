@@ -22,7 +22,7 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 
 **Hühnerchaos:** catch escaped chickens on a farm and stack them on your head. Bigger stacks score more but wobble more, and sharp turns, mud or an angry goose send them flying.
 
-**Nachtburg:** gather wood and stone by day, build walls, torches and arrow towers around your house, then defend it at night against slimes, grumbles and wall-flying bats with a hammer, sword or bow. Bello the dog helps fight once you befriend him, and hens lay eggs that heal you. Monsters find the weakest path with a flow field and break through walls.
+**Nachtburg:** gather wood and stone, build your house first (foundation, walls, roof), then build walls, torches and arrow towers around your house, then defend it at night against slimes, grumbles and wall-flying bats with a hammer, sword or bow. Bello the dog helps fight once you befriend him, and hens lay eggs that heal you. Monsters find the weakest path with a flow field and break through walls.
 
 ## How the site works
 

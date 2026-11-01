@@ -120,7 +120,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
         <span class="pill hearts" id="hHearts" aria-label=""></span>
       </div>
     </div>
-    <div class="house" id="houseBox"><div class="row"><span data-t="house">Dein Haus</span><span id="hHouse">400</span></div><div class="bar"><i id="hHouseBar"></i></div></div>
+    <div class="house" id="houseBox"><div class="row"><span data-t="house" id="hHouseName">Dein Haus</span><span id="hHouse">400</span></div><div class="bar"><i id="hHouseBar"></i></div></div>
     <button class="act" id="actField" type="button" data-t="actShort">Aktion</button>
     <div id="joy" hidden><i></i></div>
     <div id="toasts" aria-live="polite"></div>
@@ -161,7 +161,7 @@ const TXT={
   de:{
     title:'Nachtburg',sub:'Bau tagsüber, verteidige nachts.',statNights:'Nächte',statBest:'Rekord',wood:'Holz',stone:'Stein',house:'Dein Haus',
     intro:'Wenn es dunkel wird, kommen die Monster aus dem Wald und wollen dein Haus kaputt machen. Wie viele Nächte hältst du durch?',
-    step1:'<b>Tag:</b> Hack Bäume für Holz und klopf Felsen für Stein (Taste <b>E</b>).',
+    step1:'<b>Zuerst:</b> Hack Bäume für Holz, klopf Felsen für Stein (Taste <b>E</b>) und bau dein Haus: Fundament, Wände, Dach.',
     step2:'<b>Bauen:</b> Wähl unten Mauer, Fackel oder Turm und bau vor dir mit <b>E</b>.',
     step3:'<b>Nacht:</b> Hau die Monster mit dem Hammer (<b>E</b>). Fackeln brennen sie, Türme schießen.',
     go:'Los geht’s',again:'Nochmal',endTitle:'Das Haus ist gefallen!',
@@ -171,13 +171,16 @@ const TXT={
     i_wood:'Holzwand',i_stone:'Steinmauer',i_torch:'Fackel',i_tower:'Turm',i_demolish:'Abreißen',
     c_w:'{n} Holz',c_s:'{n} Stein',c_ws:'{w} Holz + {s} Stein',c_refund:'gibt die Hälfte zurück',
     day:'Tag {n} · {t}',night:'Nacht {n} · {m} Monster',
+    dayBuild:'Tag 1 · Bau zuerst dein Haus!',site:'Baustelle',st_found:'Fundament',st_walls:'Wände',st_roof:'Dach',
+    hStage:'[E] {st} bauen ({c})',hStagePoor:'{st}: es fehlt {c}',siteLabel:'Hier kommt dein Haus hin',
+    stageDone:'{st} fertig!',houseDone:'Dein Haus steht! In 45 Sekunden wird es dunkel. Bau Mauern drumherum!',needHouse:'Bau zuerst dein Haus!',
     hChop:'[E] Holz hacken',hMine:'[E] Stein abbauen',hBuild:'[E] {item} bauen',hPoor:'Zu wenig Material',hBad:'Hier geht nichts',hFar:'Zu weit vom Haus',hDemo:'[E] Abreißen',hNothing:'Nichts zum Abreißen',
     plusW:'+{n} Holz',plusS:'+{n} Stein',
     dusk:'Bald wird es dunkel …',nightStart:'Nacht {n}! Die Monster kommen!',dawn:'Geschafft! Nacht {n} überstanden. Alles wird etwas repariert.',
     houseHit:'Dein Haus wird angegriffen!',down:'Autsch! Du bist umgefallen.',up:'Weiter geht’s!',
     bats:'Fledermäuse! Die fliegen über Mauern.',grummel:'Ein Grummel! Der ist stark.',broke:'Eine Mauer ist kaputt!',
     end:'Du hast {n} Nächte überstanden und {k} Monster besiegt.',record:' Neuer Rekord!',
-    tipStart:'Hack ein paar Bäume und bau Mauern ums Haus!',
+    tipStart:'Hack Bäume und klopf Steine, dann bau dein Haus auf der Baustelle!',
     step4:'<b>Waffen & Tiere:</b> Bau dir Schwert oder Bogen (<b>Q</b> wechselt). Freunde dich mit dem Hund an, und sammel die Eier der Hühner.',
     w_hammer:'Hammer',w_sword:'Schwert',w_bow:'Bogen',wReady:'bereit',wEquip:'in der Hand',
     wBought:'{w} gebaut! Drück Q zum Wechseln.',wPoor:'Zu wenig Material für {w}.',
@@ -187,7 +190,7 @@ const TXT={
   en:{
     title:'Night Fort',sub:'Build by day, defend by night.',statNights:'Nights',statBest:'Best',wood:'wood',stone:'stone',house:'Your house',
     intro:'When it gets dark, monsters come out of the forest and want to wreck your house. How many nights can you last?',
-    step1:'<b>Day:</b> Chop trees for wood and break rocks for stone (key <b>E</b>).',
+    step1:'<b>First:</b> Chop trees for wood, break rocks for stone (key <b>E</b>) and build your house: foundation, walls, roof.',
     step2:'<b>Build:</b> Pick a wall, torch or tower below and build in front of you with <b>E</b>.',
     step3:'<b>Night:</b> Bonk the monsters with your hammer (<b>E</b>). Torches burn them, towers shoot.',
     go:'Let’s go',again:'Play again',endTitle:'The house has fallen!',
@@ -197,13 +200,16 @@ const TXT={
     i_wood:'Wood wall',i_stone:'Stone wall',i_torch:'Torch',i_tower:'Tower',i_demolish:'Demolish',
     c_w:'{n} wood',c_s:'{n} stone',c_ws:'{w} wood + {s} stone',c_refund:'refunds half',
     day:'Day {n} · {t}',night:'Night {n} · {m} monsters',
+    dayBuild:'Day 1 · Build your house first!',site:'Building site',st_found:'Foundation',st_walls:'Walls',st_roof:'Roof',
+    hStage:'[E] Build {st} ({c})',hStagePoor:'{st}: you still need {c}',siteLabel:'Your house goes here',
+    stageDone:'{st} done!',houseDone:'Your house is built! It gets dark in 45 seconds. Build walls around it!',needHouse:'Build your house first!',
     hChop:'[E] Chop wood',hMine:'[E] Mine stone',hBuild:'[E] Build {item}',hPoor:'Not enough material',hBad:'Can’t build here',hFar:'Too far from the house',hDemo:'[E] Demolish',hNothing:'Nothing to demolish',
     plusW:'+{n} wood',plusS:'+{n} stone',
     dusk:'It’s getting dark soon …',nightStart:'Night {n}! The monsters are coming!',dawn:'You did it! Night {n} survived. Everything gets patched up a bit.',
     houseHit:'Your house is under attack!',down:'Ouch! You got knocked down.',up:'Back on your feet!',
     bats:'Bats! They fly over walls.',grummel:'A Grumble! That one is strong.',broke:'A wall broke!',
     end:'You survived {n} nights and defeated {k} monsters.',record:' New record!',
-    tipStart:'Chop some trees and build walls around the house!',
+    tipStart:'Chop trees and break rocks, then build your house on the building site!',
     step4:'<b>Weapons & animals:</b> Craft a sword or bow (<b>Q</b> switches). Make friends with the dog and collect the hens’ eggs.',
     w_hammer:'Hammer',w_sword:'Sword',w_bow:'Bow',wReady:'ready',wEquip:'in hand',
     wBought:'{w} crafted! Press Q to switch.',wPoor:'Not enough material for the {w}.',
@@ -304,15 +310,33 @@ for(let i=0;i<70;i++){const a=Math.random()*Math.PI*2,rx=GW/2+2+Math.random()*14
 // Haus
 const houseMat=new THREE.MeshLambertMaterial({color:'#e8d2a8'});
 const winMat=new THREE.MeshLambertMaterial({color:'#3a3f5a',emissive:'#ffc860',emissiveIntensity:0});
-(()=>{
-  const g=new THREE.Group();g.position.set(HC.x,0,HC.z);
-  g.add(part(G.box,houseMat,2.9,2.2,2.9,0,1.1,0));
-  const roof=part(G.cone4,'#b8452a',4.2,1.9,4.2,0,3.15,0);roof.rotation.y=Math.PI/4;g.add(roof);
-  g.add(part(G.box,'#5a3a22',0.9,1.4,0.06,0,0.7,1.46,false));
-  [-0.9,0.9].forEach(x=>{g.add(part(G.box,winMat,0.6,0.6,0.06,x,1.4,1.46,false));g.add(part(G.box,winMat,0.06,0.6,0.6,1.46,1.4,x*0.8,false));g.add(part(G.box,winMat,0.06,0.6,0.6,-1.46,1.4,x*0.8,false));});
-  g.add(part(G.box,'#7a6a5a',0.5,1.2,0.5,0.9,3.6,-0.6));
-  scene.add(g);
+// Bauphasen: 0 Baustelle, 1 Fundament, 2 Wände, 3 Dach (fertig)
+const HSTAGES=[{k:'found',w:0,s:4},{k:'walls',w:10,s:0},{k:'roof',w:6,s:2}];
+let houseStage=0;
+const houseParts=(()=>{
+  const g=new THREE.Group();g.position.set(HC.x,0,HC.z);scene.add(g);
+  const site=new THREE.Group(),found=new THREE.Group(),walls=new THREE.Group(),roofG=new THREE.Group();g.add(site,found,walls,roofG);
+  // Baustelle: Pflöcke, Schnur, Schild
+  for(const [a,b] of [[-1,-1],[1,-1],[-1,1],[1,1]])site.add(part(G.cyl,'#c08a5a',0.06,0.8,0.06,a*1.55,0.4,b*1.55));
+  const rope=M('#f6f1e4');
+  site.add(part(G.box,rope,3.1,0.03,0.03,0,0.6,-1.55,false),part(G.box,rope,3.1,0.03,0.03,0,0.6,1.55,false),part(G.box,rope,0.03,0.03,3.1,-1.55,0.6,0,false),part(G.box,rope,0.03,0.03,3.1,1.55,0.6,0,false));
+  site.add(part(G.cyl,'#7a4a2a',0.05,1.1,0.05,1.2,0.55,1.9),part(G.box,'#e8c25a',0.9,0.5,0.06,1.2,1.15,1.9));
+  // Fundament
+  found.add(part(G.box,'#8e939e',3.3,0.3,3.3,0,0.15,0));
+  // Wände mit Tür und Fenstern
+  walls.add(part(G.box,houseMat,2.9,2.2,2.9,0,1.4,0));
+  walls.add(part(G.box,'#5a3a22',0.9,1.4,0.06,0,1.0,1.46,false));
+  [-0.9,0.9].forEach(x=>{walls.add(part(G.box,winMat,0.6,0.6,0.06,x,1.7,1.46,false));walls.add(part(G.box,winMat,0.06,0.6,0.6,1.46,1.7,x*0.8,false));walls.add(part(G.box,winMat,0.06,0.6,0.6,-1.46,1.7,x*0.8,false));});
+  // Dach und Schornstein
+  const roof=part(G.cone4,'#b8452a',4.2,1.9,4.2,0,3.45,0);roof.rotation.y=Math.PI/4;roofG.add(roof);
+  roofG.add(part(G.box,'#7a6a5a',0.5,1.2,0.5,0.9,3.9,-0.6));
+  return {site,found,walls,roofG,pop:0};
 })();
+function showHouse(){
+  houseParts.site.visible=houseStage<1;houseParts.found.visible=houseStage>=1;houseParts.walls.visible=houseStage>=2;houseParts.roofG.visible=houseStage>=3;
+}
+showHouse();
+const houseDone=()=>houseStage>=3;
 
 /* ---------- Natur ---------- */
 function buildTree(){const g=new THREE.Group(),inner=new THREE.Group();g.add(inner);
@@ -560,6 +584,8 @@ function pickWeapon(k){
   weapon=k;sfx.swing();
 }
 function cycleWeapon(){const list=WORDER.filter(k=>owned[k]);const i=list.indexOf(weapon);weapon=list[(i+1)%list.length];sfx.swing();}
+function stageCost(st){if(st.w&&st.s)return t('c_ws',{w:st.w,s:st.s});return st.w?t('c_w',{n:st.w}):t('c_s',{n:st.s});}
+function stageMissing(st){const mw=Math.max(0,st.w-wood),ms=Math.max(0,st.s-stone);if(mw&&ms)return t('c_ws',{w:mw,s:ms});return mw?t('c_w',{n:mw}):t('c_s',{n:ms});}
 function select(k){selected=k;itemsBox.querySelectorAll('.item').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.k===k)));}
 function afford(k){const it=ITEMS[k];return k==='demolish'||(wood>=it.w&&stone>=it.s);}
 
@@ -575,7 +601,7 @@ function startGame(){
   audioInit();resetWorld();
   $('startScreen').hidden=true;$('endScreen').hidden=true;
   day=1;nights=0;kills=0;dayT=50;isNight=false;spawnQueue=[];duskToast=false;
-  wood=6;stone=0;houseHp=HOUSE_MAX;select(null);
+  wood=6;stone=0;houseHp=HOUSE_MAX;select(null);houseStage=0;showHouse();
   Object.assign(player,{x:HC.x,z:HC.z+3,face:0,hearts:5,down:0,inv:0,swing:0});
   weapon='hammer';owned={hammer:true,sword:false,bow:false};
   eggs.forEach(e=>scene.remove(e.mesh));eggs=[];
@@ -595,6 +621,7 @@ function endGame(){
 $('go').addEventListener('click',startGame);$('again').addEventListener('click',startGame);
 function startNight(){
   if(phase!=='play'||isNight)return;
+  if(!houseDone()){toast(t('needHouse'),'#ffb340');sfx.denied();return;}
   isNight=true;duskToast=true;select(null);
   const n=day;
   const q=[];
@@ -697,6 +724,15 @@ function action(){
     if(!afford(selected))select(selected);
     return;
   }
+  if(!houseDone()&&dist2(player,HC)<3.6){
+    const st=HSTAGES[houseStage];actCd=0.4;
+    if(wood<st.w||stone<st.s){sfx.denied();floatTxt(HC.x,HC.z,t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),'#ff6b6b',2.6,1.4);return;}
+    wood-=st.w;stone-=st.s;houseStage++;showHouse();houseParts.pop=0.4;
+    puff(HC.x,1,HC.z,14,'#e8dcc4');sfx.build();
+    if(houseDone()){dayT=45;sfx.dawn();toast(t('houseDone'),'#7fd16b');}
+    else toast(t('stageDone',{st:t('st_'+st.k)}),'#7fd16b');
+    return;
+  }
   if(!dog.friend&&dist2(player,dog)<1.7){
     dog.friend=true;actCd=0.4;sfx.bark();toast(t('dogFriend'),'#7fd16b');floatTxt(dog.x,dog.z,'♥','#ff6b6b',1.6,1.4);
     return;
@@ -765,7 +801,7 @@ function update(dt){
   if(flowDirty)computeFlow();
   // Tag / Nacht
   if(!isNight){
-    dayT-=dt;
+    if(houseDone())dayT-=dt;
     if(!duskToast&&dayT<8){duskToast=true;toast(t('dusk'),'#ffb340');}
     if(dayT<=0)startNight();
   } else {
@@ -900,6 +936,7 @@ function syncWorld(){
   u.inner.rotation.x=player.down>0?-1.4:0;u.inner.position.y=player.down>0?0.3:0;
   m.visible=!(player.inv>0&&player.down<=0&&Math.floor(time*10)%2===0);
   for(const k of WORDER)u.tools[k].visible=k===weapon;
+  if(houseParts.pop>0){houseParts.pop-=1/60;const s2=1+Math.sin(Math.max(0,houseParts.pop)/0.4*Math.PI)*0.08;houseParts.found.parent.scale.set(s2,s2,s2);}
   // Hund
   const du=dog.mesh.userData;dog.mesh.position.set(dog.x,0,dog.z);turn(dog.mesh,dog.face,0.25);
   const dsw=dog.moving?Math.sin(time*18)*0.7:0;du.legs.forEach((l,i)=>l.rotation.x=(i%2?dsw:-dsw)*(i<2?1:-1));
@@ -978,6 +1015,8 @@ function hint(){
     if(!afford(selected))return {t:t('hPoor'),c:'#ff6b6b'};
     return {t:t('hBuild',{item:t('i_'+selected)}),c:'#7fd16b'};
   }
+  if(!houseDone()&&dist2(player,HC)<3.6){const st=HSTAGES[houseStage],ok=wood>=st.w&&stone>=st.s;
+    return ok?{t:t('hStage',{st:t('st_'+st.k),c:stageCost(st)}),c:'#7fd16b'}:{t:t('hStagePoor',{st:t('st_'+st.k),c:stageMissing(st)}),c:'#ff6b6b'};}
   if(!dog.friend&&dist2(player,dog)<1.7)return {t:t('hDog'),c:'#ffb340'};
   const o=nearestNature();
   if(o)return o.type==='tree'?{t:t('hChop'),c:'#e8b07a'}:{t:t('hMine'),c:'#c7ccd8'};
@@ -986,6 +1025,7 @@ function hint(){
 function drawLabels(){
   li=0;cw=stage.clientWidth;ch=stage.clientHeight;
   for(const f of floats)lab(f.txt,f.x,f.h,f.z,f.col,15);
+  if(phase==='play'&&!houseDone()){lab(t('siteLabel'),HC.x,houseStage>=2?3.4:2.0,HC.z,'#ffd9a0',14);lab((houseStage+1)+'/3 · '+t('st_'+HSTAGES[houseStage].k)+' · '+stageCost(HSTAGES[houseStage]),HC.x,houseStage>=2?2.9:1.5,HC.z,'#ffffff',12);}
   if(phase==='play')lab(dog.friend?t('dogName'):'?',dog.x,1.5,dog.z,dog.friend?'#ffd9a0':'#ffb340',dog.friend?11:18);
   const h=hint();if(h)lab(h.t,player.x,2.8,player.z,h.c,13,true);
   for(const mo of monsters)if(mo.hp<mo.max){const k=Math.max(0,mo.hp/mo.max);lab('▮'.repeat(Math.ceil(k*5))+'▯'.repeat(5-Math.ceil(k*5)),mo.x,mo.y+(mo.type==='grummel'?2.3:mo.type==='bat'?0.6:1.2),mo.z,k>0.5?'#7fd16b':'#ff6b6b',10);}
@@ -1008,13 +1048,16 @@ function drawMini(){
 function hud(){
   const ph=$('hPhase');
   if(isNight){ph.textContent=t('night',{n:day,m:monsters.length+spawnQueue.length});ph.className='pill phase night';}
+  else if(!houseDone()){ph.textContent=t('dayBuild');ph.className='pill phase day';}
   else{const s=Math.max(0,Math.ceil(dayT));ph.textContent=t('day',{n:day,t:Math.floor(s/60)+':'+String(s%60).padStart(2,'0')});ph.className='pill phase day';}
   $('hWood').textContent=wood;$('hStone').textContent=stone;
   const hh=$('hHearts');hh.textContent='♥'.repeat(Math.max(0,player.hearts))+'♡'.repeat(5-Math.max(0,player.hearts));hh.setAttribute('aria-label',player.hearts+'/5');
-  const k=Math.max(0,houseHp/HOUSE_MAX);$('hHouse').textContent=Math.ceil(houseHp)+' / '+HOUSE_MAX;
-  const bar=$('hHouseBar');bar.style.width=(k*100).toFixed(0)+'%';bar.style.background=k>0.5?'#7fd16b':k>0.25?'#ffb340':'#ff6b6b';
+  const bar=$('hHouseBar');
+  if(!houseDone()){$('hHouseName').textContent=t('site');$('hHouse').textContent=houseStage+' / 3';bar.style.width=(houseStage/3*100).toFixed(0)+'%';bar.style.background='#ffb340';}
+  else{const k=Math.max(0,houseHp/HOUSE_MAX);$('hHouseName').textContent=t('house');$('hHouse').textContent=Math.ceil(houseHp)+' / '+HOUSE_MAX;
+    bar.style.width=(k*100).toFixed(0)+'%';bar.style.background=k>0.5?'#7fd16b':k>0.25?'#ffb340':'#ff6b6b';}
   $('sNights').textContent=nights;
-  $('night').disabled=phase!=='play'||isNight;
+  $('night').disabled=phase!=='play'||isNight||!houseDone();
   wpnBox.querySelectorAll('.item').forEach(b=>{const k=b.dataset.w,w=WEAPONS[k];b.setAttribute('aria-pressed',String(k===weapon));b.classList.toggle('owned',owned[k]);
     b.classList.toggle('poor',!owned[k]&&(wood<w.w||stone<w.s));const sp=b.querySelector('span'),txt=owned[k]?t(k===weapon?'wEquip':'wReady'):wCost(k);if(sp.textContent!==txt)sp.textContent=txt;});
   itemsBox.querySelectorAll('.item').forEach(b=>b.classList.toggle('poor',!afford(b.dataset.k)));
@@ -1041,7 +1084,7 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__nb={dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
+window.__nb={get houseStage(){return houseStage},dog,hens,get eggs(){return eggs},get weapon(){return weapon},pickWeapon,get player(){return player},get monsters(){return monsters},blocks,nature,kind,idx,cx,cz,ti,tj,get fdist(){return fdist},get fnext(){return fnext},computeFlow,startNight,spawnMonster,action,select,
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
