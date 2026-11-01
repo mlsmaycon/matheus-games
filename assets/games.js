@@ -57,5 +57,22 @@ window.MW_GAMES = [
       de: 'Freundliche Geister und kleine Schreckmomente (Spinne, Glibber). Nichts Gruseliges im Detail.',
       en: 'Friendly ghosts and small scares (a spider, slime). Nothing frightening in detail.'
     }
+  },
+  {
+    slug: 'huehnerchaos',
+    fsk: 0,
+    added: '2026-11-01',
+    cover: 'games/huehnerchaos/cover.svg',
+    title: { de: 'Hühnerchaos', en: 'Chicken Chaos' },
+    tagline: { de: 'Fang die Hühner – aber pass auf den Stapel auf!', en: 'Catch the chickens – but mind the stack!' },
+    desc: {
+      de: 'Die Hühner sind ausgebüxt! Fang sie ein, stapel sie auf deinem Kopf und bring sie in den Stall. Je höher der Turm, desto mehr Punkte – aber in scharfen Kurven fliegen sie gackernd davon. Und die Gans ist sauer.',
+      en: 'The chickens have escaped! Catch them, stack them on your head and bring them back to the coop. The higher the tower, the more points – but sharp turns send them flying. And the goose is angry.'
+    },
+    tags: { de: ['3D', 'Lustig', 'Ton an'], en: ['3D', 'Funny', 'Sound on'] },
+    fskReason: {
+      de: 'Lustiger Bauernhof-Spaß ohne Gewalt. Die Gans schubst dich nur um.',
+      en: 'Funny farmyard fun without violence. The goose only knocks you over.'
+    }
   }
 ];

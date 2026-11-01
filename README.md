@@ -11,12 +11,15 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 | Brainrot-Raub / Brainrot Heist | [`games/brainrot-raub/de`](games/brainrot-raub/de/index.html) | [`games/brainrot-raub/en`](games/brainrot-raub/en/index.html) | 6 |
 | Versteck-Alarm / Hide Alarm | [`games/versteck-alarm/de`](games/versteck-alarm/de/index.html) | [`games/versteck-alarm/en`](games/versteck-alarm/en/index.html) | 0 |
 | Kürbisnacht / Pumpkin Night | [`games/kuerbisnacht/de`](games/kuerbisnacht/de/index.html) | [`games/kuerbisnacht/en`](games/kuerbisnacht/en/index.html) | 6 |
+| Hühnerchaos / Chicken Chaos | [`games/huehnerchaos/de`](games/huehnerchaos/de/index.html) | [`games/huehnerchaos/en`](games/huehnerchaos/en/index.html) | 0 |
 
 **Brainrot-Raub:** buy creatures off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
 **Versteck-Alarm:** hide-and-seek in a house with garden and garage. Hide with three AI kids from a seeker with a flashlight, or seek four kids yourself using only giggle sounds as hints.
 
 **Kürbisnacht:** Halloween trick-or-treating in a spooky neighbourhood. Choose a costume, ring at lit doors for candy (or a trick), avoid the ghosts, and stay safe in the light of the street lamps until midnight.
+
+**Hühnerchaos:** catch escaped chickens on a farm and stack them on your head. Bigger stacks score more but wobble more, and sharp turns, mud or an angry goose send them flying.
 
 ## How the site works
 
