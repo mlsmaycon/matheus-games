@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- © 2026 Matheus · My Craft Games. All rights reserved. three.js © three.js authors, MIT licence. -->
 <html lang="de">
 <head>
 <meta charset="utf-8">
@@ -13,6 +14,8 @@ body{margin:0}
 .mw-nav a{color:inherit;opacity:.85;text-decoration:none;padding:6px 10px;border-radius:999px;background:#ffffff14}
 .mw-nav a:hover,.mw-nav a:focus-visible{opacity:1;background:#ffffff26;outline:none}
 .mw-nav .mw-right{display:flex;gap:8px;align-items:center}
+.mw-copy{max-width:1100px;margin:14px auto 6px;padding:0 12px;text-align:center;font:12px/1.4 system-ui,sans-serif;opacity:.6}
+.mw-copy a{color:inherit}
 .mw-fsk{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-weight:900;color:#111;background:var(--mw-fsk,#fff)}
 
 /* Layout: game console column — status strip, 3D house with HUD overlays, thumb controls, rules. Single committed night look: flashlight yellow on deep blue. */
@@ -858,5 +861,6 @@ function loop(now){
 requestAnimationFrame(loop);
 })();
 </script>
+<p class="mw-copy">© 2026 Matheus · My Craft Games. Alle Rechte vorbehalten. 3D: <a href="../../../assets/vendor/three.LICENSE.txt">three.js</a> (MIT)</p>
 </body>
 </html>

@@ -1,0 +1,24 @@
+My Craft Games
+Copyright (c) 2026 Matheus. All rights reserved.
+
+The games, characters, artwork, texts, music/sound designs and source code
+in this repository and on the My Craft Games website are protected by
+copyright. You may play the games for free and share the link to the
+website. You may NOT copy, modify, republish, sell or distribute the games,
+their artwork or their code, in whole or in part, without written
+permission from the copyright holder.
+
+--- Deutsch ---
+Copyright (c) 2026 Matheus. Alle Rechte vorbehalten.
+
+Die Spiele, Figuren, Bilder, Texte, Klänge und der Quellcode in diesem
+Repository und auf der Website My Craft Games sind urheberrechtlich
+geschützt. Du darfst die Spiele kostenlos spielen und den Link zur Website
+teilen. Ohne schriftliche Erlaubnis dürfen die Spiele, ihre Bilder oder ihr
+Code weder ganz noch teilweise kopiert, verändert, veröffentlicht, verkauft
+oder weitergegeben werden.
+
+--- Third-party software / Fremdsoftware ---
+three.js r128 (assets/vendor/three.r128.min.js)
+Copyright © 2010-2021 three.js authors. MIT License.
+Full licence text: assets/vendor/three.LICENSE.txt
