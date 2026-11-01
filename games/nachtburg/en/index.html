@@ -278,6 +278,7 @@ const TXT={
     priceCoins:'{n} Münzen',bought:'Gekauft: {x}',yum:'Mmh, lecker! {x}',poorCoins:'Zu wenig Münzen. Tausch Gold gegen Münzen!',noGold:'Du hast kein Gold. Gold findest du in der Höhle und in der Burg.',
     followOn:'Folgt mir! · G',followOff:'Wieder arbeiten · G',followStart:'Lena, Tom und Ali folgen dir jetzt überallhin!',followStop:'Lena, Tom und Ali arbeiten wieder selbst.',
     f_ladder2:'Leiter & 3. Etage',fBuilt_ladder2:'Die dritte Etage ist fertig! Dein Haus ist jetzt richtig hoch und hält noch mehr aus.',upstairs3:'Du bist ganz oben in der 3. Etage!',
+    botBedWake:'{n} wacht im eigenen Bett auf und kommt gleich wieder raus.',
     f_bedK:'Bett für Koch Karl',fBuilt_bedK:'Koch Karl hat jetzt ein Bett! Nachts schläft er darin, und morgens kocht er dir einen Eintopf.',karlMorning:'Karl hat ausgeschlafen und dir einen Eintopf gekocht!',
     f_kitchen:'Küche',fBuilt_kitchen:'Küche gebaut! Koch Karl ist eingezogen. Gib ihm Wolle, dann kocht er für euch.',
     f_bedL:'Bett für Lena',f_bedT:'Bett für Tom',f_bedA:'Bett für Ali',fBuilt_bedL:'Lena hat jetzt ein Bett! Sie hat ein Herz mehr und steht schneller wieder auf.',fBuilt_bedT:'Tom hat jetzt ein Bett! Er hat ein Herz mehr und steht schneller wieder auf.',fBuilt_bedA:'Ali hat jetzt ein Bett! Er hat ein Herz mehr und steht schneller wieder auf.',
@@ -376,6 +377,7 @@ const TXT={
     priceCoins:'{n} coins',bought:'Bought: {x}',yum:'Yum! {x}',poorCoins:'Not enough coins. Swap gold for coins!',noGold:'You have no gold. You find gold in the cave and in the castle.',
     followOn:'Follow me! · G',followOff:'Back to work · G',followStart:'Lena, Tom and Ali follow you everywhere now!',followStop:'Lena, Tom and Ali work on their own again.',
     f_ladder2:'Ladder & 3rd floor',fBuilt_ladder2:'The third floor is done! Your house is really tall now and even tougher.',upstairs3:'You are at the very top on the 3rd floor!',
+    botBedWake:'{n} wakes up in bed and will be right back out.',
     f_bedK:'Bed for Chef Karl',fBuilt_bedK:'Chef Karl has a bed now! He sleeps in it at night and cooks you a stew every morning.',karlMorning:'Karl slept well and cooked you a stew!',
     f_kitchen:'Kitchen',fBuilt_kitchen:'Kitchen built! Chef Karl moved in. Give him wool and he cooks for you.',
     f_bedL:'Bed for Lena',f_bedT:'Bed for Tom',f_bedA:'Bed for Ali',fBuilt_bedL:'Lena has a bed now! She gets one more heart and gets back up faster.',fBuilt_bedT:'Tom has a bed now! He gets one more heart and gets back up faster.',fBuilt_bedA:'Ali has a bed now! He gets one more heart and gets back up faster.',
@@ -1598,7 +1600,7 @@ const bots=BOTDEF.map((d,i)=>{const b=Object.assign({bot:true,x:HC.x-2+i*2,z:HC.
 function botBed(b){return furnBuilt('bed'+b.name[0]);}
 function botMax(b){return botBed(b)?6:5;}
 function botHome(b,i){return {x:HC.x-2.5+i*2.5,z:HC.z+HOUSE_HALF+1.6};}
-function resetBots(){bots.forEach((b,i)=>{const h=botHome(b,i);Object.assign(b,{cave:false,castle:false,x:h.x,z:h.z+1,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,path:null,tgt:null,cd:0,think:0,stuck:0});b.mesh.visible=botsOn;});}
+function resetBots(){bots.forEach((b,i)=>{const h=botHome(b,i);Object.assign(b,{cave:false,castle:false,inBed:0,floor:0,clvl:0,x:h.x,z:h.z+1,face:0,moving:0,hearts:5,down:0,inv:0,swing:0,path:null,tgt:null,cd:0,think:0,stuck:0});b.mesh.visible=botsOn;});}
 function setBots(on){botsOn=on;bots.forEach(b=>{b.mesh.visible=on;b.path=null;b.tgt=null;});$('botBtn').textContent=t(on?'botsOnBtn':'botsOffBtn');$('botBtn').setAttribute('aria-pressed',on?'true':'false');}
 function toggleBots(){setBots(!botsOn);if(phase==='play'){toast(t(botsOn?'botsJoin':'botsLeave'),botsOn?'#7be0ff':'#aab2d6');sfx.coin();}}
 $('botBtn').addEventListener('click',toggleBots);
@@ -1664,7 +1666,11 @@ function updateBots(dt){
   if(!botsOn||phase!=='play')return;
   bots.forEach((b,bi)=>{
     b.inv=Math.max(0,b.inv-dt);b.swing=Math.max(0,b.swing-dt);b.cd=Math.max(0,b.cd-dt);b.think=Math.max(0,b.think-dt);b.moving=0;
-    if(b.down>0){b.down-=dt;if(b.down<=0){const h=botHome(b,bi);b.x=h.x;b.z=h.z+0.6;b.hearts=botMax(b);b.inv=2;b.path=null;b.cave=false;b.castle=false;b.tgt=null;puff(b.x,0.6,b.z,6,'#ffffff');}return;}
+    if(b.down>0){b.down-=dt;if(b.down<=0){b.hearts=botMax(b);b.inv=2;b.path=null;b.cave=false;b.castle=false;b.clvl=0;b.tgt=null;
+      const bed=FURN.find(f=>f.k==='bed'+b.name[0]);
+      if(bed&&bed.built&&houseStage>=5){b.floor=2;b.inBed=3;b.x=HC.x+bed.x;b.z=HC.z+bed.z+0.75;b.face=0;toast(t('botBedWake',{n:b.name}),b.vest);}
+      else{const h=botHome(b,bi);b.x=h.x;b.z=h.z+0.6;puff(b.x,0.6,b.z,6,'#ffffff');}}return;}
+    if(b.inBed>0){b.inBed-=dt;b.moving=0;if(b.inBed<=0){b.inBed=0;b.floor=0;const h=botHome(b,bi);b.x=h.x;b.z=h.z+0.6;puff(b.x,0.6,b.z,6,'#ffffff');}return;}
     if(followMe){botFollow(b,bi,dt);return;}
     if(b.cave||b.castle){const h=botHome(b,bi);b.cave=false;b.castle=false;b.x=h.x;b.z=h.z+0.6;b.path=null;b.tgt=null;}
     const ox=b.x,oz=b.z;
@@ -2428,11 +2434,11 @@ function syncWorld(){
   // Händler + Computer-Spieler
   if(merchant.state!=='away'){const m=merchant.mesh,u=m.userData;m.position.set(merchant.x,0,merchant.z);turn(m,merchant.face,0.2);
     const sw=merchant.moving?Math.sin(time*12)*0.6:0;u.legs[0].rotation.x=sw;u.legs[1].rotation.x=-sw;u.armL.rotation.x=merchant.moving?-0.9:-sw;u.armR.rotation.x=merchant.moving?-0.9:Math.sin(time*2)*0.15;}
-  for(const b of bots){const m=b.mesh,u=m.userData;m.visible=botsOn&&!(b.inv>0&&b.down<=0&&Math.floor(time*10)%2===0);if(!botsOn)continue;
-    m.position.set(b.x,0,b.z);turn(m,b.face,0.3);
+  for(const b of bots){const m=b.mesh,u=m.userData;m.visible=botsOn&&!(b.inv>0&&b.down<=0&&!(b.inBed>0)&&Math.floor(time*10)%2===0)&&!(b.inBed>0&&!houseParts.top.visible);if(!botsOn)continue;
+    m.position.set(b.x,(b.floor||0)*UPPER_Y,b.z);if(b.inBed>0)m.rotation.y=0;else turn(m,b.face,0.3);
     const sw=b.moving?Math.sin(time*14+b.x)*0.6:0;u.legs[0].rotation.x=sw;u.legs[1].rotation.x=-sw;u.armL.rotation.x=-sw;
     u.armR.rotation.x=b.swing>0?-2.4+(0.3-b.swing)/0.3*3.2:sw*0.6;
-    u.inner.rotation.x=b.down>0?-1.5:0;u.inner.position.y=b.down>0?0.3:0;
+    u.inner.rotation.x=b.down>0||b.inBed>0?-1.5:0;u.inner.position.y=b.inBed>0?0.75:b.down>0?0.3:0;
     u.tools.hammer.visible=!isNight;u.tools.sword.visible=isNight;u.tools.bow.visible=false;u.tools.pick.visible=false;u.tools.blaster.visible=false;}
   for(const a of wild){const wu=a.mesh.userData;a.mesh.position.set(a.x,a.type==='rabbit'&&a.moving?Math.abs(Math.sin(time*14+a.seed))*0.25:0,a.z);turn(a.mesh,a.face,0.25);
     if(wu.legs){const s2=a.moving?Math.sin(time*16)*0.6:0;wu.legs.forEach((l,i)=>l.rotation.x=(i%2?s2:-s2)*(i<2?1:-1));}
@@ -2579,7 +2585,7 @@ function drawLabels(){
     for(const mo of monsters)if(mo.boss&&mo.clvl===l)lab(t('boss'),mo.x,4.4,mo.z,'#ff6b6b',13);}
   if(phase==='play'&&P1.cave)lab(t('caveExit'),CAVE_EXIT.x,1.5,CAVE_EXIT.z+0.3,'#ffe9a0',13);
   if(phase==='play'&&merchant.state!=='away')lab(t('merchant'),merchant.x,2.3,merchant.z,'#ffd23f',12);
-  if(phase==='play'&&botsOn)for(const b of bots){lab(t('botTag',{n:b.name}),b.x,2.25,b.z,b.vest,10);if(b.hearts<botMax(b)&&b.down<=0)lab('♥'.repeat(b.hearts),b.x,2.6,b.z,'#ff6b6b',9);if(b.down>0)lab('Zzz',b.x,1.0,b.z,'#c9b8ff',11);}
+  if(phase==='play'&&botsOn)for(const b of bots){const fy=(b.floor||0)*UPPER_Y;if(b.inBed>0){lab('Zzz · '+b.name,b.x,(houseParts.top.visible?fy+1.3:8.8),b.z,b.vest,11);continue;}lab(t('botTag',{n:b.name}),b.x,2.25+fy,b.z,b.vest,10);if(b.hearts<botMax(b)&&b.down<=0)lab('♥'.repeat(b.hearts),b.x,2.6,b.z,'#ff6b6b',9);if(b.down>0)lab('Zzz',b.x,1.0,b.z,'#c9b8ff',11);}
   if(phase==='play')lab(dog.friend?t('dogName')+(dogHut()?' ♥':''):'?',dog.x,1.5,dog.z,dog.friend?'#ffd9a0':'#ffb340',dog.friend?11:18);
   for(const pl of players){player=pl;const fy=(pl.floor||0)*UPPER_Y;const h=hint();if(h)lab(h.t,pl.x,2.8+fy,pl.z,h.c,13,true);if(P2)lab(t('pl',{n:pl.name}),pl.x,2.25+fy,pl.z,pl===P1?'#ffd23f':'#7be0ff',11);}
   player=P1;
