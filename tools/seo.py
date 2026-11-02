@@ -263,6 +263,9 @@ write('robots.txt', f"""# {NAME} – everyone is welcome to read and index this 
 # including search engines and AI assistants.
 User-agent: *
 Allow: /
+# game sources and build tools are for developers, the real game pages are under /games/
+Disallow: /src/
+Disallow: /tools/
 
 Sitemap: {SITE}/sitemap.xml
 """)

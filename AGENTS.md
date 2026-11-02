@@ -31,7 +31,8 @@ and forgetting the others that depend on it. Every section below ends with the l
 ## 2. Repository map
 
 ```
-src/<slug>.html            SOURCE of each game (standalone file, may use CDN three.js and Google Fonts)
+src/<slug>.html            SOURCE of each game (standalone file, may use CDN three.js and Google Fonts;
+                           also served by GitHub Pages, so robots.txt keeps search engines out of /src/)
 tools/build_games.py       builds games/<slug>/{de,en}/index.html from src/, then runs tools/seo.py
 tools/seo.py               SEO + AI step (titles, meta, JSON-LD, OG images, sitemap, robots, llms.txt, 404)
 tools/qr.py                QR code generator for assets/qr-site.png

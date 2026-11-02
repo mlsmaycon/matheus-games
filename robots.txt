@@ -2,5 +2,8 @@
 # including search engines and AI assistants.
 User-agent: *
 Allow: /
+# game sources and build tools are for developers, the real game pages are under /games/
+Disallow: /src/
+Disallow: /tools/
 
 Sitemap: https://mycraftgames.com/sitemap.xml
