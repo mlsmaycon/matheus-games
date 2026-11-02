@@ -4,6 +4,8 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 
 **Live:** https://mycraftgames.com/ (custom domain via `CNAME`; also https://mlsmaycon.github.io/matheus-games/)
 
+> **Working on this project (people or AI agents)?** Read [AGENTS.md](AGENTS.md) first – it lists which files to update together for every kind of change. Game sources are in `src/`, build with `python3 tools/build_games.py`.
+
 ## Games
 
 | Game | German | English | FSK |
