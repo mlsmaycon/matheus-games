@@ -1,20 +1,38 @@
 # My Craft Games
 
-Free 3D browser games by Matheus, in German and English. A static website that runs on GitHub Pages: no build step, no server, and no outside requests unless a visitor opts in to Google Analytics.
+Free 3D browser games by Matheus, in German and English. A static website on GitHub Pages: no server, and no outside requests unless a visitor opts in to Google Analytics. This repository holds the sources; GitHub Actions builds, tests and publishes the site.
 
-**Live:** https://mycraftgames.com/ (custom domain via `CNAME`; also https://mlsmaycon.github.io/matheus-games/)
+**Live:** https://mycraftgames.com/
 
-> **Working on this project (people or AI agents)?** Read [AGENTS.md](AGENTS.md) first – it lists which files to update together for every kind of change. Game sources are in `src/`, build with `python3 tools/build_games.py`.
+> **Working on this project (people or AI agents)?** Read [AGENTS.md](AGENTS.md) first – it lists which files to update together for every kind of change.
+
+## Project layout
+
+| Folder | What it is |
+|---|---|
+| `src/` | Game sources (one HTML file per game) |
+| `site/` | Hand-written website: start page, legal pages, assets, covers, `CNAME` |
+| `tools/` | `build.py` (builds everything into `dist/`), `seo.py` (SEO + AI files), `qr.py` |
+| `tests/` | pytest + Playwright tests |
+| `.github/workflows/pages.yml` | CI: build → test → deploy to GitHub Pages (deploy only from `main`) |
+| `dist/` | Generated site (git-ignored) – exactly what is published |
+
+```
+pip install -r requirements-dev.txt && python3 -m playwright install chromium   # once
+python3 tools/build.py                    # build the site into dist/
+python3 -m pytest -q tests                # run all tests
+cd dist && python3 -m http.server 8000    # play at http://localhost:8000
+```
 
 ## Games
 
 | Game | German | English | FSK |
 |---|---|---|---|
-| Brainrot-Raub / Brainrot Heist | [`games/brainrot-raub/de`](games/brainrot-raub/de/index.html) | [`games/brainrot-raub/en`](games/brainrot-raub/en/index.html) | 6 |
-| Versteck-Alarm / Hide Alarm | [`games/versteck-alarm/de`](games/versteck-alarm/de/index.html) | [`games/versteck-alarm/en`](games/versteck-alarm/en/index.html) | 0 |
-| Kürbisnacht / Pumpkin Night | [`games/kuerbisnacht/de`](games/kuerbisnacht/de/index.html) | [`games/kuerbisnacht/en`](games/kuerbisnacht/en/index.html) | 6 |
-| Hühnerchaos / Chicken Chaos | [`games/huehnerchaos/de`](games/huehnerchaos/de/index.html) | [`games/huehnerchaos/en`](games/huehnerchaos/en/index.html) | 0 |
-| Nachtburg / Night Fort | [`games/nachtburg/de`](games/nachtburg/de/index.html) | [`games/nachtburg/en`](games/nachtburg/en/index.html) | 6 |
+| Brainrot-Raub / Brainrot Heist | [de](https://mycraftgames.com/games/brainrot-raub/de/) | [en](https://mycraftgames.com/games/brainrot-raub/en/) | 6 |
+| Versteck-Alarm / Hide Alarm | [de](https://mycraftgames.com/games/versteck-alarm/de/) | [en](https://mycraftgames.com/games/versteck-alarm/en/) | 0 |
+| Kürbisnacht / Pumpkin Night | [de](https://mycraftgames.com/games/kuerbisnacht/de/) | [en](https://mycraftgames.com/games/kuerbisnacht/en/) | 6 |
+| Hühnerchaos / Chicken Chaos | [de](https://mycraftgames.com/games/huehnerchaos/de/) | [en](https://mycraftgames.com/games/huehnerchaos/en/) | 0 |
+| Nachtburg / Night Fort | [de](https://mycraftgames.com/games/nachtburg/de/) | [en](https://mycraftgames.com/games/nachtburg/en/) | 6 |
 
 **Brainrot-Raub:** buy creatures off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
@@ -28,13 +46,13 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 
 ## How the site works
 
-- **Age and consent:** on the first visit the start page asks for the player’s age and agreement to the Terms of Use and Privacy Policy (plus a parent’s confirmation under 16). Games rated above the player’s age are locked. Game pages check this with `assets/gate.js` and send visitors back to the start page if needed.
+- **Age and consent:** on the first visit the start page asks for the player’s age and agreement to the Terms of Use and Privacy Policy (plus a parent’s confirmation under 16). Games rated above the player’s age are locked. Game pages check this with `site/assets/gate.js` and show a notice that links to the age question (no redirect, so search engines can read the pages).
 - **FSK ratings:** every game has an FSK level (0/6/12/16/18). They are our own assessment, not an official FSK/USK review, and the site says so.
 - **Languages:** the start page and legal pages switch between German and English. Every game exists in both languages (see [CONTRIBUTING.md](CONTRIBUTING.md) – this is the rule for all new games).
-- **Privacy:** game data is stored in the browser’s localStorage only. No CDNs or web fonts; three.js r128 is served from `assets/vendor/`.
-- **Analytics (opt-in only):** `assets/analytics.js` shows a consent notice at the bottom of the page (after the age question on the start page). Google Analytics 4 (`G-0QMCMFM2YN`) is loaded **only after “Accept”**; before that nothing goes to Google and no cookies are set. For under-16s the button reads “A parent agrees”. The choice lives in `mcg-analytics` and can be changed via “Cookie settings” in every footer. Events: page views, `play_game` (game page opened, with `game_slug`, `game_language`) and `select_game` (card clicked on the start page). Ads, Google signals and ad personalisation are off.
+- **Privacy:** game data is stored in the browser’s localStorage only. No CDNs or web fonts; three.js r128 is served from `site/assets/vendor/`.
+- **Analytics (opt-in only):** `site/assets/analytics.js` shows a consent notice at the bottom of the page (after the age question on the start page). Google Analytics 4 (`G-0QMCMFM2YN`) is loaded **only after “Accept”**; before that nothing goes to Google and no cookies are set. For under-16s the button reads “A parent agrees”. The choice lives in `mcg-analytics` and can be changed via “Cookie settings” in every footer. Events: page views, `play_game` (game page opened, with `game_slug`, `game_language`) and `select_game` (card clicked on the start page). Ads, Google signals and ad personalisation are off.
 
-- **SEO & AI assistants:** `tools/seo.py` adds titles, descriptions, canonical and hreflang links, Open Graph images, JSON-LD (VideoGame, WebSite, ItemList, BreadcrumbList), static game cards on the start page, a visible “About this game” section on every game page, and pre-rendered texts for crawlers without JavaScript. It also writes `sitemap.xml`, `robots.txt` (all crawlers welcome, incl. AI assistants), `llms.txt` / `llms-full.txt` and `404.html`. Game pages no longer redirect visitors without an age – they show an on-page notice instead, so search engines can read them.
+- **SEO & AI assistants:** `tools/seo.py` adds titles, descriptions, canonical and hreflang links, Open Graph images, JSON-LD (VideoGame, WebSite, ItemList, BreadcrumbList), static game cards on the start page, a visible “About this game” section on every game page, and pre-rendered texts for crawlers without JavaScript. It also writes `sitemap.xml`, `robots.txt` (all crawlers welcome, incl. AI assistants), `llms.txt` / `llms-full.txt` and `404.html` into `dist/`.
 
 ### Google Analytics settings to check (in the GA admin)
 
@@ -43,28 +61,29 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 - **Data sharing:** Admin → Account settings → turn off sharing with Google products and services, benchmarking and technical support.
 - **Custom dimensions (optional, for nicer reports):** Admin → Custom definitions → create event-scoped dimensions `game_slug` and `game_language`. Then *Reports → Engagement → Events → play_game* shows which games are played.
 
-## Turn on GitHub Pages
+## GitHub Pages (deployed by GitHub Actions)
 
-1. Repository **Settings → Pages**.
-2. Source: **Deploy from a branch**, branch `main`, folder `/ (root)`.
-3. The site appears at `https://mycraftgames.com/` after a minute or two (the `CNAME` file sets the custom domain).
+1. Repository **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. Custom domain: `mycraftgames.com` (set in the same Pages settings; `site/CNAME` keeps it in the build).
+3. Every push to `main` runs `.github/workflows/pages.yml`: build → tests → deploy. If the tests fail, nothing is
+   published and the previous version stays online. Pull requests are built and tested but not published.
 
 GitHub Pages for a **private** repository needs a paid GitHub plan (Pro, Team or Enterprise). On a free plan, make the repository public or keep it private and host elsewhere.
 
 ## Before going public
 
-Fill in the placeholders marked `[ … ]` in `imprint.html` and `privacy.html` (name, address, email). The legal texts are a starting point, not legal advice.
+Fill in the placeholders marked `[ … ]` in `site/imprint.html` and `site/privacy.html` (name, address, email). The legal texts are a starting point, not legal advice.
 
 ## Run locally
 
-Any static file server works, for example:
+Build first (`python3 tools/build.py`), then serve `dist/` with any static file server:
 
 ```
-python3 -m http.server 8000
+cd dist && python3 -m http.server 8000
 ```
 
 then open http://localhost:8000/.
 
 ## Licences
 
-© 2026 Matheus · My Craft Games. All rights reserved: the games, artwork and code may be played and linked to, but not copied, changed or republished without permission (see `LICENSE.txt`). three.js © three.js authors, MIT licence (`assets/vendor/three.LICENSE.txt`).
+© 2026 Matheus · My Craft Games. All rights reserved: the games, artwork and code may be played and linked to, but not copied, changed or republished without permission (see `LICENSE.txt`). three.js © three.js authors, MIT licence (`site/assets/vendor/three.LICENSE.txt`).
