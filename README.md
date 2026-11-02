@@ -1,6 +1,6 @@
 # My Craft Games
 
-Free 3D browser games by Matheus, in German and English. A static website that runs on GitHub Pages: no build step, no server, no outside requests.
+Free 3D browser games by Matheus, in German and English. A static website that runs on GitHub Pages: no build step, no server, and no outside requests unless a visitor opts in to Google Analytics.
 
 **Live:** https://mycraftgames.com/ (custom domain via `CNAME`; also https://mlsmaycon.github.io/matheus-games/)
 
@@ -29,7 +29,15 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 - **Age and consent:** on the first visit the start page asks for the player’s age and agreement to the Terms of Use and Privacy Policy (plus a parent’s confirmation under 16). Games rated above the player’s age are locked. Game pages check this with `assets/gate.js` and send visitors back to the start page if needed.
 - **FSK ratings:** every game has an FSK level (0/6/12/16/18). They are our own assessment, not an official FSK/USK review, and the site says so.
 - **Languages:** the start page and legal pages switch between German and English. Every game exists in both languages (see [CONTRIBUTING.md](CONTRIBUTING.md) – this is the rule for all new games).
-- **Privacy:** everything is stored in the browser’s localStorage only. No cookies, no tracking, no CDNs or web fonts; three.js r128 is served from `assets/vendor/`.
+- **Privacy:** game data is stored in the browser’s localStorage only. No CDNs or web fonts; three.js r128 is served from `assets/vendor/`.
+- **Analytics (opt-in only):** `assets/analytics.js` shows a consent notice at the bottom of the page (after the age question on the start page). Google Analytics 4 (`G-0QMCMFM2YN`) is loaded **only after “Accept”**; before that nothing goes to Google and no cookies are set. For under-16s the button reads “A parent agrees”. The choice lives in `mcg-analytics` and can be changed via “Cookie settings” in every footer. Events: page views, `play_game` (game page opened, with `game_slug`, `game_language`) and `select_game` (card clicked on the start page). Ads, Google signals and ad personalisation are off.
+
+### Google Analytics settings to check (in the GA admin)
+
+- **Data retention:** Admin → Data collection and modification → Data retention → set event data to **2 months** (the privacy policy promises at most 14).
+- **Google signals:** Admin → Data collection → keep **off**.
+- **Data sharing:** Admin → Account settings → turn off sharing with Google products and services, benchmarking and technical support.
+- **Custom dimensions (optional, for nicer reports):** Admin → Custom definitions → create event-scoped dimensions `game_slug` and `game_language`. Then *Reports → Engagement → Events → play_game* shows which games are played.
 
 ## Turn on GitHub Pages
 

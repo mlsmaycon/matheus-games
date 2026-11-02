@@ -1,9 +1,10 @@
 /* My Craft Games – start page and legal pages logic (language, age & consent gate, game list).
-   No network requests: everything lives in this browser's localStorage. */
+   No network requests from this file: everything lives in this browser's localStorage.
+   Optional Google Analytics is handled by analytics.js and only loads after opt-in consent. */
 (function () {
   var CONSENT_VERSION = 1;
   var PARENT_AGE = 16; // below this, a parent must confirm
-  var KEYS = ['mw-consent', 'mw-lang', 'brainrot-raub-v1', 'brainrot-raub-v2', 'versteck-alarm-v1', 'kuerbisnacht-v1', 'huehnerchaos-v1', 'nachtburg-v1'];
+  var KEYS = ['mw-consent', 'mw-lang', 'mcg-analytics', 'brainrot-raub-v1', 'brainrot-raub-v2', 'versteck-alarm-v1', 'kuerbisnacht-v1', 'huehnerchaos-v1', 'nachtburg-v1'];
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var store = null;
   try { store = window.localStorage; store.getItem('x'); } catch (e) { store = null; }
@@ -18,7 +19,7 @@
       'nav.noage': 'Alter angeben',
       'hero.title': 'Willkommen bei <em>My Craft Games</em>',
       'hero.text': 'Kostenlose 3D-Spiele direkt im Browser. Auf Deutsch und Englisch, für Handy und PC.',
-      'fact.1': 'Keine Anmeldung', 'fact.2': 'Keine Werbung', 'fact.3': 'Kein Download', 'fact.4': 'Kein Tracking',
+      'fact.1': 'Keine Anmeldung', 'fact.2': 'Keine Werbung', 'fact.3': 'Kein Download', 'fact.4': 'Statistik nur mit Einwilligung',
       'games.title': 'Spiele', 'games.sub': 'Jedes Spiel hat eine Altersempfehlung nach FSK-Stufen.',
       'play': 'Spielen', 'play.locked': 'Ab {n} Jahren', 'play.gate': 'Alter angeben & spielen',
       'other.lang': 'In English', 'locked': 'Ab {n} Jahren',
@@ -27,7 +28,7 @@
       'fsk.0': 'Ohne Altersbeschränkung', 'fsk.6': 'Ab 6 Jahren', 'fsk.12': 'Ab 12 Jahren', 'fsk.16': 'Ab 16 Jahren', 'fsk.18': 'Ab 18 Jahren',
       'fsk.note': 'Die Einstufungen sind eine eigene Einschätzung nach den Kriterien der FSK. Sie wurden nicht offiziell von der FSK oder der USK geprüft.',
       'phone.title': 'Auf dem Handy spielen', 'phone.text': 'Scan den Code oder öffne diese Adresse:',
-      'f.terms': 'Nutzungsbedingungen', 'f.privacy': 'Datenschutz', 'f.imprint': 'Impressum', 'f.license': 'Lizenz', 'f.copy': '© 2026 Matheus · My Craft Games. Alle Rechte vorbehalten.',
+      'f.terms': 'Nutzungsbedingungen', 'f.privacy': 'Datenschutz', 'f.imprint': 'Impressum', 'f.license': 'Lizenz', 'f.cookies': 'Cookie-Einstellungen', 'f.copy': '© 2026 Matheus · My Craft Games. Alle Rechte vorbehalten.',
       'f.reset': 'Meine Daten in diesem Browser löschen', 'f.reset2': 'Wirklich alles löschen? Nochmal klicken',
       'f.done': 'Gelöscht.',
       'g.title': 'Hallo! Wie alt bist du?',
@@ -50,7 +51,7 @@
       'nav.noage': 'Enter age',
       'hero.title': 'Welcome to <em>My Craft Games</em>',
       'hero.text': 'Free 3D games right in your browser. In German and English, for phone and PC.',
-      'fact.1': 'No sign-up', 'fact.2': 'No ads', 'fact.3': 'No download', 'fact.4': 'No tracking',
+      'fact.1': 'No sign-up', 'fact.2': 'No ads', 'fact.3': 'No download', 'fact.4': 'Analytics only with consent',
       'games.title': 'Games', 'games.sub': 'Every game has an age rating based on the German FSK levels.',
       'play': 'Play', 'play.locked': 'Ages {n}+', 'play.gate': 'Enter age & play',
       'other.lang': 'Auf Deutsch', 'locked': 'Ages {n}+',
@@ -59,7 +60,7 @@
       'fsk.0': 'All ages', 'fsk.6': 'Ages 6+', 'fsk.12': 'Ages 12+', 'fsk.16': 'Ages 16+', 'fsk.18': 'Ages 18+',
       'fsk.note': 'These ratings are our own assessment using the FSK criteria. They have not been officially reviewed by the FSK or USK.',
       'phone.title': 'Play on your phone', 'phone.text': 'Scan the code or open this address:',
-      'f.terms': 'Terms of Use', 'f.privacy': 'Privacy Policy', 'f.imprint': 'Legal notice', 'f.license': 'Licence', 'f.copy': '© 2026 Matheus · My Craft Games. All rights reserved.',
+      'f.terms': 'Terms of Use', 'f.privacy': 'Privacy Policy', 'f.imprint': 'Legal notice', 'f.license': 'Licence', 'f.cookies': 'Cookie settings', 'f.copy': '© 2026 Matheus · My Craft Games. All rights reserved.',
       'f.reset': 'Delete my data in this browser', 'f.reset2': 'Really delete everything? Click again',
       'f.done': 'Deleted.',
       'g.title': 'Hi! How old are you?',
@@ -226,7 +227,7 @@
         return;
       }
       clearTimeout(armed); armed = null; reset.classList.remove('armed');
-      KEYS.forEach(del); memConsent = null;
+      KEYS.forEach(del); memConsent = null; if (window.mcgAnalytics) window.mcgAnalytics.reset();
       reset.textContent = t('f.done');
       setTimeout(function () { reset.textContent = t('f.reset'); }, 2500);
       applyLang();

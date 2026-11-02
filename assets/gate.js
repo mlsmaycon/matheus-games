@@ -4,7 +4,7 @@
     <script src="../../../assets/gate.js" data-fsk="6" data-game="my-game"></script>
   If the visitor has not confirmed their age and accepted the Terms and Privacy Policy,
   or is younger than the game's FSK rating, they are sent back to the start page.
-  Everything is stored only in this browser (localStorage); nothing is sent anywhere.
+  Everything is stored only in this browser (localStorage); this file sends nothing anywhere.
 */
 (function () {
   var CONSENT_VERSION = 1;

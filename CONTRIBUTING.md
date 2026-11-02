@@ -12,7 +12,7 @@ Every game on My Craft Games follows the same rules. A game is not done until ev
   ```
   with the same FSK number as in the registry.
 - [ ] **Navigation bar.** Right after `<body>`, a `<nav class="mw-nav">` with a link back to `../../../index.html`, the FSK badge and a link to the other language (`../en/index.html` or `../de/index.html`). Copy it from an existing game.
-- [ ] **No outside requests.** No CDN scripts, no Google Fonts, no analytics. Libraries go in `assets/vendor/` (three.js r128 is already there: `../../../assets/vendor/three.r128.min.js`). Use system font stacks.
+- [ ] **No outside requests.** No CDN scripts, no Google Fonts, no extra analytics (the only exception is the opt-in Google Analytics in `assets/analytics.js`, which the build adds to every game page). Libraries go in `assets/vendor/` (three.js r128 is already there: `../../../assets/vendor/three.r128.min.js`). Use system font stacks.
 - [ ] **Cover image.** `games/<slug>/cover.svg` (or `.png`/`.webp`), 16:10, no text needed.
 - [ ] **Registry entry.** Add the game to `assets/games.js` with `slug`, `fsk`, `cover`, and `title`, `tagline`, `desc`, `tags`, `fskReason` in `de` and `en`.
 - [ ] **Privacy.** If the game stores anything in `localStorage`, add the key to the table in `privacy.html` (both languages) and to `KEYS` in `assets/site.js` so “Delete my data” clears it.

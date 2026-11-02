@@ -6,8 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Datenschutz · My Craft Games</title>
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=8">
-<script src="assets/site.js?v=8" defer></script>
+<link rel="stylesheet" href="assets/site.css?v=9">
+<script src="assets/site.js?v=9" defer></script>
+<script src="assets/analytics.js?v=9" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -23,10 +24,10 @@
     <!-- DEUTSCH -->
     <div class="l-de">
       <h1>Datenschutzerklärung</h1>
-      <p class="stand">Version 1 · Stand: 31. Oktober 2026</p>
+      <p class="stand">Version 2 · Stand: 2. November 2026</p>
 
       <h2>Kurz gesagt</h2>
-      <p>My Craft Games sammelt keine Daten über dich. Es gibt keine Anmeldung, keine Cookies, keine Werbung und kein Tracking. Dein Alter, deine Sprache und deine Spielstände bleiben nur in deinem Browser.</p>
+      <p>Es gibt keine Anmeldung und keine Werbung. Dein Alter, deine Sprache und deine Spielstände bleiben nur in deinem Browser. Nur wenn du zustimmst (bei Kindern unter 16: ein Elternteil), nutzen wir Google Analytics, um zu sehen, wie die Seite genutzt wird und welche Spiele gespielt werden. Ohne Zustimmung wird nichts an Google gesendet und es werden keine Cookies gesetzt.</p>
 
       <h2>1. Verantwortlich</h2>
       <p><span class="todo">[Vor- und Nachname]</span><br><span class="todo">[Straße und Hausnummer]</span><br><span class="todo">[PLZ und Ort]</span><br>E-Mail: <span class="todo">[E-Mail-Adresse]</span></p>
@@ -34,28 +35,35 @@
       <h2>2. Hosting bei GitHub Pages</h2>
       <p>Die Website liegt bei GitHub Pages, einem Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Wenn du die Seite aufrufst, verarbeitet GitHub technisch notwendige Daten wie deine IP-Adresse, Datum und Uhrzeit, die aufgerufene Seite und Browser-Informationen, um die Seite auszuliefern und vor Angriffen zu schützen. Rechtsgrundlage ist unser berechtigtes Interesse an einer sicheren, erreichbaren Website (Art. 6 Abs. 1 lit. f DSGVO). Dabei können Daten in die USA übertragen werden. Näheres steht im <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener" target="_blank">Datenschutzhinweis von GitHub</a>.</p>
 
-      <h2>3. Keine weiteren Dienste</h2>
-      <p>Alle Dateien (auch Schriftarten und die 3D-Bibliothek three.js) liegen auf derselben Website. Es werden keine Inhalte von anderen Servern geladen, keine Analyse-Tools und keine Werbenetzwerke genutzt.</p>
+      <h2 id="analytics">3. Statistik mit Google Analytics (nur mit Einwilligung)</h2>
+      <p>Alle Dateien (auch Schriftarten und die 3D-Bibliothek three.js) liegen auf derselben Website. Der einzige fremde Dienst ist Google Analytics 4 der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland – und zwar <strong>nur, wenn du zustimmst</strong>. Vorher wird nichts von Google geladen.</p>
+      <p><strong>Wozu:</strong> Wir möchten verstehen, wie viele Leute die Seite besuchen und welche Spiele gespielt werden, um die Spiele zu verbessern.</p>
+      <p><strong>Welche Daten:</strong> aufgerufene Seiten und Spiele (z.&nbsp;B. „Spiel gestartet: Nachtburg“), Sprache, ungefährer Ort (Land/Stadt), Gerät und Browser, Bildschirmgröße, Datum und Uhrzeit sowie eine zufällige Kennung in den Cookies <code>_ga</code> und <code>_ga_0QMCMFM2YN</code> (Speicherdauer bis zu 2 Jahre). Google Analytics 4 speichert keine vollständigen IP-Adressen. Werbefunktionen, Google Signals und personalisierte Werbung sind ausgeschaltet; es gibt keine Werbung und keine Werbeprofile.</p>
+      <p><strong>Rechtsgrundlage:</strong> deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Bei Kindern unter 16 Jahren muss ein Elternteil zustimmen (Art. 8 DSGVO).</p>
+      <p><strong>Übermittlung in die USA:</strong> Google kann Daten in die USA übertragen. Google ist nach dem EU-US Data Privacy Framework zertifiziert (Angemessenheitsbeschluss der EU-Kommission, Art. 45 DSGVO).</p>
+      <p><strong>Speicherdauer:</strong> Die Analysedaten werden bei Google nach höchstens 14 Monaten gelöscht.</p>
+      <p><strong>Widerruf:</strong> Du kannst deine Einwilligung jederzeit unten auf jeder Seite über „Cookie-Einstellungen“ ändern. Dann werden die Google-Cookies gelöscht und nichts mehr gesendet. Mehr bei Google: <a href="https://policies.google.com/privacy?hl=de" rel="noopener" target="_blank">Datenschutzerklärung von Google</a>.</p>
 
       <h2>4. Was in deinem Browser gespeichert wird</h2>
-      <p>My Craft Games speichert ein paar Einträge im lokalen Speicher deines Browsers (localStorage). Diese Daten werden nicht an uns oder andere gesendet.</p>
+      <p>My Craft Games speichert ein paar Einträge im lokalen Speicher deines Browsers (localStorage). Diese Daten werden nicht an uns oder andere gesendet. Die Cookies von Google Analytics (siehe Punkt 3) gibt es nur, wenn du zugestimmt hast.</p>
       <div class="tablebox"><table>
         <tr><th>Eintrag</th><th>Inhalt</th><th>Wozu</th></tr>
         <tr><td><code>mw-consent</code></td><td>Dein angegebenes Alter, Datum der Angabe, Zustimmung zu Nutzungsbedingungen und Datenschutz, ggf. Bestätigung eines Elternteils</td><td>Spiele passend zum Alter freischalten, Zustimmung merken</td></tr>
         <tr><td><code>mw-lang</code></td><td>Deutsch oder Englisch</td><td>Sprache merken</td></tr>
+        <tr><td><code>mcg-analytics</code></td><td>Deine Wahl zu Google Analytics (zugestimmt oder abgelehnt) und Datum</td><td>Wahl merken, damit wir nicht jedes Mal fragen</td></tr>
         <tr><td><code>brainrot-raub-v2</code></td><td>Spielstand: Geld, Figuren, Upgrades</td><td>Weiterspielen</td></tr>
         <tr><td><code>versteck-alarm-v1</code></td><td>Rekorde</td><td>Rekorde anzeigen</td></tr>
         <tr><td><code>kuerbisnacht-v1</code></td><td>Rekord und gewähltes Kostüm</td><td>Rekord anzeigen, Kostüm merken</td></tr>
         <tr><td><code>huehnerchaos-v1</code></td><td>Rekord</td><td>Rekord anzeigen</td></tr>
         <tr><td><code>nachtburg-v1</code></td><td>Rekord (überstandene Nächte)</td><td>Rekord anzeigen</td></tr>
       </table></div>
-      <p>Das Speichern ist für die Funktionen nötig, die du nutzt (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst alles jederzeit löschen: unten auf der Startseite über „Meine Daten in diesem Browser löschen“ oder in den Einstellungen deines Browsers.</p>
+      <p>Das Speichern ist für die Funktionen nötig, die du nutzt (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst alles jederzeit löschen (auch die Google-Cookies und deine Wahl dazu): unten auf der Startseite über „Meine Daten in diesem Browser löschen“ oder in den Einstellungen deines Browsers.</p>
 
       <h2>5. Kinder</h2>
-      <p>Wir fragen nach dem Alter nur, um passende Spiele zu zeigen. Die Angabe bleibt in deinem Browser und erreicht uns nie. Kinder unter 16 sollen die Seite mit Zustimmung eines Elternteils nutzen.</p>
+      <p>Wir fragen nach dem Alter nur, um passende Spiele zu zeigen. Die Angabe bleibt in deinem Browser und erreicht uns nie. Kinder unter 16 sollen die Seite mit Zustimmung eines Elternteils nutzen. Der Statistik mit Google Analytics darf bei Kindern unter 16 nur ein Elternteil zustimmen.</p>
 
       <h2>6. Deine Rechte</h2>
-      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO). Da wir selbst keine Daten über dich speichern, wende dich bei Fragen zur Server-Protokollierung an uns oder an GitHub. Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren.</p>
+      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO). Wir selbst speichern keine Daten über dich auf einem Server. Bei Fragen zur Server-Protokollierung wende dich an uns oder an GitHub, bei Fragen zu den Statistikdaten an uns oder an Google. Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren.</p>
 
       <h2>7. Änderungen</h2>
       <p>Wenn sich diese Erklärung ändert, steht die neue Version hier.</p>
@@ -64,10 +72,10 @@
     <!-- ENGLISH -->
     <div class="l-en">
       <h1>Privacy Policy</h1>
-      <p class="stand">Version 1 · Last updated: 31 October 2026</p>
+      <p class="stand">Version 2 · Last updated: 2 November 2026</p>
 
       <h2>In short</h2>
-      <p>My Craft Games collects no data about you. There is no sign-up, no cookies, no ads and no tracking. Your age, language and save games stay in your browser only.</p>
+      <p>There is no sign-up and there are no ads. Your age, language and save games stay in your browser only. Only if you agree (for children under 16: a parent) do we use Google Analytics to see how the site is used and which games are played. Without consent, nothing is sent to Google and no cookies are set.</p>
 
       <h2>1. Controller</h2>
       <p><span class="todo">[First and last name]</span><br><span class="todo">[Street and number]</span><br><span class="todo">[Postcode and city]</span><br>Email: <span class="todo">[Email address]</span></p>
@@ -75,28 +83,35 @@
       <h2>2. Hosting on GitHub Pages</h2>
       <p>The website is hosted on GitHub Pages, a service of GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. When you open the site, GitHub processes technically necessary data such as your IP address, date and time, the page requested and browser information, in order to deliver the site and protect it against attacks. The legal basis is our legitimate interest in a secure, available website (Art. 6(1)(f) GDPR). Data may be transferred to the USA. For details, see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener" target="_blank">GitHub privacy statement</a>.</p>
 
-      <h2>3. No other services</h2>
-      <p>All files (including fonts and the three.js 3D library) are served from this same website. No content is loaded from other servers, and no analytics tools or ad networks are used.</p>
+      <h2 id="analytics">3. Statistics with Google Analytics (only with consent)</h2>
+      <p>All files (including fonts and the three.js 3D library) are served from this same website. The only outside service is Google Analytics 4 by Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland – and <strong>only if you agree</strong>. Before that, nothing is loaded from Google.</p>
+      <p><strong>Why:</strong> We want to understand how many people visit the site and which games are played, so we can improve the games.</p>
+      <p><strong>What data:</strong> pages and games opened (e.g. “game started: Night Fort”), language, approximate location (country/city), device and browser, screen size, date and time, and a random identifier in the cookies <code>_ga</code> and <code>_ga_0QMCMFM2YN</code> (stored for up to 2 years). Google Analytics 4 does not store full IP addresses. Advertising features, Google signals and ad personalisation are switched off; there are no ads and no ad profiles.</p>
+      <p><strong>Legal basis:</strong> your consent (Art. 6(1)(a) GDPR, § 25(1) TDDDG). For children under 16, a parent must give consent (Art. 8 GDPR).</p>
+      <p><strong>Transfer to the USA:</strong> Google may transfer data to the USA. Google is certified under the EU-US Data Privacy Framework (European Commission adequacy decision, Art. 45 GDPR).</p>
+      <p><strong>Retention:</strong> Google deletes the analytics data after 14 months at the latest.</p>
+      <p><strong>Withdrawing consent:</strong> You can change your choice at any time via “Cookie settings” at the bottom of every page. The Google cookies are then deleted and nothing more is sent. More from Google: <a href="https://policies.google.com/privacy?hl=en" rel="noopener" target="_blank">Google Privacy Policy</a>.</p>
 
       <h2>4. What is stored in your browser</h2>
-      <p>My Craft Games stores a few entries in your browser’s local storage (localStorage). This data is never sent to us or anyone else.</p>
+      <p>My Craft Games stores a few entries in your browser’s local storage (localStorage). This data is never sent to us or anyone else. The Google Analytics cookies (see section 3) only exist if you have agreed.</p>
       <div class="tablebox"><table>
         <tr><th>Entry</th><th>Content</th><th>Purpose</th></tr>
         <tr><td><code>mw-consent</code></td><td>The age you entered, the date you entered it, agreement to the Terms and Privacy Policy, parent confirmation if given</td><td>Unlock games suited to your age, remember your agreement</td></tr>
         <tr><td><code>mw-lang</code></td><td>German or English</td><td>Remember your language</td></tr>
+        <tr><td><code>mcg-analytics</code></td><td>Your Google Analytics choice (accepted or declined) and the date</td><td>Remember your choice so we don’t ask every time</td></tr>
         <tr><td><code>brainrot-raub-v2</code></td><td>Save game: money, creatures, upgrades</td><td>Continue playing</td></tr>
         <tr><td><code>versteck-alarm-v1</code></td><td>Records</td><td>Show your records</td></tr>
         <tr><td><code>kuerbisnacht-v1</code></td><td>Best score and chosen costume</td><td>Show your best score, remember your costume</td></tr>
         <tr><td><code>huehnerchaos-v1</code></td><td>Best score</td><td>Show your best score</td></tr>
         <tr><td><code>nachtburg-v1</code></td><td>Best score (nights survived)</td><td>Show your best score</td></tr>
       </table></div>
-      <p>This storage is necessary for features you use (§ 25(2) no. 2 TDDDG). You can delete it at any time: at the bottom of the start page via “Delete my data in this browser”, or in your browser settings.</p>
+      <p>This storage is necessary for features you use (§ 25(2) no. 2 TDDDG). You can delete it at any time (including the Google cookies and your choice about them): at the bottom of the start page via “Delete my data in this browser”, or in your browser settings.</p>
 
       <h2>5. Children</h2>
-      <p>We ask for your age only to show suitable games. It stays in your browser and never reaches us. Children under 16 should use the site with a parent’s consent.</p>
+      <p>We ask for your age only to show suitable games. It stays in your browser and never reaches us. Children under 16 should use the site with a parent’s consent. For children under 16, only a parent may agree to statistics with Google Analytics.</p>
 
       <h2>6. Your rights</h2>
-      <p>You have the right to access, rectification, erasure, restriction of processing, data portability and objection (Art. 15–21 GDPR). As we don’t store any data about you ourselves, contact us or GitHub with questions about server logging. You can also lodge a complaint with a data protection supervisory authority.</p>
+      <p>You have the right to access, rectification, erasure, restriction of processing, data portability and objection (Art. 15–21 GDPR). We don’t store any data about you on a server ourselves. For questions about server logging, contact us or GitHub; for questions about the statistics data, contact us or Google. You can also lodge a complaint with a data protection supervisory authority.</p>
 
       <h2>7. Changes</h2>
       <p>If this policy changes, the new version will be published here.</p>
@@ -107,7 +122,7 @@
     <div class="row">
       <a href="index.html">← My Craft Games</a>
       <span data-i18n="f.copy">© 2026 Matheus · My Craft Games. Alle Rechte vorbehalten.</span>
-      <nav><a href="terms.html" data-i18n="f.terms">Nutzungsbedingungen</a><a href="privacy.html" data-i18n="f.privacy">Datenschutz</a><a href="imprint.html" data-i18n="f.imprint">Impressum</a><a href="LICENSE.txt" data-i18n="f.license">Lizenz</a></nav>
+      <nav><a href="terms.html" data-i18n="f.terms">Nutzungsbedingungen</a><a href="privacy.html" data-i18n="f.privacy">Datenschutz</a><a href="imprint.html" data-i18n="f.imprint">Impressum</a><a href="LICENSE.txt" data-i18n="f.license">Lizenz</a><button class="linkbtn" type="button" data-cookie-settings data-i18n="f.cookies">Cookie-Einstellungen</button></nav>
     </div>
   </footer>
 </div>
