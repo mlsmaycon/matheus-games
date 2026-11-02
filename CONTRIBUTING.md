@@ -39,3 +39,18 @@ games/<slug>/
 ## When the Terms or Privacy Policy change
 
 Bump `CONSENT_VERSION` in both `assets/site.js` and `assets/gate.js`. Everyone is then asked to agree again on their next visit.
+
+## After building game pages: run the SEO step
+
+Every time game pages are (re)built, run from the repository root:
+
+```
+python3 tools/seo.py
+```
+
+It adds titles, descriptions, canonical/hreflang links, Open Graph images, structured data (JSON-LD), the visible
+“About this game” section and pre-rendered texts to every game page, and regenerates `sitemap.xml`, `robots.txt`,
+`llms.txt`, `llms-full.txt` and `404.html`. It is safe to run repeatedly. A new game only needs its entry in
+`assets/games.js` (title, tagline, desc, tags, fskReason in both languages) – the SEO step picks it up automatically.
+Needs Node.js; Playwright is optional (`--no-browser` skips pre-rendering and image generation).
+

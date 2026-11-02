@@ -5,8 +5,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="../../../assets/gate.js" data-fsk="6" data-game="kuerbisnacht"></script>
-<script src="../../../assets/analytics.js?v=9" defer></script>
-<title>Pumpkin Night · My Craft Games</title>
+<script src="../../../assets/analytics.js?v=10" defer></script>
+<title>Pumpkin Night – Trick or treat – until midnight | My Craft Games</title>
+<!--seo:head-->
+<meta name="description" content="Trick or treat – until midnight! Roam the neighbourhood in costume, ring at lit doors and collect candy before the clock strikes midnight. Ghosts haunt the…">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mycraftgames.com/games/kuerbisnacht/en/">
+<link rel="alternate" hreflang="en" href="https://mycraftgames.com/games/kuerbisnacht/en/">
+<link rel="alternate" hreflang="de" href="https://mycraftgames.com/games/kuerbisnacht/de/">
+<link rel="alternate" hreflang="x-default" href="https://mycraftgames.com/games/kuerbisnacht/de/">
+<link rel="icon" href="../../../assets/icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0e1430">
+<meta property="og:type" content="website"><meta property="og:site_name" content="My Craft Games">
+<meta property="og:title" content="Pumpkin Night – Trick or treat – until midnight!">
+<meta property="og:description" content="Trick or treat – until midnight! Roam the neighbourhood in costume, ring at lit doors and collect candy before the clock strikes midnight. Ghosts haunt the…">
+<meta property="og:url" content="https://mycraftgames.com/games/kuerbisnacht/en/"><meta property="og:image" content="https://mycraftgames.com/games/kuerbisnacht/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Pumpkin Night", "alternateName": "Kürbisnacht", "description": "Roam the neighbourhood in costume, ring at lit doors and collect candy before the clock strikes midnight. Ghosts haunt the streets, and you are only safe under the street lamps.", "url": "https://mycraftgames.com/games/kuerbisnacht/en/", "image": "https://mycraftgames.com/games/kuerbisnacht/og.png", "inLanguage": "en", "genre": ["3D", "Halloween", "Sound on"], "gamePlatform": ["Web browser", "PC", "Mobile"], "applicationCategory": "Game", "operatingSystem": "Any (web browser)", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "contentRating": "FSK 6", "typicalAgeRange": "6-", "datePublished": "2026-10-31", "author": {"@type": "Person", "name": "Matheus"}, "publisher": {"@type": "Organization", "name": "My Craft Games", "url": "https://mycraftgames.com/"}, "playMode": "SinglePlayer", "isPartOf": {"@type": "WebSite", "name": "My Craft Games", "url": "https://mycraftgames.com/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "My Craft Games", "item": "https://mycraftgames.com/"}, {"@type": "ListItem", "position": 2, "name": "Pumpkin Night", "item": "https://mycraftgames.com/games/kuerbisnacht/en/"}]}</script>
+<!--/seo:head-->
 <script>window.MW_LANG='en';</script>
 <style>
 *{box-sizing:border-box}
@@ -92,10 +111,10 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 <nav class="mw-nav" aria-label="My Craft Games"><a href="../../../index.html">← My Craft Games</a><span class="mw-right"><span class="mw-fsk" style="--mw-fsk:#ffd400" title="Age rating">FSK 6</span><a href="../de/index.html" hreflang="de" lang="de">Deutsch</a></span></nav>
 <div class="app">
   <header>
-    <h1 data-t="title">Kürbisnacht<small data-t="sub">Süßes oder Saures – bis Mitternacht!</small></h1>
+    <h1 data-t="title">Pumpkin Night<small data-t="sub">Trick or treat – until midnight!</small></h1>
     <div class="stats">
-      <div class="stat"><span data-t="statCandy">Süßigkeiten</span><b id="sCandy">0</b></div>
-      <div class="stat"><span data-t="statBest">Rekord</span><b id="sBest">0</b></div>
+      <div class="stat"><span data-t="statCandy">Candy</span><b id="sCandy">0</b></div>
+      <div class="stat"><span data-t="statBest">Best</span><b id="sBest">0</b></div>
     </div>
   </header>
 
@@ -103,31 +122,31 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
     <div id="labels"></div>
     <canvas id="mini" width="320" height="240" aria-hidden="true"></canvas>
     <div class="hud"><span class="pill candy" id="hCandy">0</span><span class="pill clock" id="hClock">21:00</span></div>
-    <button class="ring" id="ring" type="button" hidden data-t="ringBtn">Klingeln</button>
+    <button class="ring" id="ring" type="button" hidden data-t="ringBtn">Ring</button>
     <div id="joy" hidden><i></i></div>
     <div id="toasts" aria-live="polite"></div>
     <div class="screen" id="startScreen">
-      <h2 data-t="titleShort">Kürbisnacht</h2>
-      <p data-t="intro">Zieh durch die Nachbarschaft, klingel an beleuchteten Türen und sammle so viele Süßigkeiten wie möglich, bevor es Mitternacht schlägt. Pass auf die Geister auf!</p>
-      <span class="lbl" data-t="costume">Dein Kostüm</span>
+      <h2 data-t="titleShort">Pumpkin Night</h2>
+      <p data-t="intro">Roam the neighbourhood, ring at lit doors and collect as much candy as you can before the clock strikes midnight. Watch out for the ghosts!</p>
+      <span class="lbl" data-t="costume">Your costume</span>
       <div class="costumes" id="costumes"></div>
-      <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
+      <button class="go" id="go" type="button" data-t="go">Let’s go</button>
     </div>
     <div class="screen" id="endScreen" hidden>
-      <h2 data-t="endTitle">Mitternacht!</h2>
+      <h2 data-t="endTitle">Midnight!</h2>
       <p id="endText"></p>
       <div class="row">
-        <button class="go" id="again" type="button" data-t="again">Nochmal</button>
-        <button class="go alt" id="toStart" type="button" data-t="changeCostume">Kostüm wechseln</button>
+        <button class="go" id="again" type="button" data-t="again">Play again</button>
+        <button class="go alt" id="toStart" type="button" data-t="changeCostume">Change costume</button>
       </div>
     </div>
   </div>
 
   <div class="controls">
-    <button class="btn" id="act" type="button" data-t="act">Klingeln · E</button>
-    <button class="btn alt" id="sound" type="button" aria-pressed="true" data-t="soundOn">Ton an · M</button>
+    <button class="btn" id="act" type="button" data-t="act">Ring · E</button>
+    <button class="btn alt" id="sound" type="button" aria-pressed="true" data-t="soundOn">Sound on · M</button>
   </div>
-  <p class="help" data-t="help" data-html="1"></p>
+  <p class="help" data-t="help" data-html="1"><b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms, <b>E</b> rings the doorbell, <b>M</b> toggles sound. <b>Goal:</b> Collect as much candy as you can before midnight.</p>
 </div>
 
 <script src="../../../assets/vendor/three.r128.min.js"></script>
@@ -676,6 +695,10 @@ function loop(now){
 requestAnimationFrame(loop);
 })();
 </script>
+<!--seo:about-->
+<style>.mw-about{max-width:1100px;margin:22px auto 0;padding:0 12px;font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;opacity:.92}.mw-about h2{font-size:20px;margin:0 0 6px}.mw-about h3{font-size:16px;margin:14px 0 4px}.mw-about ul{margin:4px 0;padding-left:20px}.mw-about a{color:inherit}</style>
+<section class="mw-about" aria-labelledby="mw-about-h"><h2 id="mw-about-h">About this game: Pumpkin Night</h2><p><strong>Trick or treat – until midnight!</strong> Roam the neighbourhood in costume, ring at lit doors and collect candy before the clock strikes midnight. Ghosts haunt the streets, and you are only safe under the street lamps.</p><p>Play free in your browser – on PC, tablet and phone, with no sign-up and no download.</p><ul><li>Age rating: FSK 6 – Friendly ghosts and small scares (a spider, slime). Nothing frightening in detail.</li><li>Tags: 3D, Halloween, Sound on</li></ul><h3>More games</h3><ul><li><a href="../../brainrot-raub/en/index.html">Brainrot Heist</a> – Buy, cash in, steal.</li><li><a href="../../versteck-alarm/en/index.html">Hide Alarm</a> – Hide or seek – all over the house.</li><li><a href="../../huehnerchaos/en/index.html">Chicken Chaos</a> – Catch the chickens – but mind the stack!</li><li><a href="../../nachtburg/en/index.html">Night Fort</a> – Build by day, defend by night.</li></ul><p><a href="../../../index.html">All games on My Craft Games</a> · <a href="../de/index.html" hreflang="de" lang="de">Deutsche Version</a></p></section>
+<!--/seo:about-->
 <p class="mw-copy">© 2026 Matheus · My Craft Games. All rights reserved. 3D: <a href="../../../assets/vendor/three.LICENSE.txt">three.js</a> (MIT)</p>
 </body>
 </html>

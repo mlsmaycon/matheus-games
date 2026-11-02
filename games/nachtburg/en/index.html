@@ -5,8 +5,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="../../../assets/gate.js" data-fsk="6" data-game="nachtburg"></script>
-<script src="../../../assets/analytics.js?v=9" defer></script>
-<title>Night Fort · My Craft Games</title>
+<script src="../../../assets/analytics.js?v=10" defer></script>
+<title>Night Fort – Build by day, defend by night | My Craft Games</title>
+<!--seo:head-->
+<meta name="description" content="Build by day, defend by night. Gather wood and stone, build your house up to three floors and furnish it. At night, protect your house and farm from monsters…">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://mycraftgames.com/games/nachtburg/en/">
+<link rel="alternate" hreflang="en" href="https://mycraftgames.com/games/nachtburg/en/">
+<link rel="alternate" hreflang="de" href="https://mycraftgames.com/games/nachtburg/de/">
+<link rel="alternate" hreflang="x-default" href="https://mycraftgames.com/games/nachtburg/de/">
+<link rel="icon" href="../../../assets/icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0e1430">
+<meta property="og:type" content="website"><meta property="og:site_name" content="My Craft Games">
+<meta property="og:title" content="Night Fort – Build by day, defend by night.">
+<meta property="og:description" content="Build by day, defend by night. Gather wood and stone, build your house up to three floors and furnish it. At night, protect your house and farm from monsters…">
+<meta property="og:url" content="https://mycraftgames.com/games/nachtburg/en/"><meta property="og:image" content="https://mycraftgames.com/games/nachtburg/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoGame", "name": "Night Fort", "alternateName": "Nachtburg", "description": "Gather wood and stone, build your house up to three floors and furnish it. At night, protect your house and farm from monsters together with Bello the dog, Farmer Ben and the computer players Lena, Tom and Ali. Explore the cave full of gold and the big castle with treasure at the top of the tower. Two players can share one keyboard.", "url": "https://mycraftgames.com/games/nachtburg/en/", "image": "https://mycraftgames.com/games/nachtburg/og.png", "inLanguage": "en", "genre": ["3D", "Building", "Farm", "2 players", "Computer players"], "gamePlatform": ["Web browser", "PC", "Mobile"], "applicationCategory": "Game", "operatingSystem": "Any (web browser)", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "contentRating": "FSK 6", "typicalAgeRange": "6-", "datePublished": "2026-11-01", "author": {"@type": "Person", "name": "Matheus"}, "publisher": {"@type": "Organization", "name": "My Craft Games", "url": "https://mycraftgames.com/"}, "playMode": "MultiPlayer", "isPartOf": {"@type": "WebSite", "name": "My Craft Games", "url": "https://mycraftgames.com/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "My Craft Games", "item": "https://mycraftgames.com/"}, {"@type": "ListItem", "position": 2, "name": "Night Fort", "item": "https://mycraftgames.com/games/nachtburg/en/"}]}</script>
+<!--/seo:head-->
 <script>window.MW_LANG='en';</script>
 <style>
 *{box-sizing:border-box}
@@ -147,10 +166,10 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
 <nav class="mw-nav" aria-label="My Craft Games"><a href="../../../index.html">← My Craft Games</a><span class="mw-right"><span class="mw-fsk" style="--mw-fsk:#ffd400" title="Age rating">FSK 6</span><a href="../de/index.html" hreflang="de" lang="de">Deutsch</a></span></nav>
 <div class="app">
   <header>
-    <h1>Nachtburg<small>Bau tagsüber, verteidige nachts.</small></h1>
+    <h1>Night Fort<small>Build by day, defend by night.</small></h1>
     <div class="stats">
-      <div class="stat"><span data-t="statNights">Nächte</span><b id="sNights">0</b></div>
-      <div class="stat"><span data-t="statBest">Rekord</span><b id="sBest">0</b></div>
+      <div class="stat"><span data-t="statNights">Nights</span><b id="sNights">0</b></div>
+      <div class="stat"><span data-t="statBest">Best</span><b id="sBest">0</b></div>
     </div>
   </header>
 
@@ -160,78 +179,78 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
     <div class="hud">
       <span class="pill phase day" id="hPhase"></span>
       <div class="col">
-        <span class="pill"><span class="w" id="hWood">0</span> <span data-t="wood">Holz</span> · <span class="s" id="hStone">0</span> <span data-t="stone">Stein</span></span>
+        <span class="pill"><span class="w" id="hWood">0</span> <span data-t="wood">wood</span> · <span class="s" id="hStone">0</span> <span data-t="stone">stone</span></span>
         <span class="pill more" id="hMore"></span>
         <span class="pill hearts" id="hHearts" aria-label=""></span>
       </div>
     </div>
-    <div class="house" id="houseBox"><div class="row"><span data-t="house" id="hHouseName">Dein Haus</span><span id="hHouse">400</span></div><div class="bar"><i id="hHouseBar"></i></div></div>
-    <button class="act" id="actField" type="button" data-t="actShort">Aktion</button>
+    <div class="house" id="houseBox"><div class="row"><span data-t="house" id="hHouseName">Building site</span><span id="hHouse">400</span></div><div class="bar"><i id="hHouseBar"></i></div></div>
+    <button class="act" id="actField" type="button" data-t="actShort">Action</button>
     <div id="joy" hidden><i></i></div>
     <div id="toasts" aria-live="polite"></div>
     <div class="screen" id="startScreen">
-      <h2 data-t="title">Nachtburg</h2>
-      <p data-t="intro"></p>
+      <h2 data-t="title">Night Fort</h2>
+      <p data-t="intro">When it gets dark, monsters come out of the forest and want to wreck your house. How many nights can you last?</p>
       <ol>
-        <li data-t="step1" data-html="1"></li>
-        <li data-t="step2" data-html="1"></li>
-        <li data-t="step3" data-html="1"></li>
-        <li data-t="step5" data-html="1"></li>
-        <li data-t="step4" data-html="1"></li>
+        <li data-t="step1" data-html="1"><b>First:</b> Chop trees for wood, break rocks for stone (key <b>E</b>) and build your house: foundation, walls, roof.</li>
+        <li data-t="step2" data-html="1"><b>Build:</b> Pick a wall, torch or tower below and build in front of you with <b>E</b>.</li>
+        <li data-t="step3" data-html="1"><b>Night:</b> Bonk the monsters with your hammer (<b>E</b>). Torches burn them, towers shoot.</li>
+        <li data-t="step5" data-html="1"><b>Inside:</b> Walk through the door and build a bed, table, fireplace, chest, rug and an arcade machine with mini-games.</li>
+        <li data-t="step4" data-html="1"><b>Animals &amp; food:</b> Shear sheep for wool (for the bed), pick berries and apples, collect eggs. Eating (<b>F</b>) gives hearts. The chest (<b>I</b>) shows all your things. Make friends with the dog and craft a sword or bow (<b>Q</b> switches).</li>
       </ol>
-      <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
+      <button class="go" id="go" type="button" data-t="go">Let’s go</button>
     </div>
     <div class="screen" id="shopScreen" hidden>
       <h2 id="shopTitle">Laden</h2>
       <p id="shopText"></p>
       <p class="coins" id="shopCoins"></p>
       <div class="inv" id="shopGrid"></div>
-      <button class="go alt" type="button" id="shopClose" data-t="arcClose">Zurück ins Spiel</button>
+      <button class="go alt" type="button" id="shopClose" data-t="arcClose">Back to the game</button>
     </div>
     <div class="screen" id="tradeScreen" hidden>
-      <h2 data-t="tradeTitle">Wanderhändler</h2>
-      <p data-t="tradeText"></p>
+      <h2 data-t="tradeTitle">Travelling merchant</h2>
+      <p data-t="tradeText">Swap your things for other things! Each offer works 3 times. Tonight the merchant moves on.</p>
       <div class="inv" id="tradeGrid"></div>
-      <button class="go alt" type="button" id="tradeClose" data-t="arcClose">Zurück ins Spiel</button>
+      <button class="go alt" type="button" id="tradeClose" data-t="arcClose">Back to the game</button>
     </div>
     <div class="screen" id="invScreen" hidden>
-      <h2 data-t="invTitle">Deine Truhe</h2>
-      <p data-t="invText"></p>
+      <h2 data-t="invTitle">Your chest</h2>
+      <p data-t="invText">All your things are in here. Food gives you hearts back, cooked food from the campfire even more!</p>
       <div class="inv" id="invGrid"></div>
-      <button class="go alt" type="button" id="invClose" data-t="arcClose">Zurück ins Spiel</button>
+      <button class="go alt" type="button" id="invClose" data-t="arcClose">Back to the game</button>
     </div>
     <div class="screen" id="arcadeScreen" hidden>
-      <h2 data-t="arcadeTitle">Spielautomat</h2>
+      <h2 data-t="arcadeTitle">Arcade machine</h2>
       <div class="arc-menu" id="arcMenu">
-        <button class="arc-pick" type="button" id="pickWhack"><span data-t="g_whack">Schleim-Klopfen</span><small data-t="g_whackInfo"></small></button>
-        <button class="arc-pick" type="button" id="pickMemory"><span data-t="g_memory">Monster-Memory</span><small data-t="g_memoryInfo"></small></button>
+        <button class="arc-pick" type="button" id="pickWhack"><span data-t="g_whack">Slime Bonk</span><small data-t="g_whackInfo">Bonk the slimes, not the hens! 20 seconds.</small></button>
+        <button class="arc-pick" type="button" id="pickMemory"><span data-t="g_memory">Monster Memory</span><small data-t="g_memoryInfo">Find all 6 pairs.</small></button>
       </div>
       <span class="arc-info" id="arcInfo" hidden></span>
       <div class="holes" id="holes" hidden></div>
       <div class="cards" id="cards" hidden></div>
       <p id="arcMsg"></p>
-      <button class="go alt" type="button" id="arcClose" data-t="arcClose">Zurück ins Spiel</button>
+      <button class="go alt" type="button" id="arcClose" data-t="arcClose">Back to the game</button>
     </div>
     <div class="screen" id="endScreen" hidden>
-      <h2 data-t="endTitle">Das Haus ist gefallen!</h2>
+      <h2 data-t="endTitle">The house has fallen!</h2>
       <p id="endText"></p>
-      <button class="go" id="again" type="button" data-t="again">Nochmal</button>
+      <button class="go" id="again" type="button" data-t="again">Play again</button>
     </div>
   </div>
 
   <div class="items" id="items" role="group"></div>
   <div class="weapons" id="weapons" role="group"></div>
   <div class="controls">
-    <button class="btn" id="act" type="button" data-t="act">Aktion · E</button>
-    <button class="btn moss" id="night" type="button" data-t="startNight">Nacht starten · N</button>
-    <button class="btn alt" id="p2Btn" type="button" data-t="p2Join">2. Spieler · P</button>
-    <button class="btn alt" id="followBtn" type="button" data-t="followOn">Folgt mir! · G</button>
-    <button class="btn alt" id="botBtn" type="button" data-t="botsOnBtn">Computer-Spieler: an · C</button>
-    <button class="btn alt" id="invBtn" type="button" data-t="invBtn">Truhe · I</button>
-    <button class="btn alt" id="eatBtn" type="button" data-t="eatBtn">Essen · F</button>
-    <button class="btn alt" id="sound" type="button" aria-pressed="true" data-t="soundOn">Ton an · M</button>
+    <button class="btn" id="act" type="button" data-t="act">Action · E</button>
+    <button class="btn moss" id="night" type="button" data-t="startNight">Start night · N</button>
+    <button class="btn alt" id="p2Btn" type="button" data-t="p2Join">Player 2 · P</button>
+    <button class="btn alt" id="followBtn" type="button" data-t="followOn">Follow me! · G</button>
+    <button class="btn alt" id="botBtn" type="button" data-t="botsOnBtn">Computer players: on · C</button>
+    <button class="btn alt" id="invBtn" type="button" data-t="invBtn">Chest · I</button>
+    <button class="btn alt" id="eatBtn" type="button" data-t="eatBtn">Eat · F</button>
+    <button class="btn alt" id="sound" type="button" aria-pressed="true" data-t="soundOn">Sound on · M</button>
   </div>
-  <p class="help" data-t="help" data-html="1"></p>
+  <p class="help" data-t="help" data-html="1"><b>Controls:</b> WASD / arrow keys or drag on the playfield, mouse wheel zooms. <b>E</b> chops, builds or fights (you can hold it). <b>1–8</b> picks a building part (also campfire and saplings), <b>B</b> or <b>Esc</b> stops building. <b>Q</b> switches weapons, <b>F</b> eats something, <b>I</b> opens the chest. <b>N</b> starts the night early. <b>P</b> adds player 2: arrow keys to walk, <b>Enter</b> for action. <b>C</b> turns the computer players on or off. Sometimes a merchant visits: press <b>E</b> next to him to trade. There is a cave in the forest with coal and gold, and the old castle has treasure chests and monsters. <b>G</b>: the computer players follow you. In the top right there is a shop and a restaurant where you pay with coins (you get them for gold).</p>
 </div>
 
 <script src="../../../assets/vendor/three.r128.min.js"></script>
@@ -2707,6 +2726,10 @@ window.__nb={farmer,CAVE,FARM,farmAnimals,allFarm,hurtAnimal,farmDawn,CLV,goLeve
   setRes(w,s){wood=w;stone=s;},get houseHp(){return houseHp},get state(){return {phase,day,nights,isNight,wood,stone,kills,houseHp}},HC};
 })();
 </script>
+<!--seo:about-->
+<style>.mw-about{max-width:1100px;margin:22px auto 0;padding:0 12px;font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;opacity:.92}.mw-about h2{font-size:20px;margin:0 0 6px}.mw-about h3{font-size:16px;margin:14px 0 4px}.mw-about ul{margin:4px 0;padding-left:20px}.mw-about a{color:inherit}</style>
+<section class="mw-about" aria-labelledby="mw-about-h"><h2 id="mw-about-h">About this game: Night Fort</h2><p><strong>Build by day, defend by night.</strong> Gather wood and stone, build your house up to three floors and furnish it. At night, protect your house and farm from monsters together with Bello the dog, Farmer Ben and the computer players Lena, Tom and Ali. Explore the cave full of gold and the big castle with treasure at the top of the tower. Two players can share one keyboard.</p><p>Play free in your browser – on PC, tablet and phone, with no sign-up and no download.</p><ul><li>Age rating: FSK 6 – Cartoon monsters and wild animals are defeated with a hammer, sword or bow and vanish in a puff of smoke. No blood. Your own pets and farm animals can’t be attacked.</li><li>Tags: 3D, Building, Farm, 2 players, Computer players</li></ul><h3>More games</h3><ul><li><a href="../../brainrot-raub/en/index.html">Brainrot Heist</a> – Buy, cash in, steal.</li><li><a href="../../versteck-alarm/en/index.html">Hide Alarm</a> – Hide or seek – all over the house.</li><li><a href="../../kuerbisnacht/en/index.html">Pumpkin Night</a> – Trick or treat – until midnight!</li><li><a href="../../huehnerchaos/en/index.html">Chicken Chaos</a> – Catch the chickens – but mind the stack!</li></ul><p><a href="../../../index.html">All games on My Craft Games</a> · <a href="../de/index.html" hreflang="de" lang="de">Deutsche Version</a></p></section>
+<!--/seo:about-->
 <p class="mw-copy">© 2026 Matheus · My Craft Games. All rights reserved. 3D: <a href="../../../assets/vendor/three.LICENSE.txt">three.js</a> (MIT)</p>
 </body>
 </html>

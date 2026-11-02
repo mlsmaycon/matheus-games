@@ -32,6 +32,8 @@ Free 3D browser games by Matheus, in German and English. A static website that r
 - **Privacy:** game data is stored in the browser’s localStorage only. No CDNs or web fonts; three.js r128 is served from `assets/vendor/`.
 - **Analytics (opt-in only):** `assets/analytics.js` shows a consent notice at the bottom of the page (after the age question on the start page). Google Analytics 4 (`G-0QMCMFM2YN`) is loaded **only after “Accept”**; before that nothing goes to Google and no cookies are set. For under-16s the button reads “A parent agrees”. The choice lives in `mcg-analytics` and can be changed via “Cookie settings” in every footer. Events: page views, `play_game` (game page opened, with `game_slug`, `game_language`) and `select_game` (card clicked on the start page). Ads, Google signals and ad personalisation are off.
 
+- **SEO & AI assistants:** `tools/seo.py` adds titles, descriptions, canonical and hreflang links, Open Graph images, JSON-LD (VideoGame, WebSite, ItemList, BreadcrumbList), static game cards on the start page, a visible “About this game” section on every game page, and pre-rendered texts for crawlers without JavaScript. It also writes `sitemap.xml`, `robots.txt` (all crawlers welcome, incl. AI assistants), `llms.txt` / `llms-full.txt` and `404.html`. Game pages no longer redirect visitors without an age – they show an on-page notice instead, so search engines can read them.
+
 ### Google Analytics settings to check (in the GA admin)
 
 - **Data retention:** Admin → Data collection and modification → Data retention → set event data to **2 months** (the privacy policy promises at most 14).

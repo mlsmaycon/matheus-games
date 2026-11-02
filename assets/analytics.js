@@ -108,7 +108,7 @@
       '.mcg-cc button{font:700 14px system-ui,sans-serif;border:0;border-radius:10px;padding:9px 16px;cursor:pointer}' +
       '.mcg-cc .yes{background:#ff9f2e;color:#171a33}.mcg-cc .no{background:#ffffff1f;color:#f6f4ee}' +
       '.mcg-cc button:focus-visible{outline:3px solid #fff;outline-offset:2px}' +
-      '.mcg-cs{background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit;opacity:inherit}';
+      '.mcg-cs,.mw-copy .mcg-cs{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;color:inherit!important;text-decoration:underline;cursor:pointer;font:inherit!important;opacity:inherit;width:auto!important;height:auto!important}';
     document.head.appendChild(st);
   }
   function hide() { if (box) { box.remove(); box = null; } }
