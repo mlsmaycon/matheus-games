@@ -24,7 +24,7 @@ and forgetting the others that depend on it. Section 5 lists, per kind of change
 5. **Privacy and legal texts must stay true.** If you store new data, add cookies, add a service or change what is
    collected, update `site/privacy.html` in **both** languages in the same change.
 6. **Phone and PC:** touch controls, no horizontal scrolling at 400 px width (tested).
-7. **Copyright:** © 2026 Matheus · My Craft Games, all rights reserved (`LICENSE.txt`). Keep the notices and the
+7. **Copyright:** © 2026 My Craft Games, all rights reserved (`LICENSE.txt`). Keep the notices and the
    three.js MIT credit.
 8. **Tests must pass** (`python3 -m pytest tests`). Add or update tests when you add features (section 4).
 9. **Answer Matheus in German**, short, friendly and kid-friendly. Say what changed and how to try it.

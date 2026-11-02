@@ -86,4 +86,4 @@ then open http://localhost:8000/.
 
 ## Licences
 
-© 2026 Matheus · My Craft Games. All rights reserved: the games, artwork and code may be played and linked to, but not copied, changed or republished without permission (see `LICENSE.txt`). three.js © three.js authors, MIT licence (`site/assets/vendor/three.LICENSE.txt`).
+© 2026 My Craft Games. All rights reserved: the games, artwork and code may be played and linked to, but not copied, changed or republished without permission (see `LICENSE.txt`). three.js © three.js authors, MIT licence (`site/assets/vendor/three.LICENSE.txt`).

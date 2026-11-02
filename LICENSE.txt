@@ -1,5 +1,5 @@
 My Craft Games
-Copyright (c) 2026 Matheus. All rights reserved.
+Copyright (c) 2026 My Craft Games. All rights reserved.
 
 The games, characters, artwork, texts, music/sound designs and source code
 in this repository and on the My Craft Games website are protected by
@@ -9,7 +9,7 @@ their artwork or their code, in whole or in part, without written
 permission from the copyright holder.
 
 --- Deutsch ---
-Copyright (c) 2026 Matheus. Alle Rechte vorbehalten.
+Copyright (c) 2026 My Craft Games. Alle Rechte vorbehalten.
 
 Die Spiele, Figuren, Bilder, Texte, Klänge und der Quellcode in diesem
 Repository und auf der Website My Craft Games sind urheberrechtlich

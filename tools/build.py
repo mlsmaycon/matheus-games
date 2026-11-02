@@ -64,9 +64,9 @@ def page(src_path, slug, fsk, lang, title, replacements, fonts_fallback):
     head = head.replace('<style>', '<style>\n*{box-sizing:border-box}\nbody{margin:0}\n[hidden]{display:none!important}' + NAV_CSS, 1)
     title_tag = re.search(r'<title>.*?</title>', head).group(0)
     head = head.replace(title_tag, f'<title>{title} · My Craft Games</title>')
-    copy = ('© 2026 Matheus · My Craft Games. ' + ('Alle Rechte vorbehalten.' if lang == 'de' else 'All rights reserved.')
+    copy = ('© 2026 My Craft Games. ' + ('Alle Rechte vorbehalten.' if lang == 'de' else 'All rights reserved.')
             + f' 3D: <a href="{ROOT}assets/vendor/three.LICENSE.txt">three.js</a> (MIT)')
-    out = (f'<!doctype html>\n<!-- © 2026 Matheus · My Craft Games. All rights reserved. three.js © three.js authors, MIT licence. -->\n<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
+    out = (f'<!doctype html>\n<!-- © 2026 My Craft Games. All rights reserved. three.js © three.js authors, MIT licence. -->\n<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
            f'<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
            f'<script src="{ROOT}assets/gate.js" data-fsk="{fsk}" data-game="{slug}"></script>\n'
            f'<script src="{ROOT}assets/analytics.js?v=10" defer></script>\n'
