@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-My Craft Games – SEO / LLM build step.  Run from the repository root AFTER building the game pages:
+My Craft Games – SEO / LLM build step. Normally called by tools/build.py; works on the built site in dist/:
 
-    python3 tools/seo.py            # everything (needs Node.js and, for prerender + images, Playwright)
-    python3 tools/seo.py --no-browser   # skip prerendering and image generation
+    python3 tools/seo.py [--out dist]               # everything (needs Node.js and, for prerender + images, Playwright)
+    python3 tools/seo.py --no-browser               # skip prerendering and image generation
 
 What it does (idempotent – safe to run again and again):
   * game pages: SEO title, meta description, canonical, hreflang, Open Graph/Twitter tags, JSON-LD (VideoGame),
@@ -22,7 +22,9 @@ AUTHOR = 'Matheus'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TODAY = datetime.date.today().isoformat()
 USE_BROWSER = '--no-browser' not in sys.argv
-os.chdir(ROOT)
+OUT = sys.argv[sys.argv.index('--out') + 1] if '--out' in sys.argv else os.path.join(ROOT, 'dist')
+assert os.path.isfile(os.path.join(OUT, 'index.html')), f'no built site in {OUT} – run tools/build.py first'
+os.chdir(OUT)
 
 def esc(s): return html.escape(s, quote=True)
 def read(p): return open(p, encoding='utf-8').read()
@@ -65,8 +67,10 @@ live = {}
 def browser_pass():
     """Load every game page in a real browser (age already confirmed) and read the texts that JavaScript fills in."""
     from playwright.sync_api import sync_playwright
-    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=ROOT)
-    handler.log_message = lambda *a: None
+    class Quiet(http.server.SimpleHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+    handler = functools.partial(Quiet, directory=os.getcwd())
     srv = socketserver.TCPServer(('127.0.0.1', 0), handler); port = srv.server_address[1]
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f'http://127.0.0.1:{port}/'
@@ -263,9 +267,6 @@ write('robots.txt', f"""# {NAME} – everyone is welcome to read and index this 
 # including search engines and AI assistants.
 User-agent: *
 Allow: /
-# game sources and build tools are for developers, the real game pages are under /games/
-Disallow: /src/
-Disallow: /tools/
 
 Sitemap: {SITE}/sitemap.xml
 """)
