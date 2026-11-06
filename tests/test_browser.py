@@ -84,3 +84,27 @@ def test_phone_width_no_horizontal_scroll(phone, path):
     phone.set_storage(age=30)
     pg = phone.goto(path, 1200)
     assert pg.evaluate('document.documentElement.scrollWidth') <= 402
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_star_unicorn_shop_buys_and_saves(page, lang):
+    """Sternen-Einhorn: the SHOP button opens the shop, buying spends coins, the purchase is worn and saved."""
+    page.set_storage(age=30)
+    page.pg.evaluate("localStorage.setItem('sternen-einhorn-v1', JSON.stringify({coins: 100, owned: [], eq: {}}))")
+    pg = page.goto(f'games/sternen-einhorn/{lang}/index.html', 1200)
+    box = pg.query_selector('#su-canvas').bounding_box()
+    pg.mouse.click(box['x'] + box['width'] * 95 / 960, box['y'] + box['height'] * 554 / 600)   # SHOP button (bottom left)
+    pg.wait_for_timeout(300)
+    assert pg.is_visible('#su-shop')
+    if lang == 'en':
+        left = german_leftovers(pg.inner_text('#su-shop'))
+        assert not left, f'German words in the English shop: {left}'
+    pg.click('.su-card >> nth=1')            # second colour: costs 25 coins
+    pg.click('#su-act')
+    pg.wait_for_timeout(200)
+    saved = pg.evaluate("JSON.parse(localStorage.getItem('sternen-einhorn-v1'))")
+    assert saved['coins'] == 75 and saved['eq']['color'] == 'pink' and 'color:pink' in saved['owned']
+    pg.keyboard.press('Escape')
+    pg.wait_for_timeout(200)
+    assert not pg.is_visible('#su-shop')
+    assert not page.errors, page.errors
