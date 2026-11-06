@@ -91,5 +91,22 @@ window.MW_GAMES = [
       de: 'Comic-Monster und Wildtiere werden mit Hammer, Schwert oder Bogen besiegt und verschwinden in einer Rauchwolke. Kein Blut. Die eigenen Haus- und Farmtiere kann man nicht angreifen.',
       en: 'Cartoon monsters and wild animals are defeated with a hammer, sword or bow and vanish in a puff of smoke. No blood. Your own pets and farm animals can’t be attacked.'
     }
+  },
+  {
+    slug: 'sternen-einhorn',
+    fsk: 0,
+    added: '2026-11-06',
+    cover: 'games/sternen-einhorn/cover.svg',
+    title: { de: 'Sternen-Einhorn', en: 'Star Unicorn' },
+    tagline: { de: 'Sterne fangen, Regenbogen wachsen lassen!', en: 'Catch the stars, grow the rainbow!' },
+    desc: {
+      de: 'Flieg mit deinem Einhorn durchs Weltall, fang Sterne und Münzen und weich den Meteoren aus. Mit genug Sternen fliegt es nach Hause und der Regenbogen bekommt eine neue Farbe – nach sieben Flügen ist er fertig. Im Einhorn-Laden kaufst du Farben, Mähnen, Hörner, Flügel, Kleider, Hüte, Schuhe, Inlineskates und Kuscheltiere, die mitfliegen.',
+      en: 'Fly your unicorn through space, catch stars and coins and dodge the meteors. With enough stars it flies home and the rainbow gets a new colour – after seven trips it is complete. In the Unicorn Shop you buy colours, manes, horns, wings, dresses, hats, shoes, roller blades and cuddly buddies that ride along.'
+    },
+    tags: { de: ['2D', 'Einhorn', 'Anziehen', 'Ton an'], en: ['2D', 'Unicorn', 'Dress-up', 'Sound on'] },
+    fskReason: {
+      de: 'Fröhliches Sammelspiel ohne Gewalt. Meteore stoßen nur ein paar Sterne weg.',
+      en: 'Cheerful collecting game without violence. Meteors only knock a few stars away.'
+    }
   }
 ];
