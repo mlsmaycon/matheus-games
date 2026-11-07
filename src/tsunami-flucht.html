@@ -118,8 +118,8 @@ const TXT={
     title:'Tsunami-Flucht',sub:'Schnapp dir Brainrots – bevor die Welle kommt!',statMoney:'Geld',statIncome:'Pro Sekunde',statBest:'Weitester Lauf',
     intro:'Lauf die lange Strandbahn entlang, schnapp dir Brainrots und bring sie zu deiner Basis. Dort verdienen sie jede Sekunde Geld. Je weiter weg, desto seltener und wertvoller sind sie. Aber pass auf: Immer wieder rollt eine riesige Welle heran! Spring rechtzeitig in einen Graben oder ein Unterloch, oder renn zurück zur Basis. Deine Basis ist geschützt – niemand kann dir deine Brainrots stehlen.',
     go:'Los geht’s',soundOn:'Ton an · M',soundOff:'Ton aus · M',reset:'Neu anfangen',resetSure:'Wirklich? Nochmal klicken',
-    upSpeed:'Schneller · 1',upCarry:'Mehr tragen · 2',maxed:'Ganz voll!',actBtn:'Schnappen',
-    help:'Manchmal versteckt sich hinter einer Welle noch eine zweite – erst raus, wenn alles vorbei ist! <b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> schnappt einen Brainrot. <b>1</b> kauft mehr Tempo, <b>2</b> mehr Tragen, <b>M</b> schaltet den Ton um. Die Leiste rechts zeigt die ganze Strecke: unten deine Basis, oben das Meer, blau die Wellen. In den dunklen <b>Gräben</b> und in den blauen <b>Unterlöchern</b> rollt die Welle über dich hinweg. Brainrots in der Basis verdienen Geld, auch wenn du nicht spielst.',
+    upSpeed:'Schneller · 1',upCarry:'Mehr tragen · 2',maxed:'Ganz voll!',actBtn:'Schnappen',sellBtn:'Verkaufen',
+    help:'Manchmal versteckt sich hinter einer Welle noch eine zweite – erst raus, wenn alles vorbei ist! <b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> schnappt einen Brainrot. <b>1</b> kauft mehr Tempo, <b>2</b> mehr Tragen, <b>M</b> schaltet den Ton um. Die Leiste rechts zeigt die ganze Strecke: unten deine Basis, oben das Meer, blau die Wellen. In den dunklen <b>Gräben</b> und in den blauen <b>Unterlöchern</b> rollt die Welle über dich hinweg. Brainrots in der Basis verdienen Geld, auch wenn du nicht spielst. Stell dich in der Basis neben einen Brainrot und drück zweimal <b>E</b>, dann <b>verkaufst</b> du ihn.',
     noload:'3D konnte nicht geladen werden.',
     r_common:'Gewöhnlich',r_uncommon:'Ungewöhnlich',r_rare:'Selten',r_epic:'Episch',r_legendary:'Legendär',r_mythic:'Mythisch',r_cosmic:'Kosmisch',r_secret:'Geheim',r_celestial:'Himmlisch',
     zone:'{r}-Zone',baseZone:'Deine Basis',beach:'Meer',
@@ -127,7 +127,7 @@ const TXT={
     w0:'Superlangsam',w1:'Langsam',w2:'Mittel',w3:'Schnell',w4:'Blitz',
     hit:'Weggespült! {n} Brainrots sind weg.',hit0:'Weggespült! Zum Glück hattest du nichts dabei.',safeTrench:'Puh! Im Graben bist du sicher.',safeHole:'Puh! Im Unterloch bist du sicher.',hole:'Unterloch',
     grab:'{n} geschnappt!',full:'Du kannst nicht mehr tragen! Bring sie zur Basis.',
-    pressE:'E: Schnappen',
+    pressE:'E: Schnappen',pressSell:'E: Verkaufen für {m}',sellConfirm:'Nochmal E = verkaufen für {m}!',sellAsk:'{name} verkaufen für {m}? Drück nochmal!',soldOne:'{name} verkauft für {m}!',
     deliver:'{n} Brainrots in der Basis! +{m}/s',deliver1:'{name} ist in deiner Basis! +{m}/s',
     sold:'Basis voll – {name} verkauft für {m}.',swapped:'{name} ersetzt {old} (verkauft für {m}).',
     upSpeedDone:'Tempo Stufe {n}!',upCarryDone:'Du kannst jetzt {n} Brainrots tragen!',poor:'Dafür brauchst du {m}.',
@@ -143,8 +143,8 @@ const TXT={
     title:'Tsunami Escape',sub:'Grab the brainrots – before the wave hits!',statMoney:'Money',statIncome:'Per second',statBest:'Farthest run',
     intro:'Run along the long beach runway, grab brainrots and bring them to your base. There they earn money every second. The farther out, the rarer and more valuable they are. But watch out: again and again a giant wave rolls in! Jump into a trench or a hideout hole in time, or run back to your base. Your base is protected – nobody can steal your brainrots.',
     go:'Let’s go',soundOn:'Sound on · M',soundOff:'Sound off · M',reset:'Start over',resetSure:'Really? Click again',
-    upSpeed:'Faster · 1',upCarry:'Carry more · 2',maxed:'Maxed out!',actBtn:'Grab',
-    help:'Sometimes a second wave hides behind the first one – only come out when it is all over! <b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> grabs a brainrot. <b>1</b> buys more speed, <b>2</b> more carrying, <b>M</b> toggles sound. The bar on the right shows the whole runway: your base at the bottom, the sea at the top, waves in blue. In the dark <b>trenches</b> and the blue <b>hideout holes</b> the wave rolls right over you. Brainrots in your base earn money, even while you are away.',
+    upSpeed:'Faster · 1',upCarry:'Carry more · 2',maxed:'Maxed out!',actBtn:'Grab',sellBtn:'Sell',
+    help:'Sometimes a second wave hides behind the first one – only come out when it is all over! <b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> grabs a brainrot. <b>1</b> buys more speed, <b>2</b> more carrying, <b>M</b> toggles sound. The bar on the right shows the whole runway: your base at the bottom, the sea at the top, waves in blue. In the dark <b>trenches</b> and the blue <b>hideout holes</b> the wave rolls right over you. Brainrots in your base earn money, even while you are away. Stand next to a brainrot in your base and press <b>E</b> twice to <b>sell</b> it.',
     noload:'3D could not be loaded.',
     r_common:'Common',r_uncommon:'Uncommon',r_rare:'Rare',r_epic:'Epic',r_legendary:'Legendary',r_mythic:'Mythic',r_cosmic:'Cosmic',r_secret:'Secret',r_celestial:'Celestial',
     zone:'{r} zone',baseZone:'Your base',beach:'Sea',
@@ -152,7 +152,7 @@ const TXT={
     w0:'Super slow',w1:'Slow',w2:'Medium',w3:'Fast',w4:'Lightning',
     hit:'Washed away! {n} brainrots are gone.',hit0:'Washed away! Luckily you weren’t carrying anything.',safeTrench:'Phew! You are safe in the trench.',safeHole:'Phew! You are safe in the hideout hole.',hole:'Hideout hole',
     grab:'{n} grabbed!',full:'You can’t carry more! Bring them to your base.',
-    pressE:'E: Grab',
+    pressE:'E: Grab',pressSell:'E: Sell for {m}',sellConfirm:'Press E again = sell for {m}!',sellAsk:'Sell {name} for {m}? Press again!',soldOne:'{name} sold for {m}!',
     deliver:'{n} brainrots in your base! +{m}/s',deliver1:'{name} is in your base! +{m}/s',
     sold:'Base full – {name} sold for {m}.',swapped:'{name} replaces {old} (sold for {m}).',
     upSpeedDone:'Speed level {n}!',upCarryDone:'You can now carry {n} brainrots!',poor:'You need {m} for that.',
@@ -215,7 +215,7 @@ const SPEED0=7,SPEED_STEP=1.25,SPEED_MAX=20;
 const speedOf=l=>SPEED0+l*SPEED_STEP;
 const speedCost=l=>Math.round(25*Math.pow(1.6,l));
 const CARRY_COST=[120,700,3500,15000,60000,240000];
-const SLOTS=12;
+const SLOTS=12,SELL_MULT=80;
 
 /* ---------- Speicher ---------- */
 const KEY='tsunami-flucht-v1';
@@ -466,8 +466,8 @@ function deliver(){
     if(S.ped.length<SLOTS){S.ped.push(ty.i);added+=ty.inc;if(got.length===1)toast(t('deliver1',{name:ty.name,m:fmt(ty.inc)}),RINFO[ty.r].col);continue;}
     let low=0;S.ped.forEach((idx,i)=>{if(BRAIN[idx].inc<BRAIN[S.ped[low]].inc)low=i;});
     const old=BRAIN[S.ped[low]];
-    if(ty.inc>old.inc){const m=old.inc*60;S.money+=m;S.ped[low]=ty.i;added+=ty.inc-old.inc;toast(t('swapped',{name:ty.name,old:old.name,m:fmt(m)}),RINFO[ty.r].col);}
-    else{const m=ty.inc*60;S.money+=m;toast(t('sold',{name:ty.name,m:fmt(m)}),'#ffd23f');}
+    if(ty.inc>old.inc){const m=old.inc*SELL_MULT;S.money+=m;S.ped[low]=ty.i;added+=ty.inc-old.inc;toast(t('swapped',{name:ty.name,old:old.name,m:fmt(m)}),RINFO[ty.r].col);}
+    else{const m=ty.inc*SELL_MULT;S.money+=m;toast(t('sold',{name:ty.name,m:fmt(m)}),'#ffd23f');}
   }
   if(got.length>1&&added>0)toast(t('deliver',{n:got.length,m:fmt(added)}),'#ffd23f');
   sfx.coin();refreshPeds();save();
@@ -607,8 +607,18 @@ cv.addEventListener('pointerup',endJoy);cv.addEventListener('pointercancel',endJ
 $('act').addEventListener('click',()=>{audioInit();grab();});
 
 function nearestBrain(){let best=null,bd=1.8;for(const f of field){const d=Math.hypot(f.x-player.x,f.z-player.z);if(d<bd){bd=d;best=f;}}return best;}
+function nearestPed(){if(player.z<1)return -1;let best=-1,bd=1.9;S.ped.forEach((_,i)=>{const p=pedPos(0,i),d=Math.hypot(p.x-player.x,p.z-player.z);if(d<bd){bd=d;best=i;}});return best;}
+let sellArm=-1,sellT=0;
+function sellAt(i){
+  const ty=BRAIN[S.ped[i]];if(!ty)return;const m=ty.inc*SELL_MULT;
+  S.ped.splice(i,1);S.money+=m;sellArm=-1;sellT=0;sfx.coin();toast(t('soldOne',{name:ty.name,m:fmt(m)}),'#ffd23f');refreshPeds();save();updButtons();
+}
 function grab(){
   if(!playing)return;audioInit();
+  const pi=nearestPed();
+  if(pi>=0){ // in der Basis am Podest: verkaufen (zweimal drücken, damit nichts aus Versehen weg ist)
+    if(sellArm===pi&&sellT>0){sellAt(pi);return;}
+    const ty=BRAIN[S.ped[pi]];sellArm=pi;sellT=2.5;toast(t('sellAsk',{name:ty.name,m:fmt(ty.inc*SELL_MULT)}),'#ffd23f');return;}
   const f=nearestBrain();if(!f)return;
   if(player.carry.length>=S.cap){sfx.no();toast(t('full'),'#ff8f80');return;}
   removeField(f);player.carry.push({ty:f.ty,mesh:buildBrain(f.ty,0.55)});sfx.grab();toast(t('grab',{n:f.ty.name}),RINFO[f.r].col);
@@ -659,7 +669,7 @@ function update(dt){
   // Tropfen
   for(const p of drops.slice()){p.life-=dt;p.vy-=12*dt;p.m.position.x+=p.vx*dt;p.m.position.y+=p.vy*dt;p.m.position.z+=p.vz*dt;if(p.life<=0||p.m.position.y<-1){scene.remove(p.m);drops.splice(drops.indexOf(p),1);}}
   if(bannerT>0){bannerT-=dt;if(bannerT<=0)$('banner').textContent='';}
-  flash=Math.max(0,flash-dt);
+  flash=Math.max(0,flash-dt);sellT=Math.max(0,sellT-dt);
 }
 function animRunner(e){
   const m=e.mesh,u=m.userData;m.position.set(e.x,e.y,e.z);
@@ -685,6 +695,9 @@ function render(){
     lab(`${esc(f.ty.name)}<small>${t('r_'+f.r)} · ${t('perSec',{m:fmt(f.ty.inc)})}</small>`,f.x,2.3,f.z,f.r==='secret'?'#ffffff':RINFO[f.r].col);}
   for(const h of HOLES){if(Math.abs(-h.d-player.z)<22&&!inHole(player.x,player.z))lab(t('hole'),h.x,1.2,-h.d,'#4de8ff');}
   const nb=nearestBrain();if(nb&&playing)lab(t('pressE'),nb.x,3.2,nb.z,'#ffd23f');
+  const np=playing?nearestPed():-1;
+  if(np>=0){const p=pedPos(0,np),m=fmt(BRAIN[S.ped[np]].inc*SELL_MULT);lab(sellArm===np&&sellT>0?t('sellConfirm',{m}):t('pressSell',{m}),p.x,3.7,p.z,sellArm===np&&sellT>0?'#ff8f80':'#ffd23f');}
+  const actTxt=t(np>=0?'sellBtn':'actBtn');if($('act').textContent!==actTxt)$('act').textContent=actTxt;
   if(player.z>-6){S.ped.forEach((idx,i)=>{const p=pedPos(0,i);lab(t('perSec',{m:fmt(BRAIN[idx].inc)}),p.x,1.9,p.z,'#ffd23f');});lab(t('baseLabel'),0,4.6,BASE_D/2,'#7fe0ff');
     bots.forEach(b=>lab(t('botBase',{n:b.name}),BASES[b.base].x,3.2,BASE_D/2,b.shirt));}
   bots.forEach(b=>{if(Math.abs(b.z-player.z)<30)lab(b.name,b.x,b.y+2.4,b.z,b.shirt);});
@@ -726,7 +739,7 @@ RAR.forEach(r=>{for(let k=0;k<RINFO[r].want;k++)spawnBrain(r);});
 refreshPeds();updButtons();resize();
 
 window.__tf={get S(){return S},get player(){return player},get field(){return field},get waves(){return waves},get bots(){return bots},
-  startWave:i=>startWave(i),spawn:r=>spawnBrain(r),grab,deliver,buySpeed,buyCarry,TRENCHES,HOLES,LEN,BASE_D,inTrench,inHole,setNext:s=>{nextWave=s;},follow:s=>{followT=s;followType=1;},get playing(){return playing},get camera(){return camera}};
+  startWave:i=>startWave(i),spawn:r=>spawnBrain(r),grab,deliver,sellAt,buySpeed,buyCarry,TRENCHES,HOLES,LEN,BASE_D,inTrench,inHole,setNext:s=>{nextWave=s;},follow:s=>{followT=s;followType=1;},get playing(){return playing},get camera(){return camera}};
 requestAnimationFrame(loop);
 })();
 </script>
