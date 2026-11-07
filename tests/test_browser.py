@@ -113,7 +113,7 @@ def test_star_unicorn_shop_buys_and_saves(page, lang):
 @pytest.mark.parametrize('lang', LANGS)
 def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
     """Tsunami-Flucht: grab a brainrot, deliver it to the base (earns money), a wave washes away what you carry,
-    a trench or a hideout hole keeps you safe, upgrades cost money, brainrots in the base can be sold (press twice), progress is saved, computer players only fill their own bases,
+    a trench or a hideout hole keeps you safe, upgrades cost money and have no limit, brainrots in the base can be sold (press twice), progress is saved, computer players only fill their own bases,
     and sometimes a second wave hides right behind the first one."""
     page.set_storage(age=30)
     pg = page.goto(f'games/tsunami-flucht/{lang}/index.html', 1200)
@@ -145,6 +145,8 @@ def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
         T.S.ped.push(T.S.ped[0]); const pp = {x: -5.6, z: 3.5}; pl.x = pp.x; pl.z = pp.z + 0.5; await wait(100);
         const before = T.S.money, n0 = T.S.ped.length; T.grab(); out.sellAsked = T.S.ped.length === n0;
         T.grab(); out.sold = T.S.ped.length === n0 - 1 && T.S.money > before;
+        T.S.money = 1e30; for (let i = 0; i < 30; i++) { T.buySpeed(); T.buyCarry(); }
+        out.noLimit = T.S.spd === 31 && T.S.cap === 32;
         T.waves.length = 0; T.follow(0.3); await wait(800);
         out.followWave = T.waves.length;
         out.botsMoved = T.bots.some(x => x.state !== 'home' || x.ped.length > 0);
@@ -158,4 +160,5 @@ def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
     assert r['saved'] == 1, r
     assert r['followWave'] == 1 and r['botsMoved'], r
     assert r['sellAsked'] and r['sold'], r
+    assert r['noLimit'], r
     assert not page.errors, page.errors

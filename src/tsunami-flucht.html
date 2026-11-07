@@ -118,7 +118,7 @@ const TXT={
     title:'Tsunami-Flucht',sub:'Schnapp dir Brainrots – bevor die Welle kommt!',statMoney:'Geld',statIncome:'Pro Sekunde',statBest:'Weitester Lauf',
     intro:'Lauf die lange Strandbahn entlang, schnapp dir Brainrots und bring sie zu deiner Basis. Dort verdienen sie jede Sekunde Geld. Je weiter weg, desto seltener und wertvoller sind sie. Aber pass auf: Immer wieder rollt eine riesige Welle heran! Spring rechtzeitig in einen Graben oder ein Unterloch, oder renn zurück zur Basis. Deine Basis ist geschützt – niemand kann dir deine Brainrots stehlen.',
     go:'Los geht’s',soundOn:'Ton an · M',soundOff:'Ton aus · M',reset:'Neu anfangen',resetSure:'Wirklich? Nochmal klicken',
-    upSpeed:'Schneller · 1',upCarry:'Mehr tragen · 2',maxed:'Ganz voll!',actBtn:'Schnappen',sellBtn:'Verkaufen',
+    upSpeed:'Schneller · 1',upCarry:'Mehr tragen · 2',actBtn:'Schnappen',sellBtn:'Verkaufen',
     help:'Manchmal versteckt sich hinter einer Welle noch eine zweite – erst raus, wenn alles vorbei ist! <b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> schnappt einen Brainrot. <b>1</b> kauft mehr Tempo, <b>2</b> mehr Tragen, <b>M</b> schaltet den Ton um. Die Leiste rechts zeigt die ganze Strecke: unten deine Basis, oben das Meer, blau die Wellen. In den dunklen <b>Gräben</b> und in den blauen <b>Unterlöchern</b> rollt die Welle über dich hinweg. Brainrots in der Basis verdienen Geld, auch wenn du nicht spielst. Stell dich in der Basis neben einen Brainrot und drück zweimal <b>E</b>, dann <b>verkaufst</b> du ihn.',
     noload:'3D konnte nicht geladen werden.',
     r_common:'Gewöhnlich',r_uncommon:'Ungewöhnlich',r_rare:'Selten',r_epic:'Episch',r_legendary:'Legendär',r_mythic:'Mythisch',r_cosmic:'Kosmisch',r_secret:'Geheim',r_celestial:'Himmlisch',
@@ -143,7 +143,7 @@ const TXT={
     title:'Tsunami Escape',sub:'Grab the brainrots – before the wave hits!',statMoney:'Money',statIncome:'Per second',statBest:'Farthest run',
     intro:'Run along the long beach runway, grab brainrots and bring them to your base. There they earn money every second. The farther out, the rarer and more valuable they are. But watch out: again and again a giant wave rolls in! Jump into a trench or a hideout hole in time, or run back to your base. Your base is protected – nobody can steal your brainrots.',
     go:'Let’s go',soundOn:'Sound on · M',soundOff:'Sound off · M',reset:'Start over',resetSure:'Really? Click again',
-    upSpeed:'Faster · 1',upCarry:'Carry more · 2',maxed:'Maxed out!',actBtn:'Grab',sellBtn:'Sell',
+    upSpeed:'Faster · 1',upCarry:'Carry more · 2',actBtn:'Grab',sellBtn:'Sell',
     help:'Sometimes a second wave hides behind the first one – only come out when it is all over! <b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> grabs a brainrot. <b>1</b> buys more speed, <b>2</b> more carrying, <b>M</b> toggles sound. The bar on the right shows the whole runway: your base at the bottom, the sea at the top, waves in blue. In the dark <b>trenches</b> and the blue <b>hideout holes</b> the wave rolls right over you. Brainrots in your base earn money, even while you are away. Stand next to a brainrot in your base and press <b>E</b> twice to <b>sell</b> it.',
     noload:'3D could not be loaded.',
     r_common:'Common',r_uncommon:'Uncommon',r_rare:'Rare',r_epic:'Epic',r_legendary:'Legendary',r_mythic:'Mythic',r_cosmic:'Cosmic',r_secret:'Secret',r_celestial:'Celestial',
@@ -171,18 +171,18 @@ document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data
 if(!window.THREE){$('hMoney').textContent=t('noload');return;}
 
 /* ---------- Welt (Meter): Basis bei z>0, Strecke Richtung -z ---------- */
-const W=18,HW=W/2,LEN=480,BASE_D=24;
+const W=18,HW=W/2,LEN=960,BASE_D=24; // die Welt ist 960 m lang
 const RAR=['common','uncommon','rare','epic','legendary','mythic','cosmic','secret','celestial'];
 const RINFO={
-  common:{col:'#c7ced6',inc:2,from:12,to:60,want:6,resp:3},
-  uncommon:{col:'#5fd35f',inc:6,from:60,to:112,want:5,resp:4},
-  rare:{col:'#3fa0ff',inc:15,from:112,to:166,want:4,resp:5},
-  epic:{col:'#b06aff',inc:40,from:166,to:226,want:4,resp:6},
-  legendary:{col:'#ffb020',inc:100,from:226,to:290,want:3,resp:8},
-  mythic:{col:'#ff4d6d',inc:250,from:290,to:350,want:2,resp:10},
-  cosmic:{col:'#4de8ff',inc:650,from:350,to:405,want:2,resp:12},
-  secret:{col:'#1d1d24',inc:1700,from:405,to:452,want:1,resp:16},
-  celestial:{col:'#fff3a0',inc:5000,from:452,to:478,want:0,resp:0}
+  common:{col:'#c7ced6',inc:2,from:12,to:120,want:9,resp:3},
+  uncommon:{col:'#5fd35f',inc:6,from:120,to:224,want:8,resp:4},
+  rare:{col:'#3fa0ff',inc:15,from:224,to:332,want:7,resp:5},
+  epic:{col:'#b06aff',inc:40,from:332,to:452,want:6,resp:6},
+  legendary:{col:'#ffb020',inc:100,from:452,to:580,want:5,resp:8},
+  mythic:{col:'#ff4d6d',inc:250,from:580,to:700,want:4,resp:10},
+  cosmic:{col:'#4de8ff',inc:650,from:700,to:810,want:3,resp:12},
+  secret:{col:'#1d1d24',inc:1700,from:810,to:904,want:2,resp:16},
+  celestial:{col:'#fff3a0',inc:5000,from:904,to:956,want:0,resp:0}
 };
 const TRENCHES=[];for(let d=34;d<LEN-6;d+=36)TRENCHES.push(d);
 const TR_HALF=1.6,TR_DEPTH=2.1;
@@ -194,7 +194,7 @@ const inHole=(x,z)=>HOLES.find(h=>Math.abs(x-h.x)<HR-0.35&&Math.abs(-z-h.d)<HR-0
 const groundY=(x,z)=>inHole(x,z)?-HOLE_DEPTH+0.1:(inTrench(z)!==undefined?-TR_DEPTH+0.1:0);
 const isSafe=e=>e.y<-1.2&&(inHole(e.x,e.z)||inTrench(e.z)!==undefined);
 const rarityAt=d=>RAR.find(r=>d>=RINFO[r].from&&d<RINFO[r].to)||(d>=RINFO.celestial.from?'celestial':null);
-const WAVES=[{sp:6,col:'#7fd0ff'},{sp:8.5,col:'#4fb8f5'},{sp:11,col:'#2f8fe0'},{sp:14.5,col:'#1f62c4'},{sp:19,col:'#6a4dff'}];
+const WAVES=[{sp:12,col:'#7fd0ff'},{sp:17,col:'#4fb8f5'},{sp:22,col:'#2f8fe0'},{sp:29,col:'#1f62c4'},{sp:38,col:'#6a4dff'}]; // doppelt so schnell, weil die Welt doppelt so lang ist
 
 const BRAIN=[ // [name, rarity, income factor, builder]
   ['Brotolino','common',1],['Kaktuccio','common',1.3],
@@ -211,10 +211,11 @@ const typesOf=r=>BRAIN.filter(b=>b.r===r);
 
 /* ---------- Geld ---------- */
 function fmt(n){n=Math.floor(n);if(n<1000)return '$'+n;const u=['K','M','B','T'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++;}return '$'+(n<10?n.toFixed(2):n<100?n.toFixed(1):Math.floor(n))+u[i];}
-const SPEED0=7,SPEED_STEP=1.25,SPEED_MAX=20;
+const SPEED0=7,SPEED_STEP=1.25; // kein Maximum: man kann für immer schneller werden
 const speedOf=l=>SPEED0+l*SPEED_STEP;
 const speedCost=l=>Math.round(25*Math.pow(1.6,l));
 const CARRY_COST=[120,700,3500,15000,60000,240000];
+const carryCost=c=>c<=CARRY_COST.length?CARRY_COST[c-1]:Math.round(240000*Math.pow(3,c-CARRY_COST.length)); // kein Maximum
 const SLOTS=12,SELL_MULT=80;
 
 /* ---------- Speicher ---------- */
@@ -400,7 +401,7 @@ function fieldTick(dt){
   for(const r of RAR){if(r==='celestial')continue;const have=field.filter(f=>f.r===r).length;
     if(have<RINFO[r].want){respawn[r]-=dt;if(respawn[r]<=0){spawnBrain(r);respawn[r]=RINFO[r].resp*(0.7+Math.random()*0.6);}}}
   celestialT-=dt;
-  if(celestialT<=0){celestialT=150+Math.random()*60;if(!field.some(f=>f.r==='celestial')){spawnBrain('celestial');celestialLife=70;toast(t('celestial'),'#fff3a0');sfx.magic();}}
+  if(celestialT<=0){celestialT=150+Math.random()*60;if(!field.some(f=>f.r==='celestial')){spawnBrain('celestial');celestialLife=120;toast(t('celestial'),'#fff3a0');sfx.magic();}}
   if(celestialLife>0){celestialLife-=dt;if(celestialLife<=0){const c=field.find(f=>f.r==='celestial');if(c){removeField(c);toast(t('celestialGone'),'#c9d6e2');}}}
 }
 
@@ -481,7 +482,7 @@ function botTick(b,bi,dt){
   const home={x:BASES[b.base].x,z:BASE_D-6};
   const danger=waves.some(w=>w.z<b.z+1)||warn>0;
   if(b.state==='home'){b.wait-=dt;if(b.wait<=0&&warn<=0&&!waves.some(w=>w.z>-70&&w.z<0)){
-      const maxD=60+b.courage*Math.min(380,60+wavesDone*14);
+      const maxD=60+b.courage*Math.min(LEN-100,60+wavesDone*28);
       const cands=field.filter(f=>-f.z<maxD&&!bots.some(o=>o!==b&&o.tgt===f));
       if(cands.length){b.tgt=cands[Math.floor(Math.random()*cands.length)];b.state='out';}else b.wait=2;}
     moveTo(b,home.x,home.z,dt,6);return;}
@@ -567,15 +568,15 @@ function lab(html,x,y,z,color){
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function updButtons(){
   const sl=S.spd,sc=speedCost(sl);
-  $('upSpeedC').textContent=sl>=SPEED_MAX?t('maxed'):fmt(sc)+' · '+speedOf(sl).toFixed(1)+' → '+speedOf(sl+1).toFixed(1);
-  $('upSpeed').classList.toggle('poor',sl<SPEED_MAX&&S.money<sc);
-  const cc=CARRY_COST[S.cap-1];
-  $('upCarryC').textContent=S.cap>=7?t('maxed'):fmt(cc)+' · '+S.cap+' → '+(S.cap+1);
-  $('upCarry').classList.toggle('poor',S.cap<7&&S.money<cc);
+  $('upSpeedC').textContent=fmt(sc)+' · '+speedOf(sl).toFixed(1)+' → '+speedOf(sl+1).toFixed(1);
+  $('upSpeed').classList.toggle('poor',S.money<sc);
+  const cc=carryCost(S.cap);
+  $('upCarryC').textContent=fmt(cc)+' · '+S.cap+' → '+(S.cap+1);
+  $('upCarry').classList.toggle('poor',S.money<cc);
 }
-function buySpeed(){audioInit();if(S.spd>=SPEED_MAX)return;const c=speedCost(S.spd);if(S.money<c){sfx.no();toast(t('poor',{m:fmt(c)}),'#ff8f80');return;}
+function buySpeed(){audioInit();const c=speedCost(S.spd);if(S.money<c){sfx.no();toast(t('poor',{m:fmt(c)}),'#ff8f80');return;}
   S.money-=c;S.spd++;sfx.buy();toast(t('upSpeedDone',{n:S.spd}),'#7fe0ff');save();updButtons();}
-function buyCarry(){audioInit();if(S.cap>=7)return;const c=CARRY_COST[S.cap-1];if(S.money<c){sfx.no();toast(t('poor',{m:fmt(c)}),'#ff8f80');return;}
+function buyCarry(){audioInit();const c=carryCost(S.cap);if(S.money<c){sfx.no();toast(t('poor',{m:fmt(c)}),'#ff8f80');return;}
   S.money-=c;S.cap++;sfx.buy();toast(t('upCarryDone',{n:S.cap}),'#7fe0ff');save();updButtons();}
 $('upSpeed').addEventListener('click',buySpeed);$('upCarry').addEventListener('click',buyCarry);
 $('sound').addEventListener('click',()=>{soundOn=!soundOn;$('sound').textContent=t(soundOn?'soundOn':'soundOff');$('sound').setAttribute('aria-pressed',soundOn?'true':'false');});
@@ -678,7 +679,7 @@ function animRunner(e){
 }
 function render(){
   animRunner(player);bots.forEach(animRunner);
-  player.carry.forEach((c,i)=>{c.mesh.position.set(player.x,player.y+1.85+i*0.75,player.z);c.mesh.rotation.y=time*1.5+i;});
+  player.carry.forEach((c,i)=>{c.mesh.position.set(player.x,player.y+1.85+Math.min(i,6)*0.75+Math.max(0,i-6)*0.45,player.z);c.mesh.rotation.y=time*1.5+i;});
   bots.forEach(b=>{if(b.carry){b.carry.mesh.position.set(b.x,b.y+1.85,b.z);b.carry.mesh.rotation.y=time*1.5;}});
   for(const f of field){f.mesh.position.y=0.15+Math.abs(Math.sin(time*2+f.bob))*0.25;f.mesh.rotation.y+=0.01;f.mesh.userData.legs.forEach((l,i)=>l.rotation.x=Math.sin(time*8+f.bob+i)*0.4);}
   pedModels.forEach((m,i)=>{m.userData.inner.position.y=Math.abs(Math.sin(time*2+i))*0.12;});
