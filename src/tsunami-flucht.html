@@ -116,16 +116,16 @@ const LANG=((window.MW_LANG||document.documentElement.lang||'de')+'').slice(0,2)
 const TXT={
   de:{
     title:'Tsunami-Flucht',sub:'Schnapp dir Brainrots – bevor die Welle kommt!',statMoney:'Geld',statIncome:'Pro Sekunde',statBest:'Weitester Lauf',
-    intro:'Lauf die lange Strandbahn entlang, schnapp dir Brainrots und bring sie zu deiner Basis. Dort verdienen sie jede Sekunde Geld. Je weiter weg, desto seltener und wertvoller sind sie. Aber pass auf: Immer wieder rollt eine riesige Welle heran! Spring rechtzeitig in einen Graben oder renn zurück zur Basis. Deine Basis ist geschützt – niemand kann dir deine Brainrots stehlen.',
+    intro:'Lauf die lange Strandbahn entlang, schnapp dir Brainrots und bring sie zu deiner Basis. Dort verdienen sie jede Sekunde Geld. Je weiter weg, desto seltener und wertvoller sind sie. Aber pass auf: Immer wieder rollt eine riesige Welle heran! Spring rechtzeitig in einen Graben oder ein Unterloch, oder renn zurück zur Basis. Deine Basis ist geschützt – niemand kann dir deine Brainrots stehlen.',
     go:'Los geht’s',soundOn:'Ton an · M',soundOff:'Ton aus · M',reset:'Neu anfangen',resetSure:'Wirklich? Nochmal klicken',
     upSpeed:'Schneller · 1',upCarry:'Mehr tragen · 2',maxed:'Ganz voll!',actBtn:'Schnappen',
-    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> schnappt einen Brainrot. <b>1</b> kauft mehr Tempo, <b>2</b> mehr Tragen, <b>M</b> schaltet den Ton um. Die Leiste rechts zeigt die ganze Strecke: unten deine Basis, oben das Meer, blau die Wellen. In den dunklen <b>Gräben</b> rollt die Welle über dich hinweg. Brainrots in der Basis verdienen Geld, auch wenn du nicht spielst.',
+    help:'<b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> schnappt einen Brainrot. <b>1</b> kauft mehr Tempo, <b>2</b> mehr Tragen, <b>M</b> schaltet den Ton um. Die Leiste rechts zeigt die ganze Strecke: unten deine Basis, oben das Meer, blau die Wellen. In den dunklen <b>Gräben</b> und in den blauen <b>Unterlöchern</b> rollt die Welle über dich hinweg. Brainrots in der Basis verdienen Geld, auch wenn du nicht spielst.',
     noload:'3D konnte nicht geladen werden.',
     r_common:'Gewöhnlich',r_uncommon:'Ungewöhnlich',r_rare:'Selten',r_epic:'Episch',r_legendary:'Legendär',r_mythic:'Mythisch',r_cosmic:'Kosmisch',r_secret:'Geheim',r_celestial:'Himmlisch',
     zone:'{r}-Zone',baseZone:'Deine Basis',beach:'Meer',
-    waveIn:'Welle in {s} s',waveNow:'Welle: {w}!',waveBig:'WELLE KOMMT!',waveGo:'Lauf! In einen Graben oder zur Basis!',
+    waveIn:'Welle in {s} s',waveNow:'Welle: {w}!',waveBig:'WELLE KOMMT!',waveGo:'Lauf! In einen Graben, ein Unterloch oder zur Basis!',
     w0:'Superlangsam',w1:'Langsam',w2:'Mittel',w3:'Schnell',w4:'Blitz',
-    hit:'Weggespült! {n} Brainrots sind weg.',hit0:'Weggespült! Zum Glück hattest du nichts dabei.',safeTrench:'Puh! Im Graben bist du sicher.',
+    hit:'Weggespült! {n} Brainrots sind weg.',hit0:'Weggespült! Zum Glück hattest du nichts dabei.',safeTrench:'Puh! Im Graben bist du sicher.',safeHole:'Puh! Im Unterloch bist du sicher.',hole:'Unterloch',
     grab:'{n} geschnappt!',full:'Du kannst nicht mehr tragen! Bring sie zur Basis.',
     pressE:'E: Schnappen',
     deliver:'{n} Brainrots in der Basis! +{m}/s',deliver1:'{name} ist in deiner Basis! +{m}/s',
@@ -141,16 +141,16 @@ const TXT={
   },
   en:{
     title:'Tsunami Escape',sub:'Grab the brainrots – before the wave hits!',statMoney:'Money',statIncome:'Per second',statBest:'Farthest run',
-    intro:'Run along the long beach runway, grab brainrots and bring them to your base. There they earn money every second. The farther out, the rarer and more valuable they are. But watch out: again and again a giant wave rolls in! Jump into a trench in time or run back to your base. Your base is protected – nobody can steal your brainrots.',
+    intro:'Run along the long beach runway, grab brainrots and bring them to your base. There they earn money every second. The farther out, the rarer and more valuable they are. But watch out: again and again a giant wave rolls in! Jump into a trench or a hideout hole in time, or run back to your base. Your base is protected – nobody can steal your brainrots.',
     go:'Let’s go',soundOn:'Sound on · M',soundOff:'Sound off · M',reset:'Start over',resetSure:'Really? Click again',
     upSpeed:'Faster · 1',upCarry:'Carry more · 2',maxed:'Maxed out!',actBtn:'Grab',
-    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> grabs a brainrot. <b>1</b> buys more speed, <b>2</b> more carrying, <b>M</b> toggles sound. The bar on the right shows the whole runway: your base at the bottom, the sea at the top, waves in blue. In the dark <b>trenches</b> the wave rolls right over you. Brainrots in your base earn money, even while you are away.',
+    help:'<b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> grabs a brainrot. <b>1</b> buys more speed, <b>2</b> more carrying, <b>M</b> toggles sound. The bar on the right shows the whole runway: your base at the bottom, the sea at the top, waves in blue. In the dark <b>trenches</b> and the blue <b>hideout holes</b> the wave rolls right over you. Brainrots in your base earn money, even while you are away.',
     noload:'3D could not be loaded.',
     r_common:'Common',r_uncommon:'Uncommon',r_rare:'Rare',r_epic:'Epic',r_legendary:'Legendary',r_mythic:'Mythic',r_cosmic:'Cosmic',r_secret:'Secret',r_celestial:'Celestial',
     zone:'{r} zone',baseZone:'Your base',beach:'Sea',
-    waveIn:'Wave in {s} s',waveNow:'Wave: {w}!',waveBig:'WAVE INCOMING!',waveGo:'Run! Into a trench or back to base!',
+    waveIn:'Wave in {s} s',waveNow:'Wave: {w}!',waveBig:'WAVE INCOMING!',waveGo:'Run! Into a trench, a hideout hole or back to base!',
     w0:'Super slow',w1:'Slow',w2:'Medium',w3:'Fast',w4:'Lightning',
-    hit:'Washed away! {n} brainrots are gone.',hit0:'Washed away! Luckily you weren’t carrying anything.',safeTrench:'Phew! You are safe in the trench.',
+    hit:'Washed away! {n} brainrots are gone.',hit0:'Washed away! Luckily you weren’t carrying anything.',safeTrench:'Phew! You are safe in the trench.',safeHole:'Phew! You are safe in the hideout hole.',hole:'Hideout hole',
     grab:'{n} grabbed!',full:'You can’t carry more! Bring them to your base.',
     pressE:'E: Grab',
     deliver:'{n} brainrots in your base! +{m}/s',deliver1:'{name} is in your base! +{m}/s',
@@ -187,6 +187,12 @@ const RINFO={
 const TRENCHES=[];for(let d=34;d<LEN-6;d+=36)TRENCHES.push(d);
 const TR_HALF=1.6,TR_DEPTH=2.1;
 const inTrench=z=>{const d=-z;return TRENCHES.find(tz=>Math.abs(d-tz)<TR_HALF-0.25);};
+// Unterlöcher: Schutzlöcher im Boden zwischen den Gräben (links und rechts)
+const HR=1.3,HOLE_DEPTH=2.6,HOLES=[];
+for(let d=16;d<LEN-10;d+=36)[-5,5].forEach(x=>HOLES.push({x,d}));
+const inHole=(x,z)=>HOLES.find(h=>Math.abs(x-h.x)<HR-0.35&&Math.abs(-z-h.d)<HR-0.35);
+const groundY=(x,z)=>inHole(x,z)?-HOLE_DEPTH+0.1:(inTrench(z)!==undefined?-TR_DEPTH+0.1:0);
+const isSafe=e=>e.y<-1.2&&(inHole(e.x,e.z)||inTrench(e.z)!==undefined);
 const rarityAt=d=>RAR.find(r=>d>=RINFO[r].from&&d<RINFO[r].to)||(d>=RINFO.celestial.from?'celestial':null);
 const WAVES=[{sp:6,col:'#7fd0ff'},{sp:8.5,col:'#4fb8f5'},{sp:11,col:'#2f8fe0'},{sp:14.5,col:'#1f62c4'},{sp:19,col:'#6a4dff'}];
 
@@ -250,7 +256,7 @@ function glow(size,color,op){const s=new THREE.Sprite(new THREE.SpriteMaterial({
 // Meer hinter dem Ende, Sand außen
 const seaMat=new THREE.MeshLambertMaterial({color:'#2f9be0'});
 const sea=new THREE.Mesh(new THREE.PlaneGeometry(400,200),seaMat);sea.rotation.x=-Math.PI/2;sea.position.set(0,-0.4,-LEN-100);scene.add(sea);
-const sandOut=new THREE.Mesh(new THREE.PlaneGeometry(220,LEN+80),M('#e9cf93'));sandOut.rotation.x=-Math.PI/2;sandOut.position.set(0,-0.02,-LEN/2+20);sandOut.receiveShadow=true;scene.add(sandOut);
+[-1,1].forEach(sd=>{const sandOut=new THREE.Mesh(new THREE.PlaneGeometry(110-HW,LEN+80),M('#e9cf93'));sandOut.rotation.x=-Math.PI/2;sandOut.position.set(sd*(HW+(110-HW)/2),-0.02,-LEN/2+20);sandOut.receiveShadow=true;scene.add(sandOut);});
 // Strecke: Abschnitte zwischen den Gräben, eingefärbt nach Zone
 (()=>{
   const cuts=[-BASE_D,0,...TRENCHES.flatMap(d=>[d-TR_HALF,d+TR_HALF]),LEN];
@@ -259,7 +265,12 @@ const sandOut=new THREE.Mesh(new THREE.PlaneGeometry(220,LEN+80),M('#e9cf93'));s
     // jeder Abschnitt in 6-m-Streifen, damit die Zonenfarben sauber wechseln
     for(let d=a;d<b;d+=6){
       const e=Math.min(b,d+6),r=rarityAt((d+e)/2);const c=new THREE.Color(r?RINFO[r].col:'#f2d9a0');c.lerp(new THREE.Color('#f2d9a0'),0.62);
-      const m=part(G.box,new THREE.MeshLambertMaterial({color:c}),W,1,e-d,0,-0.5,-(d+e)/2,false);m.receiveShadow=true;scene.add(m);}
+      const mat=new THREE.MeshLambertMaterial({color:c});
+      const piece=(x0,x1,d0,d1)=>{if(x1-x0<0.01||d1-d0<0.01)return;const m=part(G.box,mat,x1-x0,1,d1-d0,(x0+x1)/2,-0.5,-(d0+d1)/2,false);m.receiveShadow=true;scene.add(m);};
+      const hs=HOLES.filter(h=>h.d+HR>d&&h.d-HR<e).sort((p,q)=>p.x-q.x);
+      if(!hs.length){piece(-HW,HW,d,e);continue;}
+      const a0=Math.max(d,hs[0].d-HR),a1=Math.min(e,hs[0].d+HR);piece(-HW,HW,d,a0);piece(-HW,HW,a1,e);
+      let x=-HW;for(const h of hs){piece(x,h.x-HR,a0,a1);x=h.x+HR;}piece(x,HW,a0,a1);}
   }
   // Basisboden
   const base=part(G.box,'#f7e7bf',W+16,1,BASE_D,0,-0.5,BASE_D/2,false);base.receiveShadow=true;scene.add(base);
@@ -268,6 +279,17 @@ const sandOut=new THREE.Mesh(new THREE.PlaneGeometry(220,LEN+80),M('#e9cf93'));s
     scene.add(part(G.box,'#5a6b7d',W,0.3,TR_HALF*2,0,-TR_DEPTH-0.15,-d,false));
     scene.add(part(G.box,'#3f4f60',W,TR_DEPTH,0.12,0,-TR_DEPTH/2,-d-TR_HALF+0.06,false),part(G.box,'#3f4f60',W,TR_DEPTH,0.12,0,-TR_DEPTH/2,-d+TR_HALF-0.06,false));
     [-HW+0.4,HW-0.4].forEach(x=>scene.add(part(G.box,'#ffd23f',0.3,0.4,TR_HALF*2+0.4,x,0.2,-d)));
+  });
+  // Unterlöcher: dunkle Grube mit Leiter und leuchtendem Rand
+  HOLES.forEach(h=>{
+    const z=-h.d;
+    scene.add(part(G.box,'#2a3442',HR*2,0.3,HR*2,h.x,-HOLE_DEPTH-0.15,z,false));
+    [[0,-HR+0.06,HR*2,0.12],[0,HR-0.06,HR*2,0.12],[-HR+0.06,0,0.12,HR*2],[HR-0.06,0,0.12,HR*2]].forEach(([dx,dz,sx,sz])=>
+      scene.add(part(G.box,'#3a4656',sx,HOLE_DEPTH,sz,h.x+dx,-HOLE_DEPTH/2,z+dz,false)));
+    [[0,-HR,HR*2+0.5,0.25],[0,HR,HR*2+0.5,0.25],[-HR,0,0.25,HR*2],[HR,0,0.25,HR*2]].forEach(([dx,dz,sx,sz])=>
+      scene.add(part(G.box,'#4de8ff',sx,0.18,sz,h.x+dx,0.09,z+dz,false)));
+    [-0.3,0.3].forEach(o=>scene.add(part(G.box,'#9a6a3a',0.07,HOLE_DEPTH,0.07,h.x+o,-HOLE_DEPTH/2,z+HR-0.15,false)));
+    for(let k=0;k<4;k++)scene.add(part(G.box,'#9a6a3a',0.6,0.06,0.06,h.x,-HOLE_DEPTH+0.4+k*0.6,z+HR-0.15,false));
   });
   // Seitenwände (Dünen + Felsen)
   for(let d=0;d<LEN+4;d+=4){
@@ -363,7 +385,7 @@ let field=[];
 function freeSpot(r){
   const I=RINFO[r];
   for(let k=0;k<40;k++){const d=I.from+2+Math.random()*(I.to-I.from-4);if(TRENCHES.some(tz=>Math.abs(d-tz)<TR_HALF+1))continue;
-    const x=(Math.random()*2-1)*(HW-1.6);if(field.some(f=>Math.hypot(f.x-x,f.z+d)<2.4))continue;return {x,z:-d};}
+    const x=(Math.random()*2-1)*(HW-1.6);if(HOLES.some(h=>Math.abs(h.d-d)<HR+1&&Math.abs(h.x-x)<HR+1))continue;if(field.some(f=>Math.hypot(f.x-x,f.z+d)<2.4))continue;return {x,z:-d};}
   return null;
 }
 function spawnBrain(r,ty){
@@ -408,7 +430,7 @@ function waveTick(dt){
     w.z+=w.sp*dt;w.mesh.position.z=w.z;w.mesh.position.y=Math.sin(performance.now()/300)*0.08;
     for(const e of [player,...bots]){if(w.hitDone.has(e))continue;
       if(e.z<w.z+1&&e.z>w.z-9&&e.z<0.3){
-        if(inTrench(e.z)&&e.y<-1.2){if(e===player&&!w.safeShown){w.safeShown=true;toast(t('safeTrench'),'#7fe0ff');}continue;}
+        if(isSafe(e)){if(e===player&&!w.safeShown){w.safeShown=true;toast(t(inHole(e.x,e.z)?'safeHole':'safeTrench'),'#7fe0ff');}continue;}
         w.hitDone.add(e);washAway(e);}}
     if(w.z>0.5){splash(w.z);scene.remove(w.mesh);waves=waves.filter(x=>x!==w);}
   }
@@ -467,7 +489,7 @@ function botTick(b,bi,dt){
     if(moveTo(b,b.tgt.x,b.tgt.z,dt,7.5)){const f=b.tgt;removeField(f);b.carry={ty:f.ty,mesh:buildBrain(f.ty,0.5)};b.tgt=null;b.state='back';
       if(Math.abs(b.z-player.z)<30)toast(t('botGrab',{n:b.name,b:f.ty.name}),b.shirt);}
     return;}
-  if(b.state==='hide'){const tz=nearestTrench(b.z);moveTo(b,b.x,-tz,dt,8);if(!waves.length&&warn<=0)b.state=b.carry?'back':(field.includes(b.tgt)?'out':'back');return;}
+  if(b.state==='hide'){const sh=nearestShelter(b);moveTo(b,sh.x,sh.z,dt,8);if(!waves.length&&warn<=0)b.state=b.carry?'back':(field.includes(b.tgt)?'out':'back');return;}
   if(b.state==='back'){
     if(danger&&shouldHide(b)&&b.z<-4){b.state='hide';return;}
     const lane=BASES[b.base].x<0?-HW+1.5:HW-1.5;
@@ -476,7 +498,12 @@ function botTick(b,bi,dt){
       b.state='home';b.wait=2+Math.random()*4;}
   }
 }
-function nearestTrench(z){const d=-z;let best=TRENCHES[0];for(const tz of TRENCHES)if(Math.abs(tz-d)<Math.abs(best-d))best=tz;return best;}
+function nearestShelter(b){
+  let best={x:b.x,z:-TRENCHES[0]},bd=1e9;
+  for(const tz of TRENCHES){const d=Math.abs(-tz-b.z);if(d<bd){bd=d;best={x:b.x,z:-tz};}}
+  for(const h of HOLES){const d=Math.hypot(h.x-b.x,-h.d-b.z);if(d<bd){bd=d;best={x:h.x,z:-h.d};}}
+  return best;
+}
 function shouldHide(b){
   const w=waves[0];const timeToBase=(-b.z)/7.5;
   if(!w)return -b.z>40; // Warnung läuft: weit draußen lieber verstecken
@@ -484,7 +511,7 @@ function shouldHide(b){
 }
 function moveTo(e,x,z,dt,sp){
   const dx=x-e.x,dz=z-e.z,d=Math.hypot(dx,dz);if(d<0.25)return true;
-  const st=Math.min(d,sp*dt*(inTrench(e.z)?0.75:1));e.x+=dx/d*st;e.z+=dz/d*st;e.face=Math.atan2(dx,dz);e.moving=1;
+  const st=Math.min(d,sp*dt*(e.y<-0.5?0.75:1));e.x+=dx/d*st;e.z+=dz/d*st;e.face=Math.atan2(dx,dz);e.moving=1;
   if(e.z<0)e.x=Math.max(-HW+0.5,Math.min(HW-0.5,e.x));
   return d<0.4;
 }
@@ -594,6 +621,7 @@ function drawBar(){
   bc.fillStyle='#f2d9a0';bc.fillRect(8,ys(RINFO.common.from),w-16,bot-ys(RINFO.common.from));
   bc.fillStyle='#ff7a45';bc.fillRect(8,bot,w-16,h-bot-6);
   bc.fillStyle='#0b2540';TRENCHES.forEach(d=>bc.fillRect(4,ys(d)-1.5,w-8,3));
+  HOLES.forEach(h=>{bc.fillStyle='#0b2540';bc.fillRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);bc.strokeStyle='#4de8ff';bc.lineWidth=1.5;bc.strokeRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);});
   for(const f of field){bc.fillStyle=f.r==='secret'?'#fff':RINFO[f.r].col;bc.beginPath();bc.arc(w/2+(f.x/HW)*(w/2-12),ys(-f.z),3,0,7);bc.fill();bc.strokeStyle='#0b2540';bc.lineWidth=1;bc.stroke();}
   for(const wv of waves){const y=Math.max(top,ys(-wv.z));bc.fillStyle='#ffffffd0';bc.fillRect(0,y-3,w,6);bc.fillStyle=WAVES[wv.type].col;bc.fillRect(0,top,w,y-top);}
   bots.forEach(b=>{bc.fillStyle=b.shirt;bc.beginPath();bc.arc(w/2+(b.x/(HW+6))*(w/2-10),Math.min(h-12,ys(Math.max(0,-b.z))),5,0,7);bc.fill();});
@@ -610,16 +638,16 @@ function update(dt){
   if(keys.a||keys.arrowleft)ix-=1;if(keys.d||keys.arrowright)ix+=1;if(keys.w||keys.arrowup)iz-=1;if(keys.s||keys.arrowdown)iz+=1;
   if(joy){const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy);if(d>8){ix=dx/Math.max(d,46);iz=dy/Math.max(d,46);}}
   const il=Math.hypot(ix,iz);player.moving=0;
-  if(il>0.05){const n=Math.min(1,il);ix/=il;iz/=il;const sp=speedOf(S.spd)*(inTrench(player.z)&&player.y<-0.5?0.72:1)*n;
+  if(il>0.05){const n=Math.min(1,il);ix/=il;iz/=il;const sp=speedOf(S.spd)*(player.y<-0.5?0.72:1)*n;
     player.x+=ix*sp*dt;player.z+=iz*sp*dt;player.face=Math.atan2(ix,iz);player.moving=1;}
   // Grenzen: Strecke schmal, Basis breiter (aber nicht in fremde Basen)
   if(player.z<0)player.x=Math.max(-HW+0.5,Math.min(HW-0.5,player.x));else player.x=Math.max(-8,Math.min(8,player.x));
   player.z=Math.max(-LEN+1,Math.min(BASE_D-1,player.z));
-  const ty=inTrench(player.z)!==undefined?-TR_DEPTH+0.1:0;player.y+=(ty-player.y)*Math.min(1,dt*10);
+  const ty=groundY(player.x,player.z);player.y+=(ty-player.y)*Math.min(1,dt*10);
   if(player.z>0.5&&player.carry.length)deliver();
   const dist=Math.max(0,Math.round(-player.z));if(dist>S.best+5&&dist>30){if(S.best>0&&Math.floor(dist/50)>Math.floor(S.best/50))toast(t('newBest',{n:dist}),'#7fe0ff');S.best=dist;}
   // Bots
-  bots.forEach((b,i)=>{botTick(b,i,dt);const tyb=inTrench(b.z)!==undefined?-TR_DEPTH+0.1:0;b.y+=(tyb-b.y)*Math.min(1,dt*10);});
+  bots.forEach((b,i)=>{botTick(b,i,dt);const tyb=groundY(b.x,b.z);b.y+=(tyb-b.y)*Math.min(1,dt*10);});
   fieldTick(dt);waveTick(dt);
   // Geld
   S.money+=income()*dt;
@@ -643,14 +671,15 @@ function render(){
   shield.material.opacity=0.1+Math.sin(time*2)*0.04;
   // Kamera
   const cx=player.x*0.6,cy=player.y*0.4;
-  camPos.lerp(new THREE.Vector3(cx,10.5+cy,player.z+13.5),0.12);camera.position.copy(camPos);
-  camLook.lerp(new THREE.Vector3(player.x*0.7,0.8+player.y*0.5,player.z-7),0.15);camera.lookAt(camLook);
+  const low=Math.min(1,Math.max(0,-player.y/2));camPos.lerp(new THREE.Vector3(cx,10.5+cy+low*2,player.z+13.5-low*8),0.12);camera.position.copy(camPos);
+  camLook.lerp(new THREE.Vector3(player.x*(0.7+low*0.3),0.8+player.y*0.5,player.z-7+low*5),0.15);camera.lookAt(camLook);
   sun.position.set(camPos.x-10,30,player.z+12);sun.target.position.set(player.x,0,player.z-8);
   renderer.render(scene,camera);
   // Beschriftungen
   used=0;
   for(const f of field){const d=Math.hypot(f.x-player.x,f.z-player.z);if(d>26)continue;
     lab(`${esc(f.ty.name)}<small>${t('r_'+f.r)} · ${t('perSec',{m:fmt(f.ty.inc)})}</small>`,f.x,2.3,f.z,f.r==='secret'?'#ffffff':RINFO[f.r].col);}
+  for(const h of HOLES){if(Math.abs(-h.d-player.z)<22&&!inHole(player.x,player.z))lab(t('hole'),h.x,1.2,-h.d,'#4de8ff');}
   const nb=nearestBrain();if(nb&&playing)lab(t('pressE'),nb.x,3.2,nb.z,'#ffd23f');
   if(player.z>-6){S.ped.forEach((idx,i)=>{const p=pedPos(0,i);lab(t('perSec',{m:fmt(BRAIN[idx].inc)}),p.x,1.9,p.z,'#ffd23f');});lab(t('baseLabel'),0,4.6,BASE_D/2,'#7fe0ff');
     bots.forEach(b=>lab(t('botBase',{n:b.name}),BASES[b.base].x,3.2,BASE_D/2,b.shirt));}
@@ -693,7 +722,7 @@ RAR.forEach(r=>{for(let k=0;k<RINFO[r].want;k++)spawnBrain(r);});
 refreshPeds();updButtons();resize();
 
 window.__tf={get S(){return S},get player(){return player},get field(){return field},get waves(){return waves},get bots(){return bots},
-  startWave:i=>startWave(i),spawn:r=>spawnBrain(r),grab,deliver,buySpeed,buyCarry,TRENCHES,LEN,BASE_D,inTrench,setNext:s=>{nextWave=s;},get playing(){return playing},get camera(){return camera}};
+  startWave:i=>startWave(i),spawn:r=>spawnBrain(r),grab,deliver,buySpeed,buyCarry,TRENCHES,HOLES,LEN,BASE_D,inTrench,inHole,setNext:s=>{nextWave=s;},get playing(){return playing},get camera(){return camera}};
 requestAnimationFrame(loop);
 })();
 </script>
