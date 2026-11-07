@@ -113,7 +113,8 @@ def test_star_unicorn_shop_buys_and_saves(page, lang):
 @pytest.mark.parametrize('lang', LANGS)
 def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
     """Tsunami-Flucht: grab a brainrot, deliver it to the base (earns money), a wave washes away what you carry,
-    a trench or a hideout hole keeps you safe, upgrades cost money, progress is saved, computer players only fill their own bases."""
+    a trench or a hideout hole keeps you safe, upgrades cost money, progress is saved, computer players only fill their own bases,
+    and sometimes a second wave hides right behind the first one."""
     page.set_storage(age=30)
     pg = page.goto(f'games/tsunami-flucht/{lang}/index.html', 1200)
     start_game(pg)
@@ -141,6 +142,9 @@ def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
         f = T.spawn('common'); b.carry = {ty: f.ty, mesh: f.mesh}; b.state = 'back'; b.z = 16; await wait(1500);
         out.botPed = b.ped.length; out.playerPed = T.S.ped.length;
         out.saved = JSON.parse(localStorage.getItem('tsunami-flucht-v1')).ped.length;
+        T.waves.length = 0; T.follow(0.3); await wait(800);
+        out.followWave = T.waves.length;
+        out.botsMoved = T.bots.some(x => x.state !== 'home' || x.ped.length > 0);
         return out;
     }""")
     assert r['carried'] == 1 and r['afterDeliver'] == 0 and r['ped'] == 1 and r['earned'], r
@@ -149,4 +153,5 @@ def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
     assert r['spd'] == 1 and r['cap'] == 2 and r['money'] == 1000 - 25 - 120, r
     assert r['botPed'] >= 1 and r['playerPed'] == 1, r
     assert r['saved'] == 1, r
+    assert r['followWave'] == 1 and r['botsMoved'], r
     assert not page.errors, page.errors
