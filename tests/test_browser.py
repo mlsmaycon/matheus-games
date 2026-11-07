@@ -108,3 +108,42 @@ def test_star_unicorn_shop_buys_and_saves(page, lang):
     pg.wait_for_timeout(200)
     assert not pg.is_visible('#su-shop')
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
+    """Tsunami-Flucht: grab a brainrot, deliver it to the base (earns money), a wave washes away what you carry,
+    a trench keeps you safe, upgrades cost money, progress is saved, computer players only fill their own bases."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/tsunami-flucht/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(600)
+    r = pg.evaluate("""async () => {
+        const T = window.__tf, pl = T.player, out = {}, wait = ms => new Promise(r => setTimeout(r, ms));
+        T.setNext(999);
+        let f = T.field.find(x => x.r === 'common'); pl.x = f.x; pl.z = f.z; T.grab();
+        out.carried = pl.carry.length;
+        pl.x = 0; pl.z = 3; await wait(300);
+        out.ped = T.S.ped.length; out.afterDeliver = pl.carry.length;
+        const m0 = T.S.money; await wait(1200); out.earned = T.S.money > m0;
+        f = T.field.find(x => x.r === 'rare'); pl.x = f.x; pl.z = f.z; T.grab();
+        T.startWave(4); T.waves[T.waves.length - 1].z = pl.z - 2; await wait(400);
+        out.lostCarry = pl.carry.length; out.backHome = pl.z > 0;
+        const tz = -T.TRENCHES[1]; pl.x = 0; pl.z = tz; await wait(600);
+        T.startWave(2); T.waves[T.waves.length - 1].z = tz - 3; await wait(1500);
+        out.inTrench = pl.z === tz;
+        T.S.money = 1000; T.buySpeed(); T.buyCarry();
+        out.spd = T.S.spd; out.cap = T.S.cap; out.money = Math.round(T.S.money);
+        const b = T.bots[0]; b.state = 'home'; b.wait = 0; T.waves.length = 0;
+        f = T.spawn('common'); b.carry = {ty: f.ty, mesh: f.mesh}; b.state = 'back'; b.z = 16; await wait(1500);
+        out.botPed = b.ped.length; out.playerPed = T.S.ped.length;
+        out.saved = JSON.parse(localStorage.getItem('tsunami-flucht-v1')).ped.length;
+        return out;
+    }""")
+    assert r['carried'] == 1 and r['afterDeliver'] == 0 and r['ped'] == 1 and r['earned'], r
+    assert r['lostCarry'] == 0 and r['backHome'], r
+    assert r['inTrench'], r
+    assert r['spd'] == 1 and r['cap'] == 2 and r['money'] == 1000 - 25 - 120, r
+    assert r['botPed'] >= 1 and r['playerPed'] == 1, r
+    assert r['saved'] == 1, r
+    assert not page.errors, page.errors

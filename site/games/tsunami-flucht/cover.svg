@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset="1" stop-color="#d6f3ff"/></linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3fa8f0"/><stop offset="1" stop-color="#1f62c4"/></linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2d9a0"/><stop offset="1" stop-color="#e2c07a"/></linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#sky)"/>
+  <circle cx="560" cy="62" r="34" fill="#fff3a0"/>
+  <!-- runway -->
+  <polygon points="250,150 390,150 640,400 0,400" fill="url(#sand)"/>
+  <polygon points="250,150 390,150 410,170 230,170" fill="#ffd23f" opacity=".55"/>
+  <polygon points="214,186 426,186 448,208 192,208" fill="#3f4f60"/>
+  <polygon points="150,250 490,250 524,284 116,284" fill="#3f4f60"/>
+  <!-- giant wave -->
+  <path d="M0 150 C80 40 200 10 300 40 C400 70 470 30 560 20 C610 15 640 40 640 60 L640 165 L0 165 Z" fill="url(#wave)"/>
+  <path d="M0 150 C70 60 180 34 280 58 C340 72 360 100 330 118 C300 134 270 112 290 96" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+  <g fill="#fff"><circle cx="420" cy="40" r="14"/><circle cx="446" cy="34" r="11"/><circle cx="520" cy="26" r="13"/><circle cx="600" cy="30" r="12"/><circle cx="120" cy="88" r="13"/></g>
+  <!-- runner -->
+  <g transform="translate(320 300)">
+    <rect x="-22" y="-10" width="16" height="44" rx="5" fill="#2c3e66" transform="rotate(-18 -14 -10)"/>
+    <rect x="6" y="-10" width="16" height="44" rx="5" fill="#2c3e66" transform="rotate(18 14 -10)"/>
+    <rect x="-28" y="-62" width="56" height="56" rx="12" fill="#ff7a45"/>
+    <circle cy="-88" r="26" fill="#f2c9a0"/>
+    <path d="M-26 -92 A26 26 0 0 1 26 -92 Z" fill="#5a3a22"/>
+    <circle cx="-9" cy="-86" r="4" fill="#111"/><circle cx="9" cy="-86" r="4" fill="#111"/>
+    <!-- carried brainrot: pizza penguin -->
+    <g transform="translate(0 -150)">
+      <ellipse rx="26" ry="32" fill="#1d1d24"/>
+      <ellipse cy="6" rx="17" ry="22" fill="#fff"/>
+      <circle cx="-8" cy="-12" r="6" fill="#fff"/><circle cx="8" cy="-12" r="6" fill="#fff"/>
+      <circle cx="-8" cy="-11" r="3" fill="#111"/><circle cx="8" cy="-11" r="3" fill="#111"/>
+      <polygon points="-5,-2 5,-2 0,8" fill="#ff9f2e"/>
+      <polygon points="-22,-32 22,-32 0,-46" fill="#f0c050"/><circle cx="4" cy="-37" r="3" fill="#d8324a"/>
+    </g>
+  </g>
+  <!-- brainrots on the runway -->
+  <g transform="translate(150 350)"><rect x="-24" y="-30" width="48" height="32" rx="8" fill="#d9a05b"/><circle cx="-8" cy="-18" r="5" fill="#fff"/><circle cx="8" cy="-18" r="5" fill="#fff"/><circle cx="-8" cy="-17" r="2.5" fill="#111"/><circle cx="8" cy="-17" r="2.5" fill="#111"/></g>
+  <g transform="translate(470 230)"><circle r="40" fill="#ffd23f" opacity=".35"/><circle r="18" fill="#ff8fc8"/><circle r="7" fill="#f2d9a0"/><circle cy="-22" r="10" fill="#5fbf4a"/></g>
+  <g transform="translate(270 205)"><circle r="26" fill="#b06aff" opacity=".35"/><circle r="11" fill="#4caf50"/><circle cy="2" r="7" fill="#e84a5a"/></g>
+  <!-- shield dome -->
+  <path d="M480 400 A150 90 0 0 1 640 330 L640 400 Z" fill="#7fe0ff" opacity=".35"/>
+</svg>
