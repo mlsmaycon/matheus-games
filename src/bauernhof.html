@@ -120,7 +120,7 @@ const LANG=((window.MW_LANG||document.documentElement.lang||'de')+'').slice(0,2)
 const TXT={
   de:{
     title:'Mein Bauernhof',sub:'Kauf Tiere, füttere sie und verkaufe Eier, Wolle und Milch!',statCoins:'Münzen',statAnimals:'Tiere',statDay:'Tag',
-    intro:'Du hast einen eigenen Bauernhof – aber noch keine Tiere! Geh zum Tierhändler und kauf dir Hühner. Füll ihren Trog mit Futter und Wasser, dann legen sie Eier. Sammle die Eier ein und verkaufe sie im Hofladen. Mit den Münzen kaufst du Schafe, Schweine, Ziegen, Kühe und vielleicht sogar ein Einhorn! Und du kannst deinen Hof verbessern: einen besseren Hofladen, ein größeres Feld, ein größeres Haus.',
+    intro:'Du hast einen eigenen Bauernhof – aber noch keine Tiere! Geh zum Tierhändler und kauf dir Hühner. Füll ihren Trog mit Futter und Wasser, dann legen sie Eier. Sammle die Eier ein und verkaufe sie im Hofladen. Mit den Münzen kaufst du Enten, Schafe, Kaninchen, Schweine, Ziegen, Bienen, Kühe, Alpakas, Pferde, Pfauen und vielleicht sogar ein Einhorn! In jeden Stall passen bis zu 10 Tiere. Und du kannst deinen Hof verbessern: einen besseren Hofladen, ein größeres Feld, ein größeres Haus.',
     go:'Los geht’s',soundOn:'Ton an · M',soundOff:'Ton aus · M',reset:'Neu anfangen',resetSure:'Wirklich? Nochmal klicken',close:'Schließen',
     help:'Je mehr Tiere du hast, desto mehr <b>Besucher</b> kommen tagsüber und bezahlen dich – besonders, wenn deine Tiere satt sind. <b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> benutzt das, wovor du stehst: den <b>Tierhändler</b> (Tiere, Futter und Gehege kaufen), den <b>Brunnen</b> (Eimer mit Wasser füllen), einen <b>Trog</b> (Futter und Wasser hineinfüllen) und das <b>Weizenfeld</b> (säen und ernten – Weizen ist kostenloses Futter). Was deine Tiere machen, sammelst du ein, wenn du drüberläufst. Glückliche Tiere lassen auch <b>Münzen</b> fallen! Im <b>Hofladen</b> wird dein Korb automatisch verkauft. <b>M</b> schaltet den Ton um.',
     noload:'3D konnte nicht geladen werden.',
@@ -131,9 +131,9 @@ const TXT={
     feed10:'10 Futter',feed50:'50 Futter',feedDesc:'Für die Tröge. Du trägst höchstens {m}.',
     basket:'Größerer Korb',basketDesc:'Mehr Sachen tragen: {a} → {b}',bucket:'Größerer Eimer',bucketDesc:'Mehr Wasser tragen: {a} → {b}',
     pony:'Pony',ponyDesc:'Ein Pony läuft mit dir mit – du bist viel schneller!',maxed:'Ganz voll',
-    a_chicken:'Huhn',a_sheep:'Schaf',a_pig:'Schwein',a_goat:'Ziege',a_cow:'Kuh',a_unicorn:'Einhorn',
-    p_chicken:'Hühnerstall',p_sheep:'Schafweide',p_pig:'Schweinestall',p_goat:'Ziegengehege',p_cow:'Kuhstall',p_unicorn:'Einhornwiese',
-    i_egg:'Eier',i_wool:'Wolle',i_truffle:'Trüffel',i_cheese:'Ziegenkäse',i_milk:'Milch',i_dust:'Regenbogenstaub',
+    a_chicken:'Huhn',a_sheep:'Schaf',a_pig:'Schwein',a_goat:'Ziege',a_cow:'Kuh',a_unicorn:'Einhorn',a_duck:'Ente',a_rabbit:'Kaninchen',a_bee:'Bienen',a_alpaca:'Alpaka',a_horse:'Pferd',a_peacock:'Pfau',
+    p_chicken:'Hühnerstall',p_duck:'Ententeich',p_rabbit:'Kaninchenstall',p_bee:'Bienenwiese',p_alpaca:'Alpakaweide',p_horse:'Pferdestall',p_peacock:'Pfauengarten',p_sheep:'Schafweide',p_pig:'Schweinestall',p_goat:'Ziegengehege',p_cow:'Kuhstall',p_unicorn:'Einhornwiese',
+    i_egg:'Eier',i_wool:'Wolle',i_truffle:'Trüffel',i_cheese:'Ziegenkäse',i_milk:'Milch',i_dust:'Regenbogenstaub',i_duckegg:'Enteneier',i_angora:'Kuschelwolle',i_honey:'Honig',i_alpwool:'Alpakawolle',i_shoe:'Glückshufeisen',i_feather:'Pfauenfedern',
     eShop:'E: Tierhändler',eWell:'E: Wasser holen',eTrough:'E: Trog füllen',ePlant:'E: Weizen säen',eHarvest:'E: Ernten',eGrow:'Wächst … {s} s',
     actShop:'Laden',actWell:'Wasser',actTrough:'Füllen',actPlant:'Säen',actHarvest:'Ernten',
     shopSign:'Tierhändler',standSign:'Hofladen',wellSign:'Brunnen',fieldSign:'Weizenfeld',houseSign:'Dein Haus',
@@ -156,7 +156,7 @@ const TXT={
   },
   en:{
     title:'My Farm',sub:'Buy animals, feed them and sell eggs, wool and milk!',statCoins:'Coins',statAnimals:'Animals',statDay:'Day',
-    intro:'You have your own farm – but no animals yet! Go to the animal trader and buy some chickens. Fill their trough with food and water, and they will lay eggs. Collect the eggs and sell them at the farm shop. Use the coins to buy sheep, pigs, goats, cows and maybe even a unicorn! You can also improve your farm: a better farm shop, a bigger field, a bigger house.',
+    intro:'You have your own farm – but no animals yet! Go to the animal trader and buy some chickens. Fill their trough with food and water, and they will lay eggs. Collect the eggs and sell them at the farm shop. Use the coins to buy ducks, sheep, rabbits, pigs, goats, bees, cows, alpacas, horses, peacocks and maybe even a unicorn! Each pen holds up to 10 animals. You can also improve your farm: a better farm shop, a bigger field, a bigger house.',
     go:'Let’s go',soundOn:'Sound on · M',soundOff:'Sound off · M',reset:'Start over',resetSure:'Really? Click again',close:'Close',
     help:'The more animals you have, the more <b>visitors</b> come during the day and pay you – especially when your animals are well fed. <b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> uses whatever you stand in front of: the <b>animal trader</b> (buy animals, food and pens), the <b>well</b> (fill your bucket with water), a <b>trough</b> (pour in food and water) and the <b>wheat field</b> (sow and harvest – wheat is free food). You pick up what your animals make by walking over it. Happy animals also drop <b>coins</b>! At the <b>farm shop</b> your basket is sold automatically. <b>M</b> toggles sound.',
     noload:'3D could not be loaded.',
@@ -167,9 +167,9 @@ const TXT={
     feed10:'10 food',feed50:'50 food',feedDesc:'For the troughs. You can carry up to {m}.',
     basket:'Bigger basket',basketDesc:'Carry more things: {a} → {b}',bucket:'Bigger bucket',bucketDesc:'Carry more water: {a} → {b}',
     pony:'Pony',ponyDesc:'A pony trots along with you – you are much faster!',maxed:'Maxed out',
-    a_chicken:'Chicken',a_sheep:'Sheep',a_pig:'Pig',a_goat:'Goat',a_cow:'Cow',a_unicorn:'Unicorn',
-    p_chicken:'Chicken coop',p_sheep:'Sheep meadow',p_pig:'Pigsty',p_goat:'Goat pen',p_cow:'Cowshed',p_unicorn:'Unicorn meadow',
-    i_egg:'eggs',i_wool:'wool',i_truffle:'truffles',i_cheese:'goat cheese',i_milk:'milk',i_dust:'rainbow dust',
+    a_chicken:'Chicken',a_sheep:'Sheep',a_pig:'Pig',a_goat:'Goat',a_cow:'Cow',a_unicorn:'Unicorn',a_duck:'Duck',a_rabbit:'Rabbit',a_bee:'Bees',a_alpaca:'Alpaca',a_horse:'Horse',a_peacock:'Peacock',
+    p_chicken:'Chicken coop',p_duck:'Duck pond',p_rabbit:'Rabbit hutch',p_bee:'Bee meadow',p_alpaca:'Alpaca meadow',p_horse:'Horse stable',p_peacock:'Peacock garden',p_sheep:'Sheep meadow',p_pig:'Pigsty',p_goat:'Goat pen',p_cow:'Cowshed',p_unicorn:'Unicorn meadow',
+    i_egg:'eggs',i_wool:'wool',i_truffle:'truffles',i_cheese:'goat cheese',i_milk:'milk',i_dust:'rainbow dust',i_duckegg:'duck eggs',i_angora:'fluffy wool',i_honey:'honey',i_alpwool:'alpaca wool',i_shoe:'lucky horseshoes',i_feather:'peacock feathers',
     eShop:'E: Animal trader',eWell:'E: Get water',eTrough:'E: Fill trough',ePlant:'E: Sow wheat',eHarvest:'E: Harvest',eGrow:'Growing … {s} s',
     actShop:'Shop',actWell:'Water',actTrough:'Fill',actPlant:'Sow',actHarvest:'Harvest',
     shopSign:'Animal trader',standSign:'Farm shop',wellSign:'Well',fieldSign:'Wheat field',houseSign:'Your house',
@@ -204,11 +204,19 @@ const SPECIES={
   pig:{price:120,unlock:150,item:'truffle',value:22,period:28,col:'#ffaab8',icon:'🐖'},
   goat:{price:180,unlock:300,item:'cheese',value:32,period:30,col:'#d9b98a',icon:'🐐'},
   cow:{price:300,unlock:600,item:'milk',value:45,period:30,col:'#ffffff',icon:'🐄'},
-  unicorn:{price:3000,unlock:4000,item:'dust',value:350,period:50,col:'#ffffff',icon:'🦄'}
+  unicorn:{price:5000,unlock:8000,item:'dust',value:500,period:50,col:'#ffffff',icon:'🦄'},
+  duck:{price:40,unlock:100,item:'duckegg',value:8,period:15,col:'#ffffff',icon:'🦆'},
+  rabbit:{price:90,unlock:220,item:'angora',value:18,period:24,col:'#d8d8d8',icon:'🐰'},
+  bee:{price:220,unlock:450,item:'honey',value:38,period:30,col:'#ffd23f',icon:'🐝'},
+  alpaca:{price:450,unlock:900,item:'alpwool',value:65,period:32,col:'#f2e2c4',icon:'🦙'},
+  horse:{price:900,unlock:1800,item:'shoe',value:120,period:36,col:'#a8743a',icon:'🐴'},
+  peacock:{price:1800,unlock:3500,item:'feather',value:220,period:40,col:'#2f7fd6',icon:'🦚'}
 };
-const ORDER=['chicken','sheep','pig','goat','cow','unicorn'];
-const PEN_POS={chicken:[-18,-12],sheep:[-18,0],pig:[-18,12],goat:[18,-12],cow:[18,0],unicorn:[18,12]};
-const PW=10,PD=9,CAP0=3,CAP_MAX=8,TROUGH_MAX=20;
+const ORDER=['chicken','duck','sheep','rabbit','pig','goat','bee','cow','alpaca','horse','peacock','unicorn'];
+const PEN_POS={chicken:[-18,-12],sheep:[-18,0],pig:[-18,12],goat:[18,-12],cow:[18,0],unicorn:[18,12],
+  duck:[-32,-12],rabbit:[-32,0],bee:[-32,12],alpaca:[32,-12],horse:[32,0],peacock:[32,12]};
+const FX=40; // der Hof geht von -40 bis 40 (links/rechts)
+const PW=10,PD=9,CAP0=3,CAP_MAX=10,TROUGH_MAX=20;
 const expandCost=s=>Math.round(SPECIES[s].price*1.5*(S.pens[s].cap-CAP0+1));
 const BASKETS=[8,12,16,24,32],BASKET_COST=[60,200,600,2000];
 const BUCKETS=[10,20,40],BUCKET_COST=[80,400];
@@ -267,10 +275,11 @@ function part(geo,mat,sx,sy,sz,x,y,z,shadow){const m=new THREE.Mesh(geo,typeof m
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(200,200),M('#6cbf47'));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
 [[0,4,4,46],[0,4,40,4],[0,22,24,4]].forEach(([x,z,w,d])=>{const p=part(G.box,'#d9b77a',w,0.04,d,x,0.02,z,false);p.receiveShadow=true;scene.add(p);});
 // Zaun außen
-for(let a=-30;a<=30;a+=2.5){[[a,-30],[a,30],[-30,a],[30,a]].forEach(([x,z])=>{if(Math.abs(x)<3&&z===30)return;scene.add(part(G.box,'#a87a4a',0.25,1.2,0.25,x,0.6,z));});}
-[[0,-30,60,0],[-16.5,30,27,0],[16.5,30,27,0],[-30,0,0,60],[30,0,0,60]].forEach(([x,z,w,d])=>{scene.add(part(G.box,'#a87a4a',w||0.12,0.12,d||0.12,x,0.9,z,false),part(G.box,'#a87a4a',w||0.12,0.12,d||0.12,x,0.45,z,false));});
+for(let a=-FX;a<=FX;a+=2.5){[[a,-30],[a,30]].forEach(([x,z])=>{if(Math.abs(x)<3&&z===30)return;scene.add(part(G.box,'#a87a4a',0.25,1.2,0.25,x,0.6,z));});}
+for(let a=-30;a<=30;a+=2.5)[[-FX,a],[FX,a]].forEach(([x,z])=>scene.add(part(G.box,'#a87a4a',0.25,1.2,0.25,x,0.6,z)));
+[[0,-30,FX*2,0],[-(FX+3)/2,30,FX-3,0],[(FX+3)/2,30,FX-3,0],[-FX,0,0,60],[FX,0,0,60]].forEach(([x,z,w,d])=>{scene.add(part(G.box,'#a87a4a',w||0.12,0.12,d||0.12,x,0.9,z,false),part(G.box,'#a87a4a',w||0.12,0.12,d||0.12,x,0.45,z,false));});
 // Bäume außerhalb
-for(let k=0;k<46;k++){const a=k/46*Math.PI*2,r=36+(k*7%5)*2;const x=Math.cos(a)*r,z=Math.sin(a)*r;const g=new THREE.Group();g.position.set(x,0,z);
+for(let k=0;k<46;k++){const a=k/46*Math.PI*2,r=1+(k*7%5)*0.05;const x=Math.cos(a)*(FX+8)*r,z=Math.sin(a)*38*r;const g=new THREE.Group();g.position.set(x,0,z);
   g.add(part(G.cyl,'#7a5230',0.35,2.2,0.35,0,1.1,0),part(G.sph,k%3?'#3f9a3a':'#2f8030',1.8,1.6,1.8,0,3.2,0));scene.add(g);}
 // Haus
 const house=new THREE.Group();
@@ -316,7 +325,9 @@ const penObj={};
 ORDER.forEach(s=>{
   const [px,pz]=PEN_POS[s],side=px<0?1:-1; // Tor zeigt zur Mitte
   const g=new THREE.Group();g.position.set(px,0,pz);
-  const ground=part(G.box,s==='pig'?'#9a7a4e':s==='unicorn'?'#a6e07a':'#7fcc58',PW,0.06,PD,0,0.03,0,false);ground.receiveShadow=true;g.add(ground);
+  const ground=part(G.box,s==='pig'?'#9a7a4e':s==='unicorn'?'#a6e07a':s==='horse'?'#c9b07a':'#7fcc58',PW,0.06,PD,0,0.03,0,false);ground.receiveShadow=true;g.add(ground);
+  if(s==='duck')g.add(part(G.cyl,'#4fa8e8',2.4,0.05,1.8,side*0.5,0.07,1.6,false));
+  if(s==='bee'||s==='peacock')for(let k=0;k<10;k++)g.add(part(G.sph,['#ff5a7a','#ffd23f','#b06aff','#ffffff'][k%4],0.15,0.12,0.15,-3.5+(k%5)*1.7,0.25,-3.6+Math.floor(k/5)*0.5));
   const posts=[];const fence=new THREE.Group();
   const add=(x1,z1,x2,z2)=>{const L=Math.hypot(x2-x1,z2-z1),n=Math.max(1,Math.round(L/1.6));for(let i=0;i<=n;i++){const x=x1+(x2-x1)*i/n,z=z1+(z2-z1)*i/n;fence.add(part(G.box,'#a87a4a',0.2,1.1,0.2,x,0.55,z));}
     [0.4,0.85].forEach(y=>{const r=part(G.box,'#c49563',Math.abs(x2-x1)+0.12,0.1,Math.abs(z2-z1)+0.12,(x1+x2)/2,y,(z1+z2)/2,false);fence.add(r);});};
@@ -359,8 +370,36 @@ const MODEL={
     ['#ff4d4d','#ffe14d','#4fb3ff'].forEach((c,k)=>g.add(part(G.box,c,0.08,0.5,0.12,0,1.1-k*0.08,-0.7-k*0.05,false)));
     eye(g,-0.17,2.1,1.1);eye(g,0.17,2.1,1.1);return legsOf(g,'#ffffff',0.22,0.95,0.95);}
 };
+Object.assign(MODEL,{
+  duck:g=>{g.add(part(G.sph,'#ffffff',0.3,0.26,0.42,0,0.38,0),part(G.sph,'#ffffff',0.17,0.18,0.17,0,0.72,0.25),part(G.box,'#ffa32e',0.16,0.05,0.18,0,0.7,0.44,false),
+    part(G.sph,'#e8e8e8',0.12,0.15,0.22,0,0.45,-0.32));eye(g,-0.09,0.76,0.38);eye(g,0.09,0.76,0.38);
+    return [-0.1,0.1].map(x=>{const l=part(G.cyl,'#ffa32e',0.03,0.18,0.03,x,0.09,0);g.add(l);return l;});},
+  rabbit:g=>{g.add(part(G.sph,'#d8d8d8',0.3,0.28,0.38,0,0.32,0),part(G.sph,'#d8d8d8',0.2,0.2,0.2,0,0.58,0.25),part(G.sph,'#ffffff',0.1,0.1,0.1,0,0.38,-0.38,false));
+    [-1,1].forEach(sd=>{const e=part(G.sph,'#d8d8d8',0.05,0.22,0.08,sd*0.08,0.88,0.2);e.rotation.z=-sd*0.15;g.add(e);g.add(part(G.sph,'#ffb0c0',0.03,0.16,0.04,sd*0.08,0.88,0.24,false));});
+    g.add(part(G.sph,'#ff8fa3',0.03,0.03,0.03,0,0.58,0.45,false));eye(g,-0.08,0.63,0.42);eye(g,0.08,0.63,0.42);return legsOf(g,'#c8c8c8',0.14,0.14,0.14);},
+  bee:g=>{const b=new THREE.Group();b.position.y=1.0;g.add(b);
+    b.add(part(G.sph,'#ffd23f',0.3,0.26,0.4,0,0,0),part(G.box,'#222222',0.62,0.54,0.08,0,0,0.05,false),part(G.box,'#222222',0.62,0.54,0.08,0,0,-0.15,false),part(G.cone,'#222222',0.06,0.15,0.06,0,0,-0.45,false).rotateX(-Math.PI/2));
+    const w=[-1,1].map(sd=>{const m=part(G.sph,new THREE.MeshLambertMaterial({color:'#e8f6ff',transparent:true,opacity:.75}),0.25,0.04,0.15,sd*0.28,0.25,0,false);b.add(m);return m;});
+    eye(b,-0.1,0.08,0.38,1.2);eye(b,0.1,0.08,0.38,1.2);g.add(part(G.cyl,'#c88a2a',0.05,1,0.05,0,0.4,-0.5,false));
+    return w;},
+  alpaca:g=>{g.add(part(G.sph,'#f2e2c4',0.42,0.42,0.6,0,0.95,0),part(G.cyl,'#f2e2c4',0.17,0.75,0.17,0,1.5,0.4),part(G.sph,'#f2e2c4',0.22,0.22,0.3,0,1.92,0.5),
+    part(G.sph,'#ffffff',0.2,0.14,0.2,0,2.12,0.45),part(G.cone,'#d8c8a8',0.05,0.18,0.05,-0.1,2.15,0.42),part(G.cone,'#d8c8a8',0.05,0.18,0.05,0.1,2.15,0.42));
+    eye(g,-0.1,1.97,0.74);eye(g,0.1,1.97,0.74);return legsOf(g,'#d8c8a8',0.2,0.6,0.62);},
+  horse:g=>{g.add(part(G.box,'#a8743a',0.6,0.6,1.3,0,1.25,0),part(G.box,'#a8743a',0.3,0.7,0.35,0,1.75,0.6).rotateX(0.4),part(G.box,'#a8743a',0.32,0.32,0.55,0,2.05,0.95),
+    part(G.box,'#3a2410',0.1,0.6,0.4,0,1.95,0.5,false).rotateX(0.4),part(G.box,'#3a2410',0.1,0.7,0.12,0,1.0,-0.7,false));eye(g,-0.17,2.1,1.1);eye(g,0.17,2.1,1.1);return legsOf(g,'#7a4a20',0.22,0.95,0.95);},
+  peacock:g=>{g.add(part(G.sph,'#2f7fd6',0.26,0.32,0.34,0,0.55,0),part(G.cyl,'#2f7fd6',0.08,0.4,0.08,0,0.95,0.15),part(G.sph,'#2f7fd6',0.13,0.13,0.13,0,1.18,0.18),part(G.cone,'#ffd23f',0.03,0.12,0.03,0,1.36,0.15));
+    for(let k=0;k<9;k++){const a=(k/8-0.5)*2.2;const f=new THREE.Group();f.position.set(0,0.6,-0.2);f.rotation.z=a;f.rotation.x=-0.35;
+      f.add(part(G.box,'#2fae5a',0.12,1.1,0.03,0,0.55,0,false),part(G.sph,'#1f4fb0',0.1,0.1,0.04,0,1.0,0.02,false),part(G.sph,'#ffd23f',0.05,0.05,0.05,0,1.0,0.04,false));g.add(f);}
+    eye(g,-0.07,1.2,0.28);eye(g,0.07,1.2,0.28);return [-0.08,0.08].map(x=>{const l=part(G.cyl,'#8a7a6a',0.025,0.3,0.025,x,0.15,0);g.add(l);return l;});}
+});
 function buildAnimal(s){const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);const L=MODEL[s](g);outer.userData={inner:g,legs:L};scene.add(outer);return outer;}
 const ITEM_MODEL={
+  duckegg:()=>part(G.sph,'#cfe8ff',0.14,0.18,0.14,0,0.18,0),
+  angora:()=>part(G.sph,'#ffe0ec',0.24,0.2,0.24,0,0.2,0),
+  honey:()=>{const g=new THREE.Group();g.add(part(G.cyl,'#f0a020',0.16,0.26,0.16,0,0.13,0),part(G.cyl,'#c8402c',0.17,0.06,0.17,0,0.29,0));return g;},
+  alpwool:()=>part(G.sph,'#f2e2c4',0.3,0.26,0.3,0,0.26,0),
+  shoe:()=>{const m=new THREE.Mesh(new THREE.TorusGeometry(0.18,0.05,6,14,Math.PI*1.4),new THREE.MeshLambertMaterial({color:'#ffd23f',emissive:'#8a6a00',emissiveIntensity:.4}));m.position.y=0.25;m.rotation.z=-Math.PI*0.2;m.castShadow=true;return m;},
+  feather:()=>{const g=new THREE.Group();const f=part(G.box,'#2fae5a',0.06,0.5,0.02,0,0.3,0);f.rotation.z=0.4;g.add(f,part(G.sph,'#1f4fb0',0.08,0.08,0.03,0.08,0.5,0,false));return g;},
   egg:()=>part(G.sph,'#fff8ea',0.13,0.17,0.13,0,0.17,0),
   wool:()=>part(G.sph,'#f4f4f0',0.25,0.22,0.25,0,0.22,0),
   truffle:()=>part(G.ico,'#4a3020',0.18,0.16,0.18,0,0.16,0),
@@ -465,7 +504,7 @@ const sfx={
   buy(){[523,659,784,1047].forEach((f,i)=>tone('triangle',f,null,i*0.07,0.14,0.1));},
   splash(){tone('sine',500,200,0,0.25,0.1);tone('sine',700,300,0.05,0.2,0.06);},
   no(){tone('square',200,140,0,0.18,0.07);},
-  moo(s){const f={chicken:[900,700],sheep:[420,380],pig:[260,180],goat:[480,420],cow:[180,140],unicorn:[1200,1600]}[s];tone(s==='cow'||s==='pig'?'sawtooth':'triangle',f[0],f[1],0,0.35,0.06);},
+  moo(s){const f={chicken:[900,700],sheep:[420,380],pig:[260,180],goat:[480,420],cow:[180,140],unicorn:[1200,1600],duck:[700,500],rabbit:[1400,1600],bee:[220,240],alpaca:[620,560],horse:[700,300],peacock:[1100,700]}[s];tone(s==='cow'||s==='pig'?'sawtooth':'triangle',f[0],f[1],0,0.35,0.06);},
   plant(){tone('sine',300,500,0,0.12,0.08);},
   rooster(){tone('sawtooth',500,900,0,0.18,0.05);tone('sawtooth',900,700,0.18,0.35,0.05);}
 };
@@ -611,7 +650,7 @@ function update(dt){
     if(joy){const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy);if(d>8){ix=dx/Math.max(d,46);iz=dy/Math.max(d,46);}}}
   const il=Math.hypot(ix,iz);player.moving=0;
   if(il>0.05){const n=Math.min(1,il);ix/=il;iz/=il;player.x+=ix*speed()*n*dt;player.z+=iz*speed()*n*dt;player.face=Math.atan2(ix,iz);player.moving=1;}
-  player.x=Math.max(-29,Math.min(29,player.x));player.z=Math.max(-21,Math.min(29,player.z));
+  player.x=Math.max(-FX+1,Math.min(FX-1,player.x));player.z=Math.max(-21,Math.min(29,player.z));
   // Haus, Stände und Brunnen sind fest
   [[0,-25,5.4,3.4],[STAND.x,STAND.z,2.4,1],[SHOP.x,SHOP.z,2.4,1]].forEach(([cx,cz,hx,hz])=>{const dx=player.x-cx,dz=player.z-cz;if(Math.abs(dx)<hx&&Math.abs(dz)<hz){if(hx-Math.abs(dx)<hz-Math.abs(dz))player.x=cx+Math.sign(dx)*hx;else player.z=cz+Math.sign(dz)*hz;}});
   {const dx=player.x-WELL.x,dz=player.z-WELL.z,d=Math.hypot(dx,dz);if(d<1.5&&d>0){player.x=WELL.x+dx/d*1.5;player.z=WELL.z+dz/d*1.5;}}
@@ -684,7 +723,7 @@ function render(){
     if(!D.open){lab(`${t('p_'+s)}<small>${t('lockedPen')} · ${t('coins',{n:SPECIES[s].unlock})}</small>`,P.px,2.6,P.pz,'#ffb35c');return;}
     let sub=D.n?`${D.n}/${D.cap}`:t('emptyPen');
     if(D.n&&D.food<1)sub+=' · '+t('hungry');else if(D.n&&D.water<1)sub+=' · '+t('thirsty');
-    lab(`${t('p_'+s)}<small>${sub}</small>`,P.px,3.4,P.pz-PD/2,(D.n&&(D.food<1||D.water<1))?'#ff8f80':'#ffffff');
+    lab(`${t('p_'+s)}<small>${sub}</small>`,P.px,3.2,P.pz+0.6,(D.n&&(D.food<1||D.water<1))?'#ff8f80':'#ffffff');
     if(Math.hypot(P.trough.x-player.x,P.trough.z-player.z)<9)lab(t('troughInfo',{f:Math.floor(D.food),w:Math.floor(D.water)}),P.trough.x,1.5,P.trough.z,'#ffe9a8');
   });
   const n=playing&&!shopOpen?nearest():null;let act='';

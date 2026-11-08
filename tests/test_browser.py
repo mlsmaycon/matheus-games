@@ -225,3 +225,27 @@ def test_farm_visitors_look_and_pay(page, lang):
     assert r['spawned'] and r['left'], r
     assert r['paid'] >= 5, r
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_farm_more_animals_and_ten_per_pen(page, lang):
+    """Mein Bauernhof: twelve kinds of animals, every pen can grow to 10 animals, new animals make their own goods."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/bauernhof/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(500)
+    r = pg.evaluate("""() => {
+        const B = window.__bh, S = B.S, o = {};
+        o.kinds = Object.keys(B.penObj).length;
+        S.coins = 1e6; B.buildPen('duck');
+        for (let i = 0; i < 25; i++) { if (!B.buyAnimal('duck')) B.expandPen('duck'); }
+        o.ducks = S.pens.duck.n; o.cap = S.pens.duck.cap;
+        o.noMore = !B.expandPen('duck') && !B.buyAnimal('duck');
+        S.feed = 50; S.water = 40; B.fillTrough('duck'); B.tick(20);
+        o.duckEggs = B.items.some(i => i.type === 'duckegg');
+        return o;
+    }""")
+    assert r['kinds'] == 12, r
+    assert r['ducks'] == 10 and r['cap'] == 10 and r['noMore'], r
+    assert r['duckEggs'], r
+    assert not page.errors, page.errors
