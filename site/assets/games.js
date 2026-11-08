@@ -117,8 +117,8 @@ window.MW_GAMES = [
     title: { de: 'Tsunami-Flucht', en: 'Tsunami Escape' },
     tagline: { de: 'Schnapp dir Brainrots – bevor die Welle kommt!', en: 'Grab the brainrots – before the wave hits!' },
     desc: {
-      de: 'Lauf eine lange Strandbahn entlang, schnapp dir Brainrots und bring sie in deine Basis, wo sie jede Sekunde Geld verdienen. Je weiter weg, desto seltener: von gewöhnlich bis himmlisch. Immer wieder rollt eine riesige Welle heran – versteck dich in einem Graben oder renn zurück. Deine Basis hat einen Schutzschild, niemand kann dir etwas stehlen. Mit dem Geld kaufst du mehr Tempo und mehr Tragen.',
-      en: 'Run along a long beach runway, grab brainrots and bring them to your base, where they earn money every second. The farther out, the rarer they are: from common to celestial. Again and again a giant wave rolls in – hide in a trench or run back. Your base has a shield, so nobody can steal from you. Spend your money on more speed and more carrying.'
+      de: 'Lauf eine lange Strandbahn entlang, schnapp dir Brainrots und bring sie in deine Basis, wo sie jede Sekunde Geld verdienen. Je weiter weg, desto seltener: 13 Zonen von gewöhnlich bis unendlich. Immer wieder rollt eine riesige Welle heran – versteck dich in einem Graben oder renn zurück. Deine Basis hat einen Schutzschild, niemand kann dir etwas stehlen. Mit dem Geld kaufst du mehr Tempo und mehr Tragen.',
+      en: 'Run along a long beach runway, grab brainrots and bring them to your base, where they earn money every second. The farther out, the rarer they are: 13 zones from common to infinity. Again and again a giant wave rolls in – hide in a trench or run back. Your base has a shield, so nobody can steal from you. Spend your money on more speed and more carrying.'
     },
     tags: { de: ['3D', 'Brainrot', 'Sammeln', 'Ton an'], en: ['3D', 'Brainrot', 'Collecting', 'Sound on'] },
     fskReason: {
