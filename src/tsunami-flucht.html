@@ -171,7 +171,7 @@ document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data
 if(!window.THREE){$('hMoney').textContent=t('noload');return;}
 
 /* ---------- Welt (Meter): Basis bei z>0, Strecke Richtung -z ---------- */
-const W=18,HW=W/2,LEN=3400,BASE_D=24; // die Welt ist 3400 m lang
+const W=18,HW=W/2,LEN=13400,BASE_D=24; // die Welt ist 13,4 km lang
 const RAR=['common','uncommon','rare','epic','legendary','mythic','cosmic','secret','celestial','divine','rainbow','galactic','fire','ice','thunder','jungle','lava','ocean','crystal','shadow','golden','diamond','candy','robot','magic','dragon','stardust','nebula','quantum','mega','ultra','omega','infinity'];
 const LAST=RAR[RAR.length-1]; // die letzte Zone: dort taucht nur ab und zu ein Brainrot auf
 const RINFO={
@@ -209,6 +209,18 @@ const RINFO={
   omega:{col:'#ff00aa',inc:1085987000,from:3200,to:3300,want:1,resp:49},
   infinity:{col:'#19ffb0',inc:2000000000,from:3300,to:3396,want:0,resp:0}
 };
+// 100 weitere Zonen: 5 Stufen × die 20 Themen-Zonen (Super-Feuer, Hyper-Eis, …)
+const THEMES=['fire','ice','thunder','jungle','lava','ocean','crystal','shadow','golden','diamond','candy','robot','magic','dragon','stardust','nebula','quantum','mega','ultra','omega'];
+const TIERS=[['super','Super','Super'],['hyper','Hyper','Hyper'],['turbo','Turbo','Turbo'],['giga','Giga','Giga'],['max','Max','Max']];
+const TIER_ZONES=[];
+(()=>{let inc=RINFO.omega.inc,d=RINFO.omega.to;
+  TIERS.forEach(([tk],ti)=>THEMES.forEach(th=>{
+    const c=new THREE.Color(RINFO[th].col),h={};c.getHSL(h);c.setHSL((h.h+0.07*(ti+1))%1,Math.min(1,h.s+0.1),Math.min(0.8,Math.max(0.3,h.l+(ti%2?0.08:-0.06))));
+    inc=Math.round(inc*1.6);const key=tk+'_'+th;
+    RINFO[key]={col:'#'+c.getHexString(),inc,from:d,to:d+100,want:1,resp:40+ti*4,tier:ti,theme:th};d+=100;TIER_ZONES.push(key);}));
+  RAR.splice(RAR.length-1,0,...TIER_ZONES);
+  RINFO.infinity.from=d;RINFO.infinity.to=d+96;RINFO.infinity.inc=Math.round(inc*2);
+})();
 const TRENCHES=[];for(let d=34;d<LEN-6;d+=36)TRENCHES.push(d);
 const TR_HALF=1.6,TR_DEPTH=2.1;
 const inTrench=z=>{const d=-z;return TRENCHES.find(tz=>Math.abs(d-tz)<TR_HALF-0.25);};
@@ -258,10 +270,14 @@ const BRAIN=[ // [name, rarity, income factor, builder]
   ['Ultrasonico','ultra',1],['Turbotto','ultra',1.3],
   ['Omegalodon','omega',1],['Finalissimo','omega',1.3]
 ].map(([name,r,f],i)=>({i,name,r,inc:Math.round(RINFO[r].inc*f)}));
+// Brainrots der 100 Stufen-Zonen: Stufenname + Brainrot der Themen-Zone (z. B. „Super Fiammetto“)
+function typesOf0(r){return BRAIN.filter(b=>b.r===r);}
+TIER_ZONES.forEach(key=>{const I=RINFO[key];typesOf0(I.theme).forEach((b,n)=>BRAIN.push({i:BRAIN.length,name:TIERS[I.tier][1]+' '+b.name,r:key,inc:Math.round(I.inc*(n?1.3:1))}));});
+TIER_ZONES.forEach(key=>{const I=RINFO[key],[,de,en]=TIERS[I.tier];TXT.de['r_'+key]=de+'-'+TXT.de['r_'+I.theme];TXT.en['r_'+key]=en+' '+TXT.en['r_'+I.theme];});
 const typesOf=r=>BRAIN.filter(b=>b.r===r);
 
 /* ---------- Geld ---------- */
-function fmt(n){n=Math.floor(n);if(n<1000)return '$'+n;const u=['K','M','B','T'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++;}return '$'+(n<10?n.toFixed(2):n<100?n.toFixed(1):Math.floor(n))+u[i];}
+function fmt(n){n=Math.floor(n);if(n<1000)return '$'+n;const u=['K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc','Ud','Dd','Td','Qd'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++;}return '$'+(n<10?n.toFixed(2):n<100?n.toFixed(1):Math.floor(n))+u[i];}
 const SPEED0=7,SPEED_STEP=1.25; // kein Maximum: man kann für immer schneller werden
 const speedOf=l=>SPEED0+l*SPEED_STEP;
 const speedCost=l=>Math.round(25*Math.pow(1.6,l));
@@ -308,7 +324,7 @@ function glow(size,color,op){const s=new THREE.Sprite(new THREE.SpriteMaterial({
 // Meer hinter dem Ende, Sand außen
 const seaMat=new THREE.MeshLambertMaterial({color:'#2f9be0'});
 const sea=new THREE.Mesh(new THREE.PlaneGeometry(400,200),seaMat);sea.rotation.x=-Math.PI/2;sea.position.set(0,-0.4,-LEN-100);scene.add(sea);
-[-1,1].forEach(sd=>{const sandOut=new THREE.Mesh(new THREE.PlaneGeometry(110-HW,LEN+80),M('#e9cf93'));sandOut.rotation.x=-Math.PI/2;sandOut.position.set(sd*(HW+(110-HW)/2),-0.02,-LEN/2+20);sandOut.receiveShadow=true;scene.add(sandOut);});
+[-1,1].forEach(sd=>{const sandOut=new THREE.Mesh(new THREE.PlaneGeometry(110-HW,LEN+80),M('#e9cf93'));sandOut.rotation.x=-Math.PI/2;sandOut.position.set(sd*(HW+(110-HW)/2),-0.02,-LEN/2+20);sandOut.receiveShadow=true;sandOut.userData.keep=1;scene.add(sandOut);});
 // Strecke: Abschnitte zwischen den Gräben, eingefärbt nach Zone
 (()=>{
   const cuts=[-BASE_D,0,...TRENCHES.flatMap(d=>[d-TR_HALF,d+TR_HALF]),LEN];
@@ -355,6 +371,12 @@ const sea=new THREE.Mesh(new THREE.PlaneGeometry(400,200),seaMat);sea.rotation.x
 })();
 // Zonen-Schilder
 RAR.forEach(r=>{const d=RINFO[r].from;[-1,1].forEach(s=>{const p=part(G.box,RINFO[r].col,0.2,1.6,1.2,s*(HW-0.3),1.8,-d);scene.add(p);scene.add(part(G.cyl,'#7a5a3a',0.08,1.2,0.08,s*(HW-0.3),0.6,-d));});});
+// Die Strecke in 100-m-Stücke aufteilen; nur die Stücke um dich herum werden gezeichnet
+const CHUNK=100,chunks=[];
+scene.children.slice().forEach(o=>{if(o.isLight||o===sea||o===sun.target||o.userData.keep)return;const d=-o.position.z;if(d<0)return;
+  const c=Math.floor(d/CHUNK);(chunks[c]||(chunks[c]=new THREE.Group())).add(o);});
+chunks.forEach(g=>g&&scene.add(g));
+function showChunks(){const pd=-player.z;chunks.forEach((g,c)=>{if(g)g.visible=c*CHUNK<pd+270&&(c+1)*CHUNK>pd-150;});}
 
 /* ---------- Basen (Spieler + 2 Computer) mit Podesten ---------- */
 const BASES=[{x:0,name:null,col:'#ff7a45'},{x:-HW-4.5,name:'Lena',col:'#d84a8a'},{x:HW+4.5,name:'Tom',col:'#3fa84a'}];
@@ -466,7 +488,7 @@ function buildBrain(ty,scale){
   const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
   const L=(BUILD[ty.name]?BUILD[ty.name](g):genBuild(g,ty.i,RINFO[ty.r].col))||[];
   const ri=RAR.indexOf(ty.r);
-  if(ri>=3){const gl=glow(2.4+ri*0.2,darkCol(RINFO[ty.r].col)?0x7a5aff:new THREE.Color(RINFO[ty.r].col).getHex(),0.55);gl.position.y=0.9;outer.add(gl);}
+  if(ri>=3){const gl=glow(2.4+Math.min(ri,12)*0.2,darkCol(RINFO[ty.r].col)?0x7a5aff:new THREE.Color(RINFO[ty.r].col).getHex(),0.55);gl.position.y=0.9;outer.add(gl);}
   outer.scale.setScalar(scale||1);outer.userData={inner:g,legs:L,ty};scene.add(outer);return outer;
 }
 
@@ -539,6 +561,7 @@ function waveTick(dt){
         if(isSafe(e)){if(e===player&&!w.safeShown){w.safeShown=true;toast(t(inHole(e.x,e.z)?'safeHole':'safeTrench'),'#7fe0ff');}continue;}
         w.hitDone.add(e);washAway(e);}}
     if(w.z>0.5){splash(w.z);scene.remove(w.mesh);waves=waves.filter(x=>x!==w);}
+    else if(w.z<-60&&[player,...bots].every(e=>e.z<w.z-12)){scene.remove(w.mesh);waves=waves.filter(x=>x!==w);} // an allen vorbei: weg
   }
 }
 const drops=[];
@@ -737,8 +760,9 @@ function drawBar(){
   RAR.forEach(r=>{const I=RINFO[r];if(r==='rainbow'){const n=7,hgt=(ys(I.from)-ys(I.to))/n;for(let k=0;k<n;k++){bc.fillStyle=`hsl(${k/n*360},85%,60%)`;bc.fillRect(8,ys(I.to)+k*hgt,w-16,hgt+0.5);}return;}bc.fillStyle=I.col;bc.fillRect(8,ys(I.to),w-16,ys(I.from)-ys(I.to));});
   bc.fillStyle='#f2d9a0';bc.fillRect(8,ys(RINFO.common.from),w-16,bot-ys(RINFO.common.from));
   bc.fillStyle='#ff7a45';bc.fillRect(8,bot,w-16,h-bot-6);
-  bc.fillStyle='#0b2540';TRENCHES.forEach(d=>bc.fillRect(4,ys(d)-1.5,w-8,3));
-  HOLES.forEach(h=>{bc.fillStyle='#0b2540';bc.fillRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);bc.strokeStyle='#4de8ff';bc.lineWidth=1.5;bc.strokeRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);});
+  const dense=(bot-top)/LEN*36<6; // bei sehr langer Welt keine Gräben/Löcher in der Leiste
+  if(!dense){bc.fillStyle='#0b2540';TRENCHES.forEach(d=>bc.fillRect(4,ys(d)-1.5,w-8,3));}
+  if(!dense)HOLES.forEach(h=>{bc.fillStyle='#0b2540';bc.fillRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);bc.strokeStyle='#4de8ff';bc.lineWidth=1.5;bc.strokeRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);});
   for(const f of field){bc.fillStyle=labCol(f.r);bc.beginPath();bc.arc(w/2+(f.x/HW)*(w/2-12),ys(-f.z),3,0,7);bc.fill();bc.strokeStyle='#0b2540';bc.lineWidth=1;bc.stroke();}
   for(const wv of waves){const y=Math.max(top,ys(-wv.z));bc.fillStyle='#ffffffd0';bc.fillRect(0,y-3,w,6);bc.fillStyle=WAVES[wv.type].col;bc.fillRect(0,top,w,y-top);}
   bots.forEach(b=>{bc.fillStyle=b.shirt;bc.beginPath();bc.arc(w/2+(b.x/(HW+6))*(w/2-10),Math.min(h-12,ys(Math.max(0,-b.z))),5,0,7);bc.fill();});
@@ -786,6 +810,7 @@ function render(){
   for(const f of field){f.mesh.position.y=0.15+Math.abs(Math.sin(time*2+f.bob))*0.25;f.mesh.rotation.y+=0.01;f.mesh.userData.legs.forEach((l,i)=>l.rotation.x=Math.sin(time*8+f.bob+i)*0.4);}
   pedModels.forEach((m,i)=>{m.userData.inner.position.y=Math.abs(Math.sin(time*2+i))*0.12;});
   shield.material.opacity=0.1+Math.sin(time*2)*0.04;
+  showChunks();
   // Kamera
   const cx=player.x*0.6,cy=player.y*0.4;
   const low=Math.min(1,Math.max(0,-player.y/2));camPos.lerp(new THREE.Vector3(cx,10.5+cy+low*2,player.z+13.5-low*8),0.12);camera.position.copy(camPos);
