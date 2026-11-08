@@ -249,3 +249,20 @@ def test_farm_more_animals_and_ten_per_pen(page, lang):
     assert r['ducks'] == 10 and r['cap'] == 10 and r['noMore'], r
     assert r['duckEggs'], r
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_farm_loads_old_save_without_new_animals(page, lang):
+    """Mein Bauernhof: a save from before the new animals (only six pens) must still load instead of showing a black screen."""
+    page.set_storage(age=30)
+    page.pg.evaluate("""() => localStorage.setItem('bauernhof-v1', JSON.stringify({coins: 2875, feed: 0, water: 0, basketLv: 0, bucketLv: 0, pony: false,
+        standLv: 0, fieldLv: 0, houseLv: 0, tap: false, time: 50, day: 1, tips: 2, plots: [{st: 0, t: 0}],
+        pens: {chicken: {open: true, cap: 3, n: 1, food: 9, water: 9}, sheep: {open: true, cap: 3, n: 1, food: 0, water: 0},
+               pig: {open: false, cap: 3, n: 0, food: 0, water: 0}, goat: {open: false, cap: 3, n: 0, food: 0, water: 0},
+               cow: {open: false, cap: 3, n: 0, food: 0, water: 0}, unicorn: {open: false, cap: 3, n: 0, food: 0, water: 0}}}))""")
+    pg = page.goto(f'games/bauernhof/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(500)
+    r = pg.evaluate("() => ({coins: window.__bh.S.coins, sheep: window.__bh.S.pens.sheep.n, duck: window.__bh.S.pens.duck.n})")
+    assert r == {'coins': 2875, 'sheep': 1, 'duck': 0}, r
+    assert not page.errors, page.errors

@@ -241,7 +241,7 @@ let store=null;try{store=window.localStorage;store.getItem(KEY);}catch(e){store=
 function fresh(){const pens={};ORDER.forEach(s=>pens[s]={open:s==='chicken',cap:CAP0,n:0,food:0,water:0});
   return {coins:30,feed:10,water:0,basketLv:0,bucketLv:0,pony:false,standLv:0,fieldLv:0,houseLv:0,tap:false,pens,plots:PLOTS.map(()=>({st:0,t:0})),time:DAY_LEN*0.3,day:1,tips:0};}
 let S=fresh();
-try{const s=store&&JSON.parse(store.getItem(KEY)||'null');if(s&&typeof s.coins==='number'&&s.pens){const f=fresh();S=Object.assign(f,s);ORDER.forEach(k=>S.pens[k]=Object.assign(f.pens[k],s.pens[k]||{}));S.plots=PLOTS.map((_,i)=>Object.assign({st:0,t:0},(s.plots||[])[i]||{}));}}catch(e){}
+try{const s=store&&JSON.parse(store.getItem(KEY)||'null');if(s&&typeof s.coins==='number'&&s.pens){const f=fresh(),fp=f.pens;S=Object.assign(f,s);S.pens={};ORDER.forEach(k=>S.pens[k]=Object.assign(fp[k],s.pens[k]||{}));S.plots=PLOTS.map((_,i)=>Object.assign({st:0,t:0},(s.plots||[])[i]||{}));}}catch(e){S=fresh();} // kaputter Spielstand: lieber neu anfangen als schwarzer Bildschirm
 function save(){try{store&&store.setItem(KEY,JSON.stringify(S));}catch(e){}}
 const basketCap=()=>BASKETS[S.basketLv];
 const bucketCap=()=>BUCKETS[S.bucketLv];
