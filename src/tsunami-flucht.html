@@ -121,7 +121,7 @@ const TXT={
     upSpeed:'Schneller · 1',upCarry:'Mehr tragen · 2',actBtn:'Schnappen',sellBtn:'Verkaufen',
     help:'Manchmal versteckt sich hinter einer Welle noch eine zweite – erst raus, wenn alles vorbei ist! <b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> schnappt einen Brainrot. <b>1</b> kauft mehr Tempo, <b>2</b> mehr Tragen, <b>M</b> schaltet den Ton um. Die Leiste rechts zeigt die ganze Strecke: unten deine Basis, oben das Meer, blau die Wellen. In den dunklen <b>Gräben</b> und in den blauen <b>Unterlöchern</b> rollt die Welle über dich hinweg. Brainrots in der Basis verdienen Geld, auch wenn du nicht spielst. Stell dich in der Basis neben einen Brainrot und drück zweimal <b>E</b>, dann <b>verkaufst</b> du ihn.',
     noload:'3D konnte nicht geladen werden.',
-    r_common:'Gewöhnlich',r_uncommon:'Ungewöhnlich',r_rare:'Selten',r_epic:'Episch',r_legendary:'Legendär',r_mythic:'Mythisch',r_cosmic:'Kosmisch',r_secret:'Geheim',r_celestial:'Himmlisch',r_divine:'Göttlich',r_rainbow:'Regenbogen',r_galactic:'Galaktisch',r_infinity:'Unendlich',
+    r_common:'Gewöhnlich',r_uncommon:'Ungewöhnlich',r_rare:'Selten',r_epic:'Episch',r_legendary:'Legendär',r_mythic:'Mythisch',r_cosmic:'Kosmisch',r_secret:'Geheim',r_celestial:'Himmlisch',r_divine:'Göttlich',r_rainbow:'Regenbogen',r_galactic:'Galaktisch',r_fire:'Feuer',r_ice:'Eis',r_thunder:'Donner',r_jungle:'Dschungel',r_lava:'Lava',r_ocean:'Ozean',r_crystal:'Kristall',r_shadow:'Schatten',r_golden:'Gold',r_diamond:'Diamant',r_candy:'Süßigkeiten',r_robot:'Roboter',r_magic:'Zauber',r_dragon:'Drachen',r_stardust:'Sternenstaub',r_nebula:'Sternennebel',r_quantum:'Quanten',r_mega:'Mega',r_ultra:'Ultra',r_omega:'Omega',r_infinity:'Unendlich',
     zone:'{r}-Zone',baseZone:'Deine Basis',beach:'Meer',
     waveIn:'Welle in {s} s',waveNow:'Welle: {w}!',waveBig:'WELLE KOMMT!',waveGo:'Lauf! In einen Graben, ein Unterloch oder zur Basis!',waveBehind:'NOCH EINE WELLE!',waveBehindTip:'Achtung! Hinter der Welle hat sich noch eine versteckt. Bleib im Loch!',
     w0:'Superlangsam',w1:'Langsam',w2:'Mittel',w3:'Schnell',w4:'Blitz',
@@ -146,7 +146,7 @@ const TXT={
     upSpeed:'Faster · 1',upCarry:'Carry more · 2',actBtn:'Grab',sellBtn:'Sell',
     help:'Sometimes a second wave hides behind the first one – only come out when it is all over! <b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> grabs a brainrot. <b>1</b> buys more speed, <b>2</b> more carrying, <b>M</b> toggles sound. The bar on the right shows the whole runway: your base at the bottom, the sea at the top, waves in blue. In the dark <b>trenches</b> and the blue <b>hideout holes</b> the wave rolls right over you. Brainrots in your base earn money, even while you are away. Stand next to a brainrot in your base and press <b>E</b> twice to <b>sell</b> it.',
     noload:'3D could not be loaded.',
-    r_common:'Common',r_uncommon:'Uncommon',r_rare:'Rare',r_epic:'Epic',r_legendary:'Legendary',r_mythic:'Mythic',r_cosmic:'Cosmic',r_secret:'Secret',r_celestial:'Celestial',r_divine:'Divine',r_rainbow:'Rainbow',r_galactic:'Galactic',r_infinity:'Infinity',
+    r_common:'Common',r_uncommon:'Uncommon',r_rare:'Rare',r_epic:'Epic',r_legendary:'Legendary',r_mythic:'Mythic',r_cosmic:'Cosmic',r_secret:'Secret',r_celestial:'Celestial',r_divine:'Divine',r_rainbow:'Rainbow',r_galactic:'Galactic',r_fire:'Fire',r_ice:'Ice',r_thunder:'Thunder',r_jungle:'Jungle',r_lava:'Lava',r_ocean:'Ocean',r_crystal:'Crystal',r_shadow:'Shadow',r_golden:'Golden',r_diamond:'Diamond',r_candy:'Candy',r_robot:'Robot',r_magic:'Magic',r_dragon:'Dragon',r_stardust:'Stardust',r_nebula:'Nebula',r_quantum:'Quantum',r_mega:'Mega',r_ultra:'Ultra',r_omega:'Omega',r_infinity:'Infinity',
     zone:'{r} zone',baseZone:'Your base',beach:'Sea',
     waveIn:'Wave in {s} s',waveNow:'Wave: {w}!',waveBig:'WAVE INCOMING!',waveGo:'Run! Into a trench, a hideout hole or back to base!',waveBehind:'ANOTHER WAVE!',waveBehindTip:'Watch out! Another wave was hiding behind the first one. Stay in your hole!',
     w0:'Super slow',w1:'Slow',w2:'Medium',w3:'Fast',w4:'Lightning',
@@ -171,8 +171,8 @@ document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data
 if(!window.THREE){$('hMoney').textContent=t('noload');return;}
 
 /* ---------- Welt (Meter): Basis bei z>0, Strecke Richtung -z ---------- */
-const W=18,HW=W/2,LEN=1400,BASE_D=24; // die Welt ist 1400 m lang
-const RAR=['common','uncommon','rare','epic','legendary','mythic','cosmic','secret','celestial','divine','rainbow','galactic','infinity'];
+const W=18,HW=W/2,LEN=3400,BASE_D=24; // die Welt ist 3400 m lang
+const RAR=['common','uncommon','rare','epic','legendary','mythic','cosmic','secret','celestial','divine','rainbow','galactic','fire','ice','thunder','jungle','lava','ocean','crystal','shadow','golden','diamond','candy','robot','magic','dragon','stardust','nebula','quantum','mega','ultra','omega','infinity'];
 const LAST=RAR[RAR.length-1]; // die letzte Zone: dort taucht nur ab und zu ein Brainrot auf
 const RINFO={
   common:{col:'#c7ced6',inc:2,from:12,to:120,want:9,resp:3},
@@ -187,7 +187,27 @@ const RINFO={
   divine:{col:'#ffffff',inc:13000,from:1000,to:1100,want:2,resp:24},
   rainbow:{col:'#ff5fd2',inc:35000,from:1100,to:1200,want:1,resp:28},
   galactic:{col:'#6b4dff',inc:90000,from:1200,to:1300,want:1,resp:32},
-  infinity:{col:'#19ffb0',inc:250000,from:1300,to:1396,want:0,resp:0}
+  fire:{col:'#ff5a1f',inc:144000,from:1300,to:1400,want:1,resp:30},
+  ice:{col:'#a8eaff',inc:230000,from:1400,to:1500,want:1,resp:31},
+  thunder:{col:'#ffe600',inc:368000,from:1500,to:1600,want:1,resp:32},
+  jungle:{col:'#2fae4a',inc:589000,from:1600,to:1700,want:1,resp:33},
+  lava:{col:'#d8321a',inc:942000,from:1700,to:1800,want:1,resp:34},
+  ocean:{col:'#1f7fd6',inc:1507000,from:1800,to:1900,want:1,resp:35},
+  crystal:{col:'#c9a8ff',inc:2411000,from:1900,to:2000,want:1,resp:36},
+  shadow:{col:'#3a3550',inc:3858000,from:2000,to:2100,want:1,resp:37},
+  golden:{col:'#ffc800',inc:6173000,from:2100,to:2200,want:1,resp:38},
+  diamond:{col:'#7ff5ff',inc:9877000,from:2200,to:2300,want:1,resp:39},
+  candy:{col:'#ff8fc8',inc:15803000,from:2300,to:2400,want:1,resp:40},
+  robot:{col:'#9aa7b4',inc:25285000,from:2400,to:2500,want:1,resp:41},
+  magic:{col:'#b84dff',inc:40456000,from:2500,to:2600,want:1,resp:42},
+  dragon:{col:'#c0182e',inc:64730000,from:2600,to:2700,want:1,resp:43},
+  stardust:{col:'#ffe9a8',inc:103568000,from:2700,to:2800,want:1,resp:44},
+  nebula:{col:'#ff6ab0',inc:165709000,from:2800,to:2900,want:1,resp:45},
+  quantum:{col:'#00e0c0',inc:265134000,from:2900,to:3000,want:1,resp:46},
+  mega:{col:'#ff3d3d',inc:424214000,from:3000,to:3100,want:1,resp:47},
+  ultra:{col:'#7a00ff',inc:678742000,from:3100,to:3200,want:1,resp:48},
+  omega:{col:'#ff00aa',inc:1085987000,from:3200,to:3300,want:1,resp:49},
+  infinity:{col:'#19ffb0',inc:2000000000,from:3300,to:3396,want:0,resp:0}
 };
 const TRENCHES=[];for(let d=34;d<LEN-6;d+=36)TRENCHES.push(d);
 const TR_HALF=1.6,TR_DEPTH=2.1;
@@ -215,7 +235,28 @@ const BRAIN=[ // [name, rarity, income factor, builder]
   ['Angelonio','divine',1],['Campanello','divine',1.3],
   ['Arcobalenino','rainbow',1],['Prismazzo','rainbow',1.3],
   ['Alienizza','galactic',1],['Razzolino','galactic',1.3],
-  ['Infinitron','infinity',1],['Dragocosmo','infinity',1.3]
+  ['Infinitron','infinity',1],['Dragocosmo','infinity',1.3],
+  // 20 weitere Zonen (Modelle werden aus Bausteinen zusammengesetzt)
+  ['Fiammetto','fire',1],['Pepperoncino','fire',1.3],
+  ['Ghiacciolo','ice',1],['Igloolino','ice',1.3],
+  ['Fulminello','thunder',1],['Tuonarossa','thunder',1.3],
+  ['Scimmiotto','jungle',1],['Bananito','jungle',1.3],
+  ['Vulcanino','lava',1],['Magmazzo','lava',1.3],
+  ['Polpetto','ocean',1],['Balenona','ocean',1.3],
+  ['Cristallo Gatto','crystal',1],['Gemmolino','crystal',1.3],
+  ['Ombrello Ninja','shadow',1],['Pipistrellino','shadow',1.3],
+  ['Lingottino','golden',1],['Corona Rana','golden',1.3],
+  ['Diamantello','diamond',1],['Brillantino','diamond',1.3],
+  ['Lollipoppo','candy',1],['Gommosauro','candy',1.3],
+  ['Robottino','robot',1],['Ingranaggio','robot',1.3],
+  ['Magicello','magic',1],['Pozionetta','magic',1.3],
+  ['Draghetto','dragon',1],['Fuocodrago','dragon',1.3],
+  ['Stellina Volante','stardust',1],['Polverino','stardust',1.3],
+  ['Nebulosa Medusa','nebula',1],['Cometino','nebula',1.3],
+  ['Atomino','quantum',1],['Quarkello','quantum',1.3],
+  ['Megapizza','mega',1],['Gigantoro','mega',1.3],
+  ['Ultrasonico','ultra',1],['Turbotto','ultra',1.3],
+  ['Omegalodon','omega',1],['Finalissimo','omega',1.3]
 ].map(([name,r,f],i)=>({i,name,r,inc:Math.round(RINFO[r].inc*f)}));
 const typesOf=r=>BRAIN.filter(b=>b.r===r);
 
@@ -303,8 +344,8 @@ const sea=new THREE.Mesh(new THREE.PlaneGeometry(400,200),seaMat);sea.rotation.x
     for(let k=0;k<4;k++)scene.add(part(G.box,'#9a6a3a',0.6,0.06,0.06,h.x,-HOLE_DEPTH+0.4+k*0.6,z+HR-0.15,false));
   });
   // Seitenwände (Dünen + Felsen)
-  for(let d=0;d<LEN+4;d+=4){
-    [-1,1].forEach(s=>{const h=2.2+Math.sin(d*0.37+s)*0.6;scene.add(part(G.box,d<0?'#e2c788':'#d8b878',1.4,h,4.05,s*(HW+0.7),h/2-0.2,-d-2));});
+  for(let d=0;d<LEN+8;d+=8){
+    [-1,1].forEach(s=>{const h=2.2+Math.sin(d*0.37+s)*0.6;scene.add(part(G.box,d<0?'#e2c788':'#d8b878',1.4,h,8.05,s*(HW+0.7),h/2-0.2,-d-4));});
   }
   // Palmen außen
   for(let d=-10;d<LEN;d+=17){[-1,1].forEach(s=>{const g=new THREE.Group();g.position.set(s*(HW+4+Math.random()*4),0,-d-Math.random()*6);
@@ -393,11 +434,39 @@ const BUILD={
   Sternello:g=>{const st=part(G.oct,new THREE.MeshLambertMaterial({color:'#ffd23f',emissive:'#a87a00',emissiveIntensity:.5}),0.6,0.6,0.25,0,1.0,0);g.add(st);
     for(let k=0;k<5;k++){const a=k/5*Math.PI*2;const sp=part(G.cone,'#ffd23f',0.15,0.45,0.1,Math.sin(a)*0.6,1.0+Math.cos(a)*0.6,0);sp.rotation.z=-a;g.add(sp);}eyes(g,1.05,0.22);return legs(g,'#ffd23f',2,0.2);}
 };
+// Baukasten für die vielen neuen Brainrots: Körper + Zubehör + Farben, je nach Nummer verschieden
+function genBuild(g,k,c1){
+  const base=new THREE.Color(c1),hsl={};base.getHSL(hsl);
+  const c2='#'+new THREE.Color().setHSL((hsl.h+0.45)%1,Math.max(0.5,hsl.s),Math.min(0.75,hsl.l+0.15)).getHexString();
+  const mat=new THREE.MeshLambertMaterial({color:c1,emissive:c1,emissiveIntensity:0.15});
+  const shape=k%6;let top=1.4;
+  if(shape===0)g.add(part(G.sph,mat,0.5,0.55,0.5,0,0.9,0));
+  else if(shape===1)g.add(part(G.box,mat,0.85,0.8,0.65,0,0.9,0));
+  else if(shape===2){g.add(part(G.cone,mat,0.5,1.1,0.5,0,1.0,0));top=1.55;}
+  else if(shape===3){const t=part(G.torus,mat,0.48,0.48,0.6,0,0.9,0);g.add(t);}
+  else if(shape===4)g.add(part(G.cyl,mat,0.42,0.9,0.42,0,0.9,0));
+  else {g.add(part(G.oct,mat,0.55,0.7,0.55,0,0.95,0));top=1.65;}
+  g.add(part(G.sph,c2,0.26,0.3,0.12,0,0.78,0.42,false)); // Bauch
+  const acc=(k*5+Math.floor(k/6))%8;
+  if(acc===0){for(let i=0;i<5;i++){const a=i/5*Math.PI*2;g.add(part(G.cone,'#ffd23f',0.07,0.22,0.07,Math.cos(a)*0.22,top+0.08,Math.sin(a)*0.22));}g.add(part(G.cyl,'#ffd23f',0.26,0.08,0.26,0,top-0.04,0,false));}
+  else if(acc===1)[-1,1].forEach(s=>{const h=part(G.cone,c2,0.08,0.4,0.08,s*0.25,top+0.1,0);h.rotation.z=-s*0.4;g.add(h);});
+  else if(acc===2){const h=part(G.torus,new THREE.MeshBasicMaterial({color:'#fff3a0'}),0.3,0.3,0.12,0,top+0.3,0,false);h.rotation.x=Math.PI/2;g.add(h);}
+  else if(acc===3)[-1,1].forEach(s=>{const w=part(G.sph,'#ffffff',0.42,0.16,0.22,s*0.65,1.05,-0.15);w.rotation.z=s*0.6;g.add(w);});
+  else if(acc===4)g.add(part(G.cyl,'#555d6a',0.03,0.4,0.03,0,top+0.15,0),part(G.sph,c2,0.1,0.1,0.1,0,top+0.38,0,false));
+  else if(acc===5)g.add(part(G.cyl,'#1d1d24',0.3,0.05,0.3,0,top-0.02,0),part(G.cyl,'#1d1d24',0.2,0.38,0.2,0,top+0.18,0));
+  else if(acc===6)for(let i=0;i<4;i++)g.add(part(G.cone,c2,0.09,0.3,0.09,0,top-0.05,-0.15*i+0.15).rotateX(-0.5));
+  else {const pr=part(G.box,c2,0.9,0.04,0.12,0,top+0.25,0,false);g.add(pr,part(G.cyl,'#555d6a',0.03,0.25,0.03,0,top+0.12,0));}
+  eyes(g,1.02,shape===3?0.3:0.45,0.9);
+  if(k%4===1)g.add(part(G.box,'#111111',0.55,0.1,0.06,0,1.04,0.5,false)); // Sonnenbrille
+  return legs(g,c2,k%3===0?4:2,0.24);
+}
+const darkCol=c=>{const x=new THREE.Color(c);return 0.2126*x.r+0.7152*x.g+0.0722*x.b<0.25;};
+const labCol=r=>darkCol(RINFO[r].col)?'#ffffff':RINFO[r].col;
 function buildBrain(ty,scale){
   const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
-  const L=BUILD[ty.name](g)||[];
+  const L=(BUILD[ty.name]?BUILD[ty.name](g):genBuild(g,ty.i,RINFO[ty.r].col))||[];
   const ri=RAR.indexOf(ty.r);
-  if(ri>=3){const gl=glow(2.4+ri*0.2,RINFO[ty.r].col==='#1d1d24'?0x7a5aff:new THREE.Color(RINFO[ty.r].col).getHex(),0.55);gl.position.y=0.9;outer.add(gl);}
+  if(ri>=3){const gl=glow(2.4+ri*0.2,darkCol(RINFO[ty.r].col)?0x7a5aff:new THREE.Color(RINFO[ty.r].col).getHex(),0.55);gl.position.y=0.9;outer.add(gl);}
   outer.scale.setScalar(scale||1);outer.userData={inner:g,legs:L,ty};scene.add(outer);return outer;
 }
 
@@ -434,7 +503,7 @@ function fieldTick(dt){
   for(const r of RAR){if(r===LAST)continue;const have=field.filter(f=>f.r===r).length;
     if(have<RINFO[r].want){respawn[r]-=dt;if(respawn[r]<=0){spawnBrain(r);respawn[r]=RINFO[r].resp*(0.7+Math.random()*0.6);}}}
   celestialT-=dt;
-  if(celestialT<=0){celestialT=150+Math.random()*60;if(!field.some(f=>f.r===LAST)){spawnBrain(LAST);celestialLife=150;toast(t('celestial'),RINFO[LAST].col);sfx.magic();}}
+  if(celestialT<=0){celestialT=150+Math.random()*60;if(!field.some(f=>f.r===LAST)){spawnBrain(LAST);celestialLife=240;toast(t('celestial'),RINFO[LAST].col);sfx.magic();}}
   if(celestialLife>0){celestialLife-=dt;if(celestialLife<=0){const c=field.find(f=>f.r===LAST);if(c){removeField(c);toast(t('celestialGone'),'#c9d6e2');}}}
 }
 
@@ -456,7 +525,7 @@ function buildWave(type){
   if(type===4)for(let k=0;k<4;k++){const b=part(G.box,new THREE.MeshBasicMaterial({color:'#fff36a'}),0.12,2.5,0.12,-6+k*4,6.5,0,false);b.rotation.z=0.5;g.add(b);}
   scene.add(g);return g;
 }
-function startWave(type){const w={type,z:-LEN-14,mesh:buildWave(type),hitDone:new Set(),sp:WAVES[type].sp};w.mesh.position.set(0,0,w.z);waves.push(w);wavesDone++;sfx.whoosh();}
+function startWave(type){const far=Math.min(player.z,...bots.map(b=>b.z));const w={type,z:Math.max(-LEN-14,far-400),mesh:buildWave(type),hitDone:new Set(),sp:WAVES[type].sp};w.mesh.position.set(0,0,w.z);waves.push(w);wavesDone++;sfx.whoosh();}
 function waveTick(dt){
   if(warn>0){warn-=dt;if(warn<=0){startWave(warnType);
       // Manchmal versteckt sich eine zweite Welle direkt dahinter – ohne Sirene!
@@ -670,7 +739,7 @@ function drawBar(){
   bc.fillStyle='#ff7a45';bc.fillRect(8,bot,w-16,h-bot-6);
   bc.fillStyle='#0b2540';TRENCHES.forEach(d=>bc.fillRect(4,ys(d)-1.5,w-8,3));
   HOLES.forEach(h=>{bc.fillStyle='#0b2540';bc.fillRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);bc.strokeStyle='#4de8ff';bc.lineWidth=1.5;bc.strokeRect(w/2+(h.x/HW)*(w/2-12)-4,ys(h.d)-4,8,8);});
-  for(const f of field){bc.fillStyle=f.r==='secret'?'#fff':RINFO[f.r].col;bc.beginPath();bc.arc(w/2+(f.x/HW)*(w/2-12),ys(-f.z),3,0,7);bc.fill();bc.strokeStyle='#0b2540';bc.lineWidth=1;bc.stroke();}
+  for(const f of field){bc.fillStyle=labCol(f.r);bc.beginPath();bc.arc(w/2+(f.x/HW)*(w/2-12),ys(-f.z),3,0,7);bc.fill();bc.strokeStyle='#0b2540';bc.lineWidth=1;bc.stroke();}
   for(const wv of waves){const y=Math.max(top,ys(-wv.z));bc.fillStyle='#ffffffd0';bc.fillRect(0,y-3,w,6);bc.fillStyle=WAVES[wv.type].col;bc.fillRect(0,top,w,y-top);}
   bots.forEach(b=>{bc.fillStyle=b.shirt;bc.beginPath();bc.arc(w/2+(b.x/(HW+6))*(w/2-10),Math.min(h-12,ys(Math.max(0,-b.z))),5,0,7);bc.fill();});
   bc.fillStyle='#ffffff';bc.strokeStyle='#0b2540';bc.lineWidth=3;bc.beginPath();bc.arc(w/2+(player.x/HW)*(w/2-12),Math.min(h-12,ys(Math.max(0,-player.z))),9,0,7);bc.fill();bc.stroke();
@@ -726,7 +795,7 @@ function render(){
   // Beschriftungen
   used=0;
   for(const f of field){const d=Math.hypot(f.x-player.x,f.z-player.z);if(d>26)continue;
-    lab(`${esc(f.ty.name)}<small>${t('r_'+f.r)} · ${t('perSec',{m:fmt(f.ty.inc)})}</small>`,f.x,2.3,f.z,f.r==='secret'?'#ffffff':RINFO[f.r].col);}
+    lab(`${esc(f.ty.name)}<small>${t('r_'+f.r)} · ${t('perSec',{m:fmt(f.ty.inc)})}</small>`,f.x,2.3,f.z,labCol(f.r));}
   for(const h of HOLES){if(Math.abs(-h.d-player.z)<22&&!inHole(player.x,player.z))lab(t('hole'),h.x,1.2,-h.d,'#4de8ff');}
   const nb=nearestBrain();if(nb&&playing)lab(t('pressE'),nb.x,3.2,nb.z,'#ffd23f');
   const np=playing?nearestPed():-1;
@@ -744,7 +813,7 @@ function render(){
   else if(waves.length){hw.textContent=t('waveNow',{w:t('w'+waves[0].type)});hw.classList.add('danger');}
   else{hw.textContent=t('waveIn',{s:Math.ceil(nextWave+4)});hw.classList.remove('danger');}
   const d=-player.z,zr=d<0?'base':rarityAt(d)||'common';
-  $('zone').textContent=zr==='base'?t('baseZone'):t('zone',{r:t('r_'+zr)});$('zone').style.color=zr==='base'?'#7fe0ff':(zr==='secret'?'#ffffff':RINFO[zr].col);
+  $('zone').textContent=zr==='base'?t('baseZone'):t('zone',{r:t('r_'+zr)});$('zone').style.color=zr==='base'?'#7fe0ff':labCol(zr);
   $('sMoney').textContent=fmt(S.money);$('sIncome').textContent=fmt(income());$('sBest').textContent=t('m',{n:S.best});
   updButtons();drawBar();
   renderer.domElement.style.filter=flash>0?`brightness(${1+flash})`:'';
