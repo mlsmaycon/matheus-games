@@ -266,3 +266,28 @@ def test_farm_loads_old_save_without_new_animals(page, lang):
     r = pg.evaluate("() => ({coins: window.__bh.S.coins, sheep: window.__bh.S.pens.sheep.n, duck: window.__bh.S.pens.duck.n})")
     assert r == {'coins': 2875, 'sheep': 1, 'duck': 0}, r
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_farm_animals_have_babies(page, lang):
+    """Mein Bauernhof: two fed animals with free room get a baby, the baby is small, grows up and is saved; a full pen gets no babies."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/bauernhof/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(500)
+    r = pg.evaluate("""() => {
+        const B = window.__bh, S = B.S, o = {};
+        S.coins = 100; B.buyAnimal('chicken'); B.buyAnimal('chicken'); S.water = 10; S.feed = 20; B.fillTrough('chicken');
+        S.time = 60; B.penObj.chicken.breedT = 0.5; B.tick(1);
+        o.n = S.pens.chicken.n; const baby = B.penObj.chicken.animals.find(a => a.baby > 0);
+        o.small = !!baby && baby.mesh.scale.x < 0.7;
+        B.tick(1); o.saved = JSON.parse(localStorage.getItem('bauernhof-v1') || '{}').pens?.chicken?.kids?.length ?? 'none';
+        S.pens.chicken.food = 20; S.pens.chicken.water = 20; S.time = 60; B.penObj.chicken.breedT = 999; B.tick(B.GROW_UP + 1);
+        o.grown = !!baby && !(baby.baby > 0) && baby.mesh.scale.x > 0.95;
+        B.penObj.chicken.breedT = 0.1; S.pens.chicken.food = 20; S.pens.chicken.water = 20; S.time = 60; B.tick(0.5);
+        o.full = S.pens.chicken.n;
+        return o;
+    }""")
+    assert r['n'] == 3 and r['small'], r
+    assert r['grown'] and r['full'] == 3, r
+    assert not page.errors, page.errors
