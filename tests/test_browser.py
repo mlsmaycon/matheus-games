@@ -162,3 +162,66 @@ def test_tsunami_escape_grab_deliver_wave_and_trench(page, lang):
     assert r['sellAsked'] and r['sold'], r
     assert r['noLimit'], r
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_farm_buy_feed_collect_sell_and_improve(page, lang):
+    """Mein Bauernhof: buy chickens, fill the trough, animals produce, items are collected and sold at the farm shop, happy animals drop coins,
+    pens can be built, the farm can be improved (shop level raises prices), the shop panel opens, progress is saved."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/bauernhof/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(500)
+    r = pg.evaluate("""() => {
+        const B = window.__bh, S = B.S, o = {};
+        o.bought = B.buyAnimal('chicken') && B.buyAnimal('chicken');
+        o.poor = !B.buyAnimal('chicken');
+        S.water = 10; o.filled = B.fillTrough('chicken');
+        B.tick(20); o.items = B.items.length;
+        for (const it of B.items.slice()) { B.player.x = it.x; B.player.z = it.z; B.tick(0.1); }
+        o.basket = B.basket.length;
+        const before = S.coins; B.player.x = B.STAND.x; B.player.z = B.STAND.z + 1.5; B.tick(0.1);
+        o.earned = S.coins - before; o.basketAfter = B.basket.length;
+        S.water = 10; B.fillTrough('chicken'); const a0 = B.penObj.chicken.animals[0]; if (a0.coin) a0.coin = null; a0.ct = 0; B.tick(0.1);
+        const coin = B.items.find(x => x.type === 'coin'); o.coinDropped = !!coin;
+        if (coin) { const c1 = S.coins; B.player.x = coin.x; B.player.z = coin.z; B.tick(0.1); o.coinValue = S.coins - c1; }
+        S.coins = 10000;
+        o.pen = B.buildPen('sheep') && B.buyAnimal('sheep');
+        o.improved = B.upgradeFarm('stand') && B.upgradeFarm('house') && B.upgradeFarm('field') && B.upgradeFarm('tap');
+        B.player.x = B.STAND.x; B.player.z = B.STAND.z + 1.5;
+        B.basket.push({type: 'egg', value: 4}); const c0 = S.coins; B.tick(0.1); o.boosted = S.coins - c0;
+        B.player.x = B.SHOP.x; B.player.z = B.SHOP.z + 1.5; B.tick(0.1); B.use(); o.shop = B.shopOpen && !!document.querySelector('#shopList button');
+        B.closeShop();
+        const saved = JSON.parse(localStorage.getItem('bauernhof-v1'));
+        o.saved = saved.pens.chicken.n === 2 && saved.pens.sheep.open && saved.standLv === 1;
+        return o;
+    }""")
+    assert r['bought'] and r['poor'] and r['filled'], r
+    assert r['items'] >= 2 and r['basket'] >= 2, r
+    assert r['earned'] >= 8 and r['basketAfter'] == 0, r
+    assert r['coinDropped'] and r['coinValue'] >= 2, r
+    assert r['pen'] and r['improved'] and r['boosted'] == 5, r
+    assert r['shop'] and r['saved'], r
+    assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_farm_visitors_look_and_pay(page, lang):
+    """Mein Bauernhof: visitors walk in through the gate, look at pens with animals and pay when they leave."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/bauernhof/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(500)
+    r = pg.evaluate("""() => {
+        const B = window.__bh, S = B.S, o = {};
+        B.buyAnimal('chicken'); S.water = 10; B.fillTrough('chicken');
+        o.none = B.visitors.length;
+        const v = B.spawnVisitor(); o.spawned = !!v && B.visitors.length === 1;
+        const c0 = S.coins; B.player.x = -25; B.player.z = -18;
+        for (let i = 0; i < 60 && B.visitors.includes(v); i++) B.tick(1);
+        o.left = !B.visitors.includes(v); o.paid = S.coins - c0;
+        return o;
+    }""")
+    assert r['spawned'] and r['left'], r
+    assert r['paid'] >= 5, r
+    assert not page.errors, page.errors

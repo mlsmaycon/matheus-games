@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd0ff"/><stop offset="1" stop-color="#d8f0ff"/></linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fcc58"/><stop offset="1" stop-color="#4f9e33"/></linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#sky)"/>
+  <circle cx="560" cy="64" r="32" fill="#fff3a0"/>
+  <g fill="#fff"><ellipse cx="120" cy="70" rx="46" ry="16"/><ellipse cx="150" cy="60" rx="30" ry="16"/><ellipse cx="380" cy="50" rx="40" ry="13"/></g>
+  <path d="M0 210 Q160 170 320 200 T640 190 L640 400 L0 400 Z" fill="url(#grass)"/>
+  <!-- barn -->
+  <g transform="translate(400 120)">
+    <rect x="0" y="60" width="170" height="110" fill="#c8402c"/>
+    <polygon points="-12,62 85,0 182,62" fill="#8a2618"/>
+    <rect x="58" y="100" width="54" height="70" fill="#f4e6c8"/>
+    <path d="M58 100 L112 170 M112 100 L58 170" stroke="#c8402c" stroke-width="6"/>
+    <rect x="70" y="70" width="30" height="22" fill="#f4e6c8"/>
+  </g>
+  <!-- fence -->
+  <g stroke="#a87a4a" stroke-width="7" stroke-linecap="round">
+    <path d="M20 300 L620 300 M20 324 L620 324"/>
+    <path d="M40 290 V340 M110 290 V340 M180 290 V340 M250 290 V340 M320 290 V340 M390 290 V340 M460 290 V340 M530 290 V340 M600 290 V340"/>
+  </g>
+  <!-- cow -->
+  <g transform="translate(150 230)">
+    <rect x="-60" y="-34" width="120" height="62" rx="14" fill="#fff"/>
+    <ellipse cx="-20" cy="-14" rx="18" ry="12" fill="#222"/><ellipse cx="30" cy="6" rx="14" ry="10" fill="#222"/>
+    <rect x="-52" y="22" width="12" height="34" fill="#fff"/><rect x="-26" y="22" width="12" height="34" fill="#fff"/><rect x="18" y="22" width="12" height="34" fill="#fff"/><rect x="42" y="22" width="12" height="34" fill="#fff"/>
+    <rect x="52" y="-56" width="46" height="44" rx="10" fill="#fff"/>
+    <rect x="58" y="-24" width="38" height="16" rx="7" fill="#ffc8c8"/>
+    <circle cx="66" cy="-42" r="4" fill="#111"/><circle cx="86" cy="-42" r="4" fill="#111"/>
+    <path d="M56 -56 L48 -70 M94 -56 L102 -70" stroke="#f2e2c4" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="0" cy="30" rx="14" ry="8" fill="#ffb0c0"/>
+  </g>
+  <!-- chicken -->
+  <g transform="translate(330 268)">
+    <ellipse rx="26" ry="22" fill="#fff"/><circle cx="18" cy="-22" r="13" fill="#fff"/>
+    <path d="M14 -36 q4 -8 8 0 q4 -8 8 0" fill="#e8322e"/><polygon points="30,-24 42,-20 30,-16" fill="#ffa32e"/><circle cx="22" cy="-24" r="2.5" fill="#111"/>
+    <path d="M-6 20 V34 M6 20 V34" stroke="#ffa32e" stroke-width="4"/>
+  </g>
+  <!-- egg + sheep -->
+  <ellipse cx="380" cy="292" rx="9" ry="12" fill="#fff8ea"/>
+  <g transform="translate(540 262)" fill="#f4f4f0"><circle r="24"/><circle cx="-20" cy="-6" r="16"/><circle cx="20" cy="-8" r="16"/><circle cy="-20" r="16"/><ellipse cx="30" cy="-2" rx="11" ry="13" fill="#2a2a2a"/></g>
+  <!-- coins -->
+  <g fill="#ffd23f" stroke="#c99a10" stroke-width="3"><circle cx="70" cy="360" r="16"/><circle cx="100" cy="368" r="16"/><circle cx="84" cy="342" r="16"/></g>
+</svg>

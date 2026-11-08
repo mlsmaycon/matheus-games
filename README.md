@@ -35,6 +35,7 @@ cd dist && python3 -m http.server 8000    # play at http://localhost:8000
 | Nachtburg / Night Fort | [de](https://mycraftgames.com/games/nachtburg/de/) | [en](https://mycraftgames.com/games/nachtburg/en/) | 6 |
 | Sternen-Einhorn / Star Unicorn | [de](https://mycraftgames.com/games/sternen-einhorn/de/) | [en](https://mycraftgames.com/games/sternen-einhorn/en/) | 0 |
 | Tsunami-Flucht / Tsunami Escape | [de](https://mycraftgames.com/games/tsunami-flucht/de/) | [en](https://mycraftgames.com/games/tsunami-flucht/en/) | 6 |
+| Mein Bauernhof / My Farm | [de](https://mycraftgames.com/games/bauernhof/de/) | [en](https://mycraftgames.com/games/bauernhof/en/) | 0 |
 
 **Brainrot-Raub:** buy creatures off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
@@ -49,6 +50,8 @@ cd dist && python3 -m http.server 8000    # play at http://localhost:8000
 **Sternen-Einhorn:** a 2D canvas game (no three.js). Fly a unicorn through space with mouse, finger or arrow keys, catch stars and coins and dodge meteors (a hit only knocks two stars away). With enough stars the unicorn flies home and the rainbow grows one band; seven trips complete it. Coins buy dress-up items in the Unicorn Shop (8 tabs: body colours, manes, horns, wings, outfits including tutu and dresses, hats, shoes including roller blades, and stuffed-animal buddies that ride on the unicorn's back), with a try-on preview. Coins and items are saved in `sternen-einhorn-v1`.
 
 **Tsunami-Flucht:** inspired by "Escape Tsunami for Brainrots". Run down a 13.9 km beach runway with 138 rarity zones (the last 100 are Super/Hyper/Turbo/Giga/Max tiers of 20 themes; only the stretch around the player is drawn) (common to ultimate; five zones beyond Infinity; the last zone only spawns a brainrot now and then), grab brainrots and carry them back to your base, where each one earns money per second (also while away, at half rate for up to 2 hours). Waves of five speeds roll in regularly after a siren, starting 400 m beyond the farthest runner; hide in the trenches every 36 m or get washed back to base and lose what you carry. Money buys speed and carrying capacity, with no upper limit. Brainrots in the base can be sold (press E twice next to the pedestal). Hideout holes between the trenches also protect you, and sometimes a second wave follows the first without a siren. The base has a shield: nobody can steal your brainrots. Two computer players (Lena and Tom) collect for their own bases. Saved in `tsunami-flucht-v1`.
+
+**Mein Bauernhof:** farm game. Start with 30 coins and no animals; buy chickens, sheep, pigs, goats, cows and a unicorn at the animal trader, build and enlarge their pens, fill troughs with food (bought or grown in the wheat field) and water (from the well), collect what the animals make and sell it at the farm shop. Farm improvements: shop level (+25 % price each), bigger wheat field, bigger house (morning coin bonus), water pipe; plus bigger basket and bucket and a pony for speed. Day/night cycle. Saved in `bauernhof-v1`. Visitors walk in during the day, look at the pens and pay more when the animals are fed.
 
 ## How the site works
 

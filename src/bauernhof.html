@@ -1,0 +1,719 @@
+<title>Mein Bauernhof</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<script>window.MW_LANG='de';</script>
+<style>
+/* Layout: farm column – coin strip, 3D farmyard seen from above, shop panel slides over the yard, buttons below. Look: meadow green, barn red, straw yellow. */
+:root{
+  --grass:#5fae3f;
+  --grass-dark:#2f6e22;
+  --barn:#c8402c;
+  --barn-dark:#8a2618;
+  --straw:#f4cf5c;
+  --ink:#2a2216;
+  --panel:#fffaf0;
+  --muted:#6b5a3e;
+  --display:"Arial Rounded MT Bold","SF Pro Rounded",ui-rounded,"Trebuchet MS",system-ui,sans-serif;
+  --body:ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+html,body{background:#e8f4d4;color:var(--ink)}
+body{font-family:var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 28px}
+.app{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,46px);line-height:1;margin:0;color:var(--barn);text-shadow:3px 3px 0 #fff;letter-spacing:.5px;text-wrap:balance}
+h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;color:var(--muted);text-shadow:none;margin-top:8px}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:var(--panel);border-radius:12px;padding:6px 12px;min-width:84px}
+.stat span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:800}
+.stat b{font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.stage{position:relative;border-radius:18px;overflow:hidden;box-shadow:0 0 0 4px #fff,0 14px 40px #2a221640;aspect-ratio:16/10;max-width:100%;background:#9fd6ff;touch-action:none;user-select:none;-webkit-user-select:none}
+@media (max-width:640px){.stage{aspect-ratio:4/5}}
+.stage canvas{display:block;width:100%;height:100%}
+#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lb{position:absolute;left:0;top:0;white-space:nowrap;font-family:var(--display);font-weight:800;font-size:12px;color:#fff;-webkit-text-stroke:3px #2a2216;paint-order:stroke fill;will-change:transform;text-align:center;line-height:1.15}
+.lb small{display:block;font-size:11px}
+.hud{position:absolute;left:10px;right:10px;top:10px;display:flex;gap:6px;pointer-events:none;flex-wrap:wrap}
+.pill{background:#2a2216e0;color:#fff;border-radius:999px;padding:5px 12px;font-family:var(--display);font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+.pill.coins{color:#ffd23f}
+.pill.clock{margin-left:auto}
+#joy{position:absolute;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;background:#ffffff50;pointer-events:none}
+#joy i{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:#ffffffc0}
+#act{position:absolute;right:14px;bottom:14px;min-width:84px;height:84px;padding:0 10px;border-radius:42px;border:0;background:var(--barn);color:#fff;font-family:var(--display);font-weight:800;font-size:14px;box-shadow:0 5px 0 var(--barn-dark);cursor:pointer;line-height:1.1}
+#act:active{transform:translateY(3px);box-shadow:0 2px 0 var(--barn-dark)}
+#act[hidden]{display:none}
+#toasts{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;width:64%}
+.toast{background:#2a2216ee;color:#fff;font-weight:800;font-size:14px;padding:7px 14px;border-radius:999px;border:2px solid var(--c,#ffd23f);animation:pop .25s ease-out;text-align:center}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;background:#f4fbe8ec;text-align:center;overflow:auto}
+.screen h2{font-family:var(--display);font-weight:800;font-size:clamp(32px,6vw,54px);margin:0;color:var(--barn);text-shadow:3px 3px 0 #fff;text-wrap:balance}
+.screen p{margin:0;max-width:58ch;font-size:16px;line-height:1.5}
+.go{font-family:var(--display);font-weight:800;font-size:22px;border:0;border-radius:16px;padding:14px 30px;cursor:pointer;background:var(--barn);color:#fff;box-shadow:0 5px 0 var(--barn-dark)}
+.go:active{transform:translateY(3px);box-shadow:0 2px 0 var(--barn-dark)}
+#shop{position:absolute;left:10px;right:10px;top:50px;bottom:10px;background:var(--panel);border-radius:16px;box-shadow:0 10px 30px #2a221660;display:flex;flex-direction:column;overflow:hidden;max-width:620px;margin:0 auto}
+#shop header{padding:12px 14px;background:var(--barn);color:#fff;align-items:center;flex-wrap:nowrap}
+#shop h3{margin:0;font-family:var(--display);font-size:20px}
+#shop .x{border:0;background:#ffffff30;color:#fff;font-weight:800;font-size:18px;width:36px;height:36px;border-radius:50%;cursor:pointer;flex:none}
+#shopList{overflow:auto;padding:10px 12px 14px;display:flex;flex-direction:column;gap:8px}
+#shopList h4{margin:8px 0 0;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.row{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:8px 10px;border:2px solid #f0e3c6}
+.row .ic{font-size:26px;width:34px;text-align:center;flex:none}
+.row .tx{flex:1;min-width:0;font-size:13px;line-height:1.35}
+.row .tx b{font-size:15px;display:block}
+.row button{flex:none;border:0;border-radius:10px;padding:8px 10px;font-family:var(--display);font-weight:800;font-size:13px;color:#fff;background:var(--grass-dark);box-shadow:0 3px 0 #1d4715;cursor:pointer;min-width:96px}
+.row button:disabled{background:#b9ad95;box-shadow:0 3px 0 #8d8270;cursor:default}
+.row button.lock{background:#b07a1c;box-shadow:0 3px 0 #7a520e}
+.controls{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-weight:800;font-size:16px;border:0;border-radius:14px;padding:10px 16px;cursor:pointer;color:#fff;background:var(--grass-dark);box-shadow:0 4px 0 #1d4715;flex:1 1 150px}
+.btn.alt{background:#7d6a4d;box-shadow:0 4px 0 #574830}
+.btn:active{transform:translateY(3px)}
+.btn:focus-visible,.go:focus-visible,#act:focus-visible,.row button:focus-visible,#shop .x:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.help{margin:0;color:var(--muted);font-size:14px;line-height:1.55;max-width:80ch}
+.help b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.toast{animation:none}}
+</style>
+
+<div class="app">
+  <header>
+    <h1>Mein Bauernhof<small data-t="sub">Kauf Tiere, füttere sie und verkaufe Eier, Wolle und Milch!</small></h1>
+    <div class="stats">
+      <div class="stat"><span data-t="statCoins">Münzen</span><b id="sCoins">0</b></div>
+      <div class="stat"><span data-t="statAnimals">Tiere</span><b id="sAnimals">0</b></div>
+      <div class="stat"><span data-t="statDay">Tag</span><b id="sDay">1</b></div>
+    </div>
+  </header>
+
+  <div class="stage" id="stage">
+    <div id="labels"></div>
+    <div class="hud">
+      <span class="pill coins" id="hCoins">0</span>
+      <span class="pill" id="hFeed">0</span>
+      <span class="pill" id="hWater">0</span>
+      <span class="pill" id="hBasket">0</span>
+      <span class="pill clock" id="hClock">…</span>
+    </div>
+    <div id="joy" hidden><i></i></div>
+    <button id="act" type="button" hidden></button>
+    <div id="toasts" aria-live="polite"></div>
+    <div id="shop" hidden role="dialog" aria-labelledby="shopTitle">
+      <header><h3 id="shopTitle" data-t="shopTitle">Tierhändler</h3><button class="x" id="shopClose" type="button" aria-label="Schließen">✕</button></header>
+      <div id="shopList"></div>
+    </div>
+    <div class="screen" id="startScreen">
+      <h2 data-t="title">Mein Bauernhof</h2>
+      <p data-t="intro"></p>
+      <button class="go" id="go" type="button" data-t="go">Los geht’s</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="sound" type="button" aria-pressed="true" data-t="soundOn">Ton an · M</button>
+    <button class="btn alt" id="reset" type="button" data-t="reset">Neu anfangen</button>
+  </div>
+  <p class="help" data-t="help" data-html="1"></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const LANG=((window.MW_LANG||document.documentElement.lang||'de')+'').slice(0,2)==='en'?'en':'de';
+const TXT={
+  de:{
+    title:'Mein Bauernhof',sub:'Kauf Tiere, füttere sie und verkaufe Eier, Wolle und Milch!',statCoins:'Münzen',statAnimals:'Tiere',statDay:'Tag',
+    intro:'Du hast einen eigenen Bauernhof – aber noch keine Tiere! Geh zum Tierhändler und kauf dir Hühner. Füll ihren Trog mit Futter und Wasser, dann legen sie Eier. Sammle die Eier ein und verkaufe sie im Hofladen. Mit den Münzen kaufst du Schafe, Schweine, Ziegen, Kühe und vielleicht sogar ein Einhorn! Und du kannst deinen Hof verbessern: einen besseren Hofladen, ein größeres Feld, ein größeres Haus.',
+    go:'Los geht’s',soundOn:'Ton an · M',soundOff:'Ton aus · M',reset:'Neu anfangen',resetSure:'Wirklich? Nochmal klicken',close:'Schließen',
+    help:'Je mehr Tiere du hast, desto mehr <b>Besucher</b> kommen tagsüber und bezahlen dich – besonders, wenn deine Tiere satt sind. <b>Steuerung:</b> WASD / Pfeiltasten oder im Spielfeld ziehen. <b>E</b> oder <b>Leertaste</b> benutzt das, wovor du stehst: den <b>Tierhändler</b> (Tiere, Futter und Gehege kaufen), den <b>Brunnen</b> (Eimer mit Wasser füllen), einen <b>Trog</b> (Futter und Wasser hineinfüllen) und das <b>Weizenfeld</b> (säen und ernten – Weizen ist kostenloses Futter). Was deine Tiere machen, sammelst du ein, wenn du drüberläufst. Glückliche Tiere lassen auch <b>Münzen</b> fallen! Im <b>Hofladen</b> wird dein Korb automatisch verkauft. <b>M</b> schaltet den Ton um.',
+    noload:'3D konnte nicht geladen werden.',
+    hCoins:'{n} Münzen',hFeed:'Futter {n}',hWater:'Wasser {n}/{m}',hBasket:'Korb {n}/{m}',clock:'Tag {d} · {t}',
+    shopTitle:'Tierhändler',shopAnimals:'Tiere',shopSupplies:'Vorräte',shopExtras:'Extras',
+    buy:'Kaufen · {p}',build:'Gehege bauen · {p}',expand:'Platz +1 · {p}',full:'Voll',owned:'Hast du',
+    perItem:'macht {item} (je {v} Münzen)',inPen:'{n}/{c} im Gehege',locked:'Gehege fehlt noch',
+    feed10:'10 Futter',feed50:'50 Futter',feedDesc:'Für die Tröge. Du trägst höchstens {m}.',
+    basket:'Größerer Korb',basketDesc:'Mehr Sachen tragen: {a} → {b}',bucket:'Größerer Eimer',bucketDesc:'Mehr Wasser tragen: {a} → {b}',
+    pony:'Pony',ponyDesc:'Ein Pony läuft mit dir mit – du bist viel schneller!',maxed:'Ganz voll',
+    a_chicken:'Huhn',a_sheep:'Schaf',a_pig:'Schwein',a_goat:'Ziege',a_cow:'Kuh',a_unicorn:'Einhorn',
+    p_chicken:'Hühnerstall',p_sheep:'Schafweide',p_pig:'Schweinestall',p_goat:'Ziegengehege',p_cow:'Kuhstall',p_unicorn:'Einhornwiese',
+    i_egg:'Eier',i_wool:'Wolle',i_truffle:'Trüffel',i_cheese:'Ziegenkäse',i_milk:'Milch',i_dust:'Regenbogenstaub',
+    eShop:'E: Tierhändler',eWell:'E: Wasser holen',eTrough:'E: Trog füllen',ePlant:'E: Weizen säen',eHarvest:'E: Ernten',eGrow:'Wächst … {s} s',
+    actShop:'Laden',actWell:'Wasser',actTrough:'Füllen',actPlant:'Säen',actHarvest:'Ernten',
+    shopSign:'Tierhändler',standSign:'Hofladen',wellSign:'Brunnen',fieldSign:'Weizenfeld',houseSign:'Dein Haus',
+    troughInfo:'Futter {f} · Wasser {w}',hungry:'Hunger!',thirsty:'Durst!',lockedPen:'Gesperrt',emptyPen:'Noch leer',
+    bought:'Neues Tier: {a}!',builtPen:'{p} ist fertig!',expanded:'{p} hat jetzt Platz für {c}!',poor:'Dafür brauchst du {p} Münzen.',
+    gotFeed:'+{n} Futter',feedFull:'Du kannst nicht mehr Futter tragen.',gotWater:'Eimer voll!',
+    filled:'Trog gefüllt!',noSupplies:'Du hast kein Futter und kein Wasser dabei. Futter: Laden oder Weizenfeld. Wasser: Brunnen.',troughFull:'Der Trog ist schon voll.',
+    planted:'Weizen gesät!',harvested:'Geerntet: +{n} Futter',
+    picked:'{i} eingesammelt',basketFull:'Dein Korb ist voll! Bring ihn zum Hofladen.',
+    sold:'Verkauft: {n} Sachen für {p} Münzen!',upBasket:'Dein Korb ist größer!',upBucket:'Dein Eimer ist größer!',upPony:'Dein Pony läuft jetzt mit dir mit!',
+    newDay:'Guten Morgen! Tag {d}',night:'Es wird Nacht. Die Tiere werden müde.',
+    tip1:'Geh zum Tierhändler (vorne rechts) und kauf dir ein Huhn!',tip2:'Füll den Trog im Hühnerstall mit Futter und Wasser!',tip3:'Hol Wasser am Brunnen in der Mitte.',tip4:'Bring die Eier zum Hofladen (vorne links).',
+    resetDone:'Neuer Bauernhof!',coins:'{n} Münzen',
+    shopFarm:'Hof verbessern',upStand:'Hofladen Stufe {n}',upStandDesc:'Du bekommst mehr für deine Sachen: {a} % → {b} %',upStandMax:'Du bekommst {a} % für deine Sachen.',
+    upField:'Größeres Weizenfeld',upFieldDesc:'Mehr Beete: {a} → {b}',upFieldMax:'{a} Beete',
+    upHouse:'Haus Stufe {n}',upHouseDesc:'Jeden Morgen bekommst du Münzen geschenkt: {a} → {b}',upHouseMax:'Jeden Morgen {a} Münzen geschenkt.',
+    upTap:'Wasserleitung',upTapDesc:'Die Tröge füllen sich von allein mit Wasser.',
+    didStand:'Hofladen verbessert! Jetzt {a} % Preis.',didField:'Das Feld hat jetzt {a} Beete!',didHouse:'Dein Haus ist größer! Jeden Morgen {a} Münzen.',didTap:'Die Wasserleitung läuft!',
+    bonus:'Morgen-Bonus: +{n} Münzen',standLv:'Stufe {n}',coinDrop:'+{n} Münzen von deinen Tieren!',visitorCome:'Besuch kommt! Besucher schauen sich deine Tiere an und bezahlen dafür.',visitorPaid:'Ein Besucher hat {n} Münzen bezahlt!',vHappy1:'Wie süß!',vHappy2:'Toll!',vHappy3:'Schau mal!',vSad:'Die haben Hunger …',vBye:'Danke! +{n}'
+  },
+  en:{
+    title:'My Farm',sub:'Buy animals, feed them and sell eggs, wool and milk!',statCoins:'Coins',statAnimals:'Animals',statDay:'Day',
+    intro:'You have your own farm – but no animals yet! Go to the animal trader and buy some chickens. Fill their trough with food and water, and they will lay eggs. Collect the eggs and sell them at the farm shop. Use the coins to buy sheep, pigs, goats, cows and maybe even a unicorn! You can also improve your farm: a better farm shop, a bigger field, a bigger house.',
+    go:'Let’s go',soundOn:'Sound on · M',soundOff:'Sound off · M',reset:'Start over',resetSure:'Really? Click again',close:'Close',
+    help:'The more animals you have, the more <b>visitors</b> come during the day and pay you – especially when your animals are well fed. <b>Controls:</b> WASD / arrow keys or drag on the playfield. <b>E</b> or <b>Space</b> uses whatever you stand in front of: the <b>animal trader</b> (buy animals, food and pens), the <b>well</b> (fill your bucket with water), a <b>trough</b> (pour in food and water) and the <b>wheat field</b> (sow and harvest – wheat is free food). You pick up what your animals make by walking over it. Happy animals also drop <b>coins</b>! At the <b>farm shop</b> your basket is sold automatically. <b>M</b> toggles sound.',
+    noload:'3D could not be loaded.',
+    hCoins:'{n} coins',hFeed:'Food {n}',hWater:'Water {n}/{m}',hBasket:'Basket {n}/{m}',clock:'Day {d} · {t}',
+    shopTitle:'Animal trader',shopAnimals:'Animals',shopSupplies:'Supplies',shopExtras:'Extras',
+    buy:'Buy · {p}',build:'Build pen · {p}',expand:'Room +1 · {p}',full:'Full',owned:'Owned',
+    perItem:'makes {item} ({v} coins each)',inPen:'{n}/{c} in the pen',locked:'No pen yet',
+    feed10:'10 food',feed50:'50 food',feedDesc:'For the troughs. You can carry up to {m}.',
+    basket:'Bigger basket',basketDesc:'Carry more things: {a} → {b}',bucket:'Bigger bucket',bucketDesc:'Carry more water: {a} → {b}',
+    pony:'Pony',ponyDesc:'A pony trots along with you – you are much faster!',maxed:'Maxed out',
+    a_chicken:'Chicken',a_sheep:'Sheep',a_pig:'Pig',a_goat:'Goat',a_cow:'Cow',a_unicorn:'Unicorn',
+    p_chicken:'Chicken coop',p_sheep:'Sheep meadow',p_pig:'Pigsty',p_goat:'Goat pen',p_cow:'Cowshed',p_unicorn:'Unicorn meadow',
+    i_egg:'eggs',i_wool:'wool',i_truffle:'truffles',i_cheese:'goat cheese',i_milk:'milk',i_dust:'rainbow dust',
+    eShop:'E: Animal trader',eWell:'E: Get water',eTrough:'E: Fill trough',ePlant:'E: Sow wheat',eHarvest:'E: Harvest',eGrow:'Growing … {s} s',
+    actShop:'Shop',actWell:'Water',actTrough:'Fill',actPlant:'Sow',actHarvest:'Harvest',
+    shopSign:'Animal trader',standSign:'Farm shop',wellSign:'Well',fieldSign:'Wheat field',houseSign:'Your house',
+    troughInfo:'Food {f} · Water {w}',hungry:'Hungry!',thirsty:'Thirsty!',lockedPen:'Locked',emptyPen:'Still empty',
+    bought:'New animal: {a}!',builtPen:'{p} is ready!',expanded:'{p} now has room for {c}!',poor:'You need {p} coins for that.',
+    gotFeed:'+{n} food',feedFull:'You can’t carry more food.',gotWater:'Bucket full!',
+    filled:'Trough filled!',noSupplies:'You have no food and no water with you. Food: shop or wheat field. Water: well.',troughFull:'The trough is already full.',
+    planted:'Wheat sown!',harvested:'Harvested: +{n} food',
+    picked:'Picked up {i}',basketFull:'Your basket is full! Take it to the farm shop.',
+    sold:'Sold {n} things for {p} coins!',upBasket:'Your basket is bigger!',upBucket:'Your bucket is bigger!',upPony:'Your pony now trots along with you!',
+    newDay:'Good morning! Day {d}',night:'Night is falling. The animals are getting sleepy.',
+    tip1:'Go to the animal trader (front right) and buy a chicken!',tip2:'Fill the trough in the chicken coop with food and water!',tip3:'Get water from the well in the middle.',tip4:'Take the eggs to the farm shop (front left).',
+    resetDone:'A brand-new farm!',coins:'{n} coins',
+    shopFarm:'Improve the farm',upStand:'Farm shop level {n}',upStandDesc:'You get more for your goods: {a} % → {b} %',upStandMax:'You get {a} % for your goods.',
+    upField:'Bigger wheat field',upFieldDesc:'More beds: {a} → {b}',upFieldMax:'{a} beds',
+    upHouse:'House level {n}',upHouseDesc:'Every morning you get free coins: {a} → {b}',upHouseMax:'{a} free coins every morning.',
+    upTap:'Water pipe',upTapDesc:'The troughs fill up with water by themselves.',
+    didStand:'Farm shop improved! Now {a} % price.',didField:'The field now has {a} beds!',didHouse:'Your house is bigger! {a} coins every morning.',didTap:'The water pipe is running!',
+    bonus:'Morning bonus: +{n} coins',standLv:'Level {n}',coinDrop:'+{n} coins from your animals!',visitorCome:'Visitors are coming! They look at your animals and pay for it.',visitorPaid:'A visitor paid {n} coins!',vHappy1:'So cute!',vHappy2:'Great!',vHappy3:'Look at that!',vSad:'They are hungry …',vBye:'Thanks! +{n}'
+  }
+};
+const t=(k,v)=>{let s=(TXT[LANG][k]??TXT.de[k]??k);if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s;};
+document.querySelector('h1').firstChild.textContent=t('title');
+document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data-t');if(el.dataset.html)el.innerHTML=t(k);else el.textContent=t(k);});
+$('shopClose').setAttribute('aria-label',t('close'));
+if(!window.THREE){$('hCoins').textContent=t('noload');return;}
+
+/* ---------- Spieldaten ---------- */
+const SPECIES={
+  chicken:{price:15,unlock:0,item:'egg',value:4,period:12,col:'#ffffff',icon:'🐔'},
+  sheep:{price:60,unlock:50,item:'wool',value:12,period:22,col:'#f4f4f0',icon:'🐑'},
+  pig:{price:120,unlock:150,item:'truffle',value:22,period:28,col:'#ffaab8',icon:'🐖'},
+  goat:{price:180,unlock:300,item:'cheese',value:32,period:30,col:'#d9b98a',icon:'🐐'},
+  cow:{price:300,unlock:600,item:'milk',value:45,period:30,col:'#ffffff',icon:'🐄'},
+  unicorn:{price:3000,unlock:4000,item:'dust',value:350,period:50,col:'#ffffff',icon:'🦄'}
+};
+const ORDER=['chicken','sheep','pig','goat','cow','unicorn'];
+const PEN_POS={chicken:[-18,-12],sheep:[-18,0],pig:[-18,12],goat:[18,-12],cow:[18,0],unicorn:[18,12]};
+const PW=10,PD=9,CAP0=3,CAP_MAX=8,TROUGH_MAX=20;
+const expandCost=s=>Math.round(SPECIES[s].price*1.5*(S.pens[s].cap-CAP0+1));
+const BASKETS=[8,12,16,24,32],BASKET_COST=[60,200,600,2000];
+const BUCKETS=[10,20,40],BUCKET_COST=[80,400];
+const PONY_COST=500;
+const FEED_MAX=()=>60+S.basketLv*20;
+const DAY_LEN=180;
+const PLOTS=[];for(let r=0;r<4;r++)for(let c=0;c<3;c++)PLOTS.push({x:-4+c*4,z:-17+r*4});
+// Hof verbessern
+const STAND_COST=[100,300,900,2500,7000];      // Hofladen: +25 % Preis pro Stufe
+const FIELD_COST=[150,600];                     // Weizenfeld: 6 → 9 → 12 Beete
+const HOUSE_COST=[200,800,2500,8000];           // Haus: Morgen-Bonus
+const TAP_COST=400;                             // Wasserleitung: Tröge füllen sich mit Wasser
+const plotsOpen=()=>6+3*S.fieldLv;
+const sellMult=()=>1+0.25*S.standLv;
+const morningBonus=()=>S.houseLv?20*S.houseLv*S.houseLv:0;
+const GROW=40,HARVEST=5;
+
+/* ---------- Speicher ---------- */
+const KEY='bauernhof-v1';
+let store=null;try{store=window.localStorage;store.getItem(KEY);}catch(e){store=null;}
+function fresh(){const pens={};ORDER.forEach(s=>pens[s]={open:s==='chicken',cap:CAP0,n:0,food:0,water:0});
+  return {coins:30,feed:10,water:0,basketLv:0,bucketLv:0,pony:false,standLv:0,fieldLv:0,houseLv:0,tap:false,pens,plots:PLOTS.map(()=>({st:0,t:0})),time:DAY_LEN*0.3,day:1,tips:0};}
+let S=fresh();
+try{const s=store&&JSON.parse(store.getItem(KEY)||'null');if(s&&typeof s.coins==='number'&&s.pens){const f=fresh();S=Object.assign(f,s);ORDER.forEach(k=>S.pens[k]=Object.assign(f.pens[k],s.pens[k]||{}));S.plots=PLOTS.map((_,i)=>Object.assign({st:0,t:0},(s.plots||[])[i]||{}));}}catch(e){}
+function save(){try{store&&store.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const basketCap=()=>BASKETS[S.basketLv];
+const bucketCap=()=>BUCKETS[S.bucketLv];
+const animalsTotal=()=>ORDER.reduce((a,s)=>a+S.pens[s].n,0);
+
+/* ---------- Three.js ---------- */
+const stage=$('stage');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+stage.prepend(renderer.domElement);
+const scene=new THREE.Scene();
+const SKY_DAY=new THREE.Color('#9fd6ff'),SKY_NIGHT=new THREE.Color('#1b2448'),SKY_EVE=new THREE.Color('#ffb27a');
+scene.background=SKY_DAY.clone();
+scene.fog=new THREE.Fog(scene.background,60,120);
+const camera=new THREE.PerspectiveCamera(50,1.6,0.1,200);
+const hemi=new THREE.HemisphereLight(0xf2f8ff,0x6b8a3a,0.75);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff2d6,0.85);
+sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-38,right:38,top:38,bottom:-38,near:1,far:120});sun.shadow.bias=-0.0006;
+sun.position.set(-20,40,20);scene.add(sun);
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+window.addEventListener('resize',resize);
+
+const G={sph:new THREE.SphereGeometry(1,16,12),cyl:new THREE.CylinderGeometry(1,1,1,16),cone:new THREE.ConeGeometry(1,1,14),box:new THREE.BoxGeometry(1,1,1),
+  roof:new THREE.ConeGeometry(1,1,4),torus:new THREE.TorusGeometry(1,0.3,8,18),ico:new THREE.IcosahedronGeometry(1,0)};
+const mats={};
+function M(c){if(!mats[c])mats[c]=new THREE.MeshLambertMaterial({color:c});return mats[c];}
+function part(geo,mat,sx,sy,sz,x,y,z,shadow){const m=new THREE.Mesh(geo,typeof mat==='string'?M(mat):mat);m.scale.set(sx,sy,sz);m.position.set(x,y,z);if(shadow!==false){m.castShadow=true;m.receiveShadow=true;}return m;}
+
+// Boden, Wege
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(200,200),M('#6cbf47'));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+[[0,4,4,46],[0,4,40,4],[0,22,24,4]].forEach(([x,z,w,d])=>{const p=part(G.box,'#d9b77a',w,0.04,d,x,0.02,z,false);p.receiveShadow=true;scene.add(p);});
+// Zaun außen
+for(let a=-30;a<=30;a+=2.5){[[a,-30],[a,30],[-30,a],[30,a]].forEach(([x,z])=>{if(Math.abs(x)<3&&z===30)return;scene.add(part(G.box,'#a87a4a',0.25,1.2,0.25,x,0.6,z));});}
+[[0,-30,60,0],[-16.5,30,27,0],[16.5,30,27,0],[-30,0,0,60],[30,0,0,60]].forEach(([x,z,w,d])=>{scene.add(part(G.box,'#a87a4a',w||0.12,0.12,d||0.12,x,0.9,z,false),part(G.box,'#a87a4a',w||0.12,0.12,d||0.12,x,0.45,z,false));});
+// Bäume außerhalb
+for(let k=0;k<46;k++){const a=k/46*Math.PI*2,r=36+(k*7%5)*2;const x=Math.cos(a)*r,z=Math.sin(a)*r;const g=new THREE.Group();g.position.set(x,0,z);
+  g.add(part(G.cyl,'#7a5230',0.35,2.2,0.35,0,1.1,0),part(G.sph,k%3?'#3f9a3a':'#2f8030',1.8,1.6,1.8,0,3.2,0));scene.add(g);}
+// Haus
+const house=new THREE.Group();
+(()=>{const g=house;g.position.set(0,0,-25);
+  g.add(part(G.box,'#f2e2c4',10,5,6,0,2.5,0));const r=part(G.roof,'#a8382a',8,3,5,0,6.5,0);r.rotation.y=Math.PI/4;r.scale.set(8.2,3,5.6);g.add(r);
+  g.add(part(G.box,'#7a4a2a',1.4,2.4,0.1,0,1.2,3.02,false),part(G.box,'#9fd6ff',1.2,1,0.1,-3,3,3.02,false),part(G.box,'#9fd6ff',1.2,1,0.1,3,3,3.02,false),part(G.box,'#8a8a8a',0.8,2,0.8,3,7,0));
+  scene.add(g);})();
+// Ausbau-Teile des Hauses (werden mit der Haus-Stufe sichtbar)
+const houseExtras=[
+  [part(G.box,'#f2e2c4',4,3.5,4,7.5,1.75,0),(()=>{const r=part(G.roof,'#a8382a',3.4,2,3.4,7.5,4.5,0);r.rotation.y=Math.PI/4;return r;})()],
+  [part(G.box,'#f2e2c4',4,3.5,4,-7.5,1.75,0),(()=>{const r=part(G.roof,'#a8382a',3.4,2,3.4,-7.5,4.5,0);r.rotation.y=Math.PI/4;return r;})()],
+  [part(G.box,'#ffffff',10.6,0.3,1.6,0,0.15,3.8),...[-4.5,-1.5,1.5,4.5].map(x=>part(G.cyl,'#ffffff',0.1,2.4,0.1,x,1.35,4.4)),part(G.box,'#a8382a',10.6,0.2,1.8,0,2.6,3.9)],
+  [part(G.cyl,'#ffd23f',0.06,3,0.06,0,9.5,0),part(G.box,'#ff4d4d',1.2,0.7,0.05,0.62,10.6,0,false),part(G.sph,'#ffd23f',0.4,0.4,0.4,-3,6.4,2.4)]
+];
+houseExtras.forEach(list=>list.forEach(m=>{m.visible=false;house.add(m);}));
+function showHouse(){houseExtras.forEach((list,i)=>list.forEach(m=>m.visible=S.houseLv>i));}
+// Hofladen (verkaufen) und Tierhändler (kaufen)
+const STAND={x:-8,z:19},SHOP={x:8,z:19},WELL={x:0,z:4};
+function stall(x,z,roofCol,sign){const g=new THREE.Group();g.position.set(x,0,z);
+  g.add(part(G.box,'#b98a52',4.4,1.1,1.6,0,0.55,0));[-2,2].forEach(dx=>g.add(part(G.box,'#8a6234',0.18,2.8,0.18,dx,1.4,-0.6)));
+  const roof=part(G.box,roofCol,5,0.2,2.6,0,2.9,-0.1);roof.rotation.x=0.18;g.add(roof);
+  for(let k=0;k<5;k++)g.add(part(G.box,k%2?'#ffffff':roofCol,1,0.4,0.05,-2+k,2.6,1.2,false));
+  scene.add(g);return g;}
+const standMesh=stall(STAND.x,STAND.z,'#3a8f3a');
+standMesh.add(part(G.sph,'#ffffff',0.2,0.26,0.2,-1.2,1.3,0),part(G.sph,'#f4f4f0',0.3,0.3,0.3,-0.4,1.35,0),part(G.cyl,'#ffffff',0.2,0.5,0.2,0.5,1.35,0),part(G.box,'#ffd23f',0.5,0.3,0.4,1.3,1.25,0));
+const standExtras=[0,1,2,3,4].map(i=>{const m=part(G.box,['#e8c060','#ff8f80','#9be36a','#4fb3ff','#ffd23f'][i],0.7,0.5,0.6,-2.6+(i%2)*5.2,0.25+Math.floor(i/2)*0.5,0.9);m.visible=false;standMesh.add(m);return m;});
+function showStand(){standExtras.forEach((m,i)=>m.visible=S.standLv>i);}
+const shopMesh=stall(SHOP.x,SHOP.z,'#c8402c');
+shopMesh.add(part(G.box,'#e8c060',0.8,0.6,0.6,-1.3,1.4,0),part(G.box,'#e8c060',0.8,0.6,0.6,-0.3,1.4,0));
+// Brunnen
+(()=>{const g=new THREE.Group();g.position.set(WELL.x,0,WELL.z);
+  g.add(part(G.cyl,'#9aa0a8',1.2,1,1.2,0,0.5,0),part(G.cyl,'#2f6fb0',1.0,0.05,1.0,0,0.98,0,false));[-1,1].forEach(s=>g.add(part(G.box,'#7a5230',0.15,2.2,0.15,s*1.05,1.6,0)));
+  const r=part(G.roof,'#a8382a',1.6,0.9,1.6,0,3.0,0);r.rotation.y=Math.PI/4;g.add(r);g.add(part(G.cyl,'#7a5230',0.08,2.1,0.08,0,2.4,0).rotateZ(Math.PI/2));
+  scene.add(g);})();
+// Weizenfeld
+const plotMeshes=PLOTS.map(p=>{const g=new THREE.Group();g.position.set(p.x,0,p.z);
+  g.add(part(G.box,'#7a5230',3.4,0.18,3.4,0,0.09,0));const wheat=new THREE.Group();
+  for(let i=0;i<9;i++){const s=part(G.cyl,'#d8b440',0.05,1,0.05,-1.1+(i%3)*1.1,0.5,-1.1+Math.floor(i/3)*1.1);wheat.add(s);const h=part(G.sph,'#f0cf5a',0.12,0.25,0.12,s.position.x,1,s.position.z);wheat.add(h);}
+  g.add(wheat);g.userData.wheat=wheat;scene.add(g);return g;});
+
+/* ---------- Gehege ---------- */
+const penObj={};
+ORDER.forEach(s=>{
+  const [px,pz]=PEN_POS[s],side=px<0?1:-1; // Tor zeigt zur Mitte
+  const g=new THREE.Group();g.position.set(px,0,pz);
+  const ground=part(G.box,s==='pig'?'#9a7a4e':s==='unicorn'?'#a6e07a':'#7fcc58',PW,0.06,PD,0,0.03,0,false);ground.receiveShadow=true;g.add(ground);
+  const posts=[];const fence=new THREE.Group();
+  const add=(x1,z1,x2,z2)=>{const L=Math.hypot(x2-x1,z2-z1),n=Math.max(1,Math.round(L/1.6));for(let i=0;i<=n;i++){const x=x1+(x2-x1)*i/n,z=z1+(z2-z1)*i/n;fence.add(part(G.box,'#a87a4a',0.2,1.1,0.2,x,0.55,z));}
+    [0.4,0.85].forEach(y=>{const r=part(G.box,'#c49563',Math.abs(x2-x1)+0.12,0.1,Math.abs(z2-z1)+0.12,(x1+x2)/2,y,(z1+z2)/2,false);fence.add(r);});};
+  const hx=PW/2,hz=PD/2,gx=side*hx;
+  add(-hx,-hz,hx,-hz);add(-hx,hz,hx,hz);add(-gx,-hz,-gx,hz);add(gx,-hz,gx,-1.4);add(gx,1.4,gx,hz);
+  g.add(fence);
+  // Trog am Tor
+  const tr=new THREE.Group();tr.position.set(gx-side*1.4,0,2.6);
+  tr.add(part(G.box,'#8a6234',0.9,0.5,2.2,0,0.25,0));const food=part(G.box,'#e8c060',0.7,0.1,0.95,0,0.45,-0.5,false),water=part(G.box,'#4f9be0',0.7,0.1,0.95,0,0.45,0.55,false);tr.add(food,water);
+  const tap=part(G.cyl,'#4f9be0',0.08,1.4,0.08,0,0.7,1.3);tap.visible=false;tr.add(tap);
+  g.add(tr);
+  // Stall/Hütte hinten
+  const hut=new THREE.Group();hut.position.set(-gx+side*1.8,0,-2.2);
+  hut.add(part(G.box,s==='unicorn'?'#ffd6f5':'#c8402c',2.6,2,2.4,0,1,0));const rf=part(G.roof,s==='unicorn'?'#b06aff':'#7a2a1a',2.2,1.2,2.2,0,2.6,0);rf.rotation.y=Math.PI/4;hut.add(rf);hut.add(part(G.box,'#3a2a1a',0.9,1.2,0.05,side*1.31,0.6,0,false).rotateY(Math.PI/2));
+  g.add(hut);
+  scene.add(g);
+  penObj[s]={g,px,pz,side,trough:{x:px+gx-side*1.4,z:pz+2.6},food,water,tap,animals:[]};
+});
+
+/* ---------- Tiermodelle ---------- */
+function legsOf(g,c,sp,len,y){const L=[];[[-sp,0.25],[sp,0.25],[-sp,-0.25],[sp,-0.25]].forEach(([x,z])=>{const l=part(G.cyl,c,0.07,len,0.07,x,y-len/2,z);g.add(l);L.push(l);});return L;}
+function eye(g,x,y,z,s){g.add(part(G.sph,'#111111',0.05*(s||1),0.06*(s||1),0.04*(s||1),x,y,z,false));}
+const MODEL={
+  chicken:g=>{g.add(part(G.sph,'#ffffff',0.32,0.3,0.4,0,0.45,0),part(G.sph,'#ffffff',0.18,0.2,0.18,0,0.78,0.25),part(G.box,'#e8322e',0.05,0.14,0.16,0,0.98,0.25,false),
+    part(G.cone,'#ffa32e',0.06,0.14,0.06,0,0.76,0.45,false).rotateX(Math.PI/2),part(G.sph,'#f2f2f2',0.12,0.2,0.25,0,0.55,-0.32));eye(g,-0.1,0.82,0.38);eye(g,0.1,0.82,0.38);
+    return [-0.1,0.1].map(x=>{const l=part(G.cyl,'#ffa32e',0.03,0.25,0.03,x,0.12,0);g.add(l);return l;});},
+  sheep:g=>{[[0,0.75,0,0.48],[-0.25,0.8,0.2,0.32],[0.25,0.8,0.2,0.32],[-0.25,0.8,-0.25,0.32],[0.25,0.8,-0.25,0.32],[0,1.0,0,0.32]].forEach(([x,y,z,r])=>g.add(part(G.sph,'#f4f4f0',r,r*0.9,r,x,y,z)));
+    g.add(part(G.sph,'#2a2a2a',0.18,0.2,0.22,0,0.85,0.55));eye(g,-0.08,0.9,0.73,1.2);eye(g,0.08,0.9,0.73,1.2);return legsOf(g,'#2a2a2a',0.22,0.5,0.5);},
+  pig:g=>{g.add(part(G.sph,'#ffaab8',0.45,0.38,0.62,0,0.6,0),part(G.cyl,'#ff8fa3',0.13,0.1,0.13,0,0.62,0.66).rotateX(Math.PI/2),part(G.cone,'#ff8fa3',0.09,0.18,0.06,-0.2,0.98,0.35),part(G.cone,'#ff8fa3',0.09,0.18,0.06,0.2,0.98,0.35),
+    part(G.torus,'#ff8fa3',0.08,0.08,0.08,0,0.7,-0.62));eye(g,-0.14,0.78,0.55);eye(g,0.14,0.78,0.55);return legsOf(g,'#ff8fa3',0.22,0.35,0.36);},
+  goat:g=>{g.add(part(G.box,'#d9b98a',0.5,0.45,0.9,0,0.85,0),part(G.box,'#d9b98a',0.3,0.35,0.35,0,1.15,0.55),part(G.cone,'#f2f2f2',0.06,0.25,0.06,0,0.92,0.68).rotateX(Math.PI),
+    part(G.cone,'#8a7a6a',0.05,0.3,0.05,-0.1,1.45,0.48).rotateX(-0.5),part(G.cone,'#8a7a6a',0.05,0.3,0.05,0.1,1.45,0.48).rotateX(-0.5));eye(g,-0.12,1.2,0.73);eye(g,0.12,1.2,0.73);return legsOf(g,'#a8865a',0.18,0.6,0.62);},
+  cow:g=>{g.add(part(G.box,'#ffffff',0.75,0.65,1.4,0,1.15,0),part(G.box,'#ffffff',0.45,0.45,0.5,0,1.35,0.85),part(G.box,'#ffc8c8',0.36,0.2,0.12,0,1.2,1.12,false),
+    part(G.box,'#222222',0.4,0.35,0.05,0.38,1.2,0.1,false),part(G.box,'#222222',0.05,0.3,0.45,-0.38,1.2,-0.3,false),part(G.box,'#222222',0.5,0.05,0.4,0.05,1.48,-0.3,false),
+    part(G.sph,'#ffb0c0',0.18,0.12,0.18,0,0.78,-0.25),part(G.cone,'#f2e2c4',0.05,0.25,0.05,-0.2,1.65,0.85).rotateZ(0.6),part(G.cone,'#f2e2c4',0.05,0.25,0.05,0.2,1.65,0.85).rotateZ(-0.6));
+    eye(g,-0.14,1.45,1.1);eye(g,0.14,1.45,1.1);return legsOf(g,'#ffffff',0.28,0.85,0.85);},
+  unicorn:g=>{g.add(part(G.box,'#ffffff',0.6,0.6,1.3,0,1.25,0),part(G.box,'#ffffff',0.3,0.7,0.35,0,1.75,0.6).rotateX(0.4),part(G.box,'#ffffff',0.32,0.32,0.55,0,2.05,0.95),
+    part(G.cone,new THREE.MeshLambertMaterial({color:'#ffd23f',emissive:'#a87a00',emissiveIntensity:.5}),0.06,0.5,0.06,0,2.45,1.05).rotateX(0.5));
+    ['#ff4d4d','#ffa53d','#ffe14d','#5fd35f','#4fb3ff','#b06aff'].forEach((c,k)=>g.add(part(G.box,c,0.08,0.25,0.18,0,2.05-k*0.14,0.62-k*0.1,false)));
+    ['#ff4d4d','#ffe14d','#4fb3ff'].forEach((c,k)=>g.add(part(G.box,c,0.08,0.5,0.12,0,1.1-k*0.08,-0.7-k*0.05,false)));
+    eye(g,-0.17,2.1,1.1);eye(g,0.17,2.1,1.1);return legsOf(g,'#ffffff',0.22,0.95,0.95);}
+};
+function buildAnimal(s){const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);const L=MODEL[s](g);outer.userData={inner:g,legs:L};scene.add(outer);return outer;}
+const ITEM_MODEL={
+  egg:()=>part(G.sph,'#fff8ea',0.13,0.17,0.13,0,0.17,0),
+  wool:()=>part(G.sph,'#f4f4f0',0.25,0.22,0.25,0,0.22,0),
+  truffle:()=>part(G.ico,'#4a3020',0.18,0.16,0.18,0,0.16,0),
+  cheese:()=>{const m=part(G.cyl,'#ffe07a',0.24,0.18,0.24,0,0.1,0);m.geometry=new THREE.CylinderGeometry(1,1,1,3);return m;},
+  milk:()=>{const g=new THREE.Group();g.add(part(G.cyl,'#ffffff',0.12,0.34,0.12,0,0.17,0),part(G.cyl,'#4fb3ff',0.08,0.08,0.08,0,0.38,0));return g;},
+  dust:()=>part(G.ico,new THREE.MeshLambertMaterial({color:'#ff9df0',emissive:'#b06aff',emissiveIntensity:.6}),0.2,0.2,0.2,0,0.3,0)
+};
+
+/* ---------- Tiere im Gehege ---------- */
+function addAnimal(s,silent){
+  const P=penObj[s];const mesh=buildAnimal(s);
+  const a={s,x:P.px+(Math.random()-0.5)*(PW-3),z:P.pz+(Math.random()-0.5)*(PD-3),tx:0,tz:0,wait:Math.random()*3,face:Math.random()*6,moving:0,
+    t:SPECIES[s].period*(0.5+Math.random()*0.5),ct:SPECIES[s].period*(1.5+Math.random()),item:null,coin:null,mesh};
+  a.tx=a.x;a.tz=a.z;P.animals.push(a);
+  if(!silent){mesh.scale.setScalar(0.1);a.pop=0;}
+  return a;
+}
+function restoreAnimals(){ORDER.forEach(s=>{penObj[s].animals.forEach(a=>{scene.remove(a.mesh);if(a.item)removeItem(a.item);if(a.coin)removeItem(a.coin);});penObj[s].animals=[];for(let i=0;i<S.pens[s].n;i++)addAnimal(s,true);});}
+let items=[];
+function dropItem(a){
+  const sp=SPECIES[a.s],m=ITEM_MODEL[sp.item]();const g=new THREE.Group();g.add(m);
+  const it={x:a.x+(Math.random()-0.5)*0.6,z:a.z+(Math.random()-0.5)*0.6,type:sp.item,value:sp.value,owner:a,mesh:g,bob:Math.random()*6};
+  g.position.set(it.x,0,it.z);scene.add(g);items.push(it);a.item=it;sfx.pop();
+}
+function removeItem(it){scene.remove(it.mesh);items=items.filter(x=>x!==it);if(it.owner&&it.owner.item===it)it.owner.item=null;if(it.coinOf&&it.coinOf.coin===it)it.coinOf.coin=null;}
+// Glückliche Tiere (Futter und Wasser im Trog) lassen ab und zu eine Münze fallen
+function dropCoin(a){
+  const g=new THREE.Group();const c=part(G.cyl,new THREE.MeshLambertMaterial({color:'#ffd23f',emissive:'#8a6a00',emissiveIntensity:.5}),0.22,0.06,0.22,0,0.35,0);c.rotation.x=Math.PI/2;g.add(c);
+  const it={x:a.x+(Math.random()-0.5)*0.8,z:a.z+(Math.random()-0.5)*0.8,type:'coin',value:Math.max(1,Math.ceil(SPECIES[a.s].value*0.5)),coinOf:a,mesh:g,bob:Math.random()*6};
+  g.position.set(it.x,0,it.z);scene.add(g);items.push(it);a.coin=it;
+}
+let basket=[];
+
+/* ---------- Spieler und Pony ---------- */
+function buildFarmer(){
+  const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
+  const lg=[-0.15,0.15].map(x=>{const l=part(G.box,'#3a5aa8',0.2,0.6,0.22,x,0.3,0);g.add(l);return l;});
+  g.add(part(G.box,'#c8402c',0.62,0.62,0.36,0,0.92,0),part(G.box,'#3a5aa8',0.64,0.3,0.38,0,0.72,0,false),part(G.sph,'#f2c9a0',0.3,0.32,0.3,0,1.48,0),
+    part(G.cyl,'#f4cf5c',0.5,0.06,0.5,0,1.7,0),part(G.cyl,'#f4cf5c',0.28,0.25,0.28,0,1.82,0));
+  const ar=[-0.4,0.4].map(x=>{const a=part(G.box,'#c8402c',0.16,0.55,0.18,x,0.95,0);g.add(a);return a;});
+  eye(g,-0.1,1.5,0.28);eye(g,0.1,1.5,0.28);
+  const bk=new THREE.Group();bk.position.set(0.5,0.75,0.15);bk.add(part(G.cyl,'#b98a52',0.22,0.22,0.22,0,0,0));g.add(bk);
+  outer.userData={inner:g,legs:lg,arms:ar,basket:bk};scene.add(outer);return outer;
+}
+const player={x:0,z:12,face:Math.PI,moving:0,mesh:buildFarmer()};
+
+/* ---------- Besucher: kommen durchs Tor, schauen Tiere an und bezahlen ---------- */
+const GATE={x:0,z:32};
+function buildVisitor(){
+  const shirts=['#3a8fd8','#e8a33a','#9a5ad8','#3aaa7a','#e85a8a','#5a6a7a'],hairs=['#2a1a10','#8a5a2a','#f2d36b','#c84a2a','#111111'],skins=['#f2c9a0','#d9a07a','#a8724a','#f7d8c0'];
+  const pick=a=>a[Math.floor(Math.random()*a.length)];const sh=pick(shirts);
+  const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
+  const lg=[-0.14,0.14].map(x=>{const l=part(G.box,'#3a3a4a',0.19,0.58,0.2,x,0.29,0);g.add(l);return l;});
+  g.add(part(G.box,sh,0.58,0.6,0.34,0,0.88,0),part(G.sph,pick(skins),0.28,0.3,0.28,0,1.42,0),part(G.sph,pick(hairs),0.3,0.18,0.3,0,1.56,-0.03));
+  const ar=[-0.37,0.37].map(x=>{const a=part(G.box,sh,0.15,0.52,0.17,x,0.9,0);g.add(a);return a;});
+  eye(g,-0.09,1.45,0.26);eye(g,0.09,1.45,0.26);
+  if(Math.random()<0.4)g.add(part(G.cyl,pick(['#ff5a7a','#ffd23f','#4fb3ff']),0.32,0.08,0.32,0,1.66,0),part(G.cyl,pick(['#ff5a7a','#ffd23f','#4fb3ff']),0.2,0.2,0.2,0,1.78,0));
+  outer.userData={inner:g,legs:lg,arms:ar};scene.add(outer);return outer;
+}
+let visitors=[],visitT=8,visitorTip=false;
+function viewPoint(s){const P=penObj[s];return {x:P.px+P.side*(PW/2+1.3),z:P.pz-1.2+(Math.random()-0.5)*2};}
+function spawnVisitor(){
+  const pens=ORDER.filter(s=>S.pens[s].open&&S.pens[s].n>0);if(!pens.length)return null;
+  pens.sort(()=>Math.random()-0.5);const plan=pens.slice(0,Math.min(pens.length,1+Math.floor(Math.random()*3)));
+  const v={x:GATE.x+(Math.random()-0.5)*2,z:GATE.z,face:Math.PI,moving:0,plan,step:0,wait:0,pay:0,say:'',sayT:0,tgt:viewPoint(plan[0]),mesh:buildVisitor()};
+  visitors.push(v);if(!visitorTip){visitorTip=true;toast(t('visitorCome'),'#9fd6ff');}return v;
+}
+function visitorTick(v,dt){
+  v.moving=0;v.sayT=Math.max(0,v.sayT-dt);
+  if(v.wait>0){v.wait-=dt;const s=v.plan[v.step];const P=penObj[s];v.face=Math.atan2(P.px-v.x,P.pz-v.z);if(v.wait<=0){v.step++;v.tgt=v.step<v.plan.length?viewPoint(v.plan[v.step]):{x:GATE.x,z:GATE.z+1};}return;}
+  const dx=v.tgt.x-v.x,dz=v.tgt.z-v.z,d=Math.hypot(dx,dz);
+  if(d>0.3){const st=Math.min(d,3.2*dt);v.x+=dx/d*st;v.z+=dz/d*st;v.face=Math.atan2(dx,dz);v.moving=1;return;}
+  if(v.step<v.plan.length){ // angekommen am Gehege: anschauen
+    const s=v.plan[v.step],D=S.pens[s],happy=D.n>0&&D.food>=1&&D.water>=1;
+    v.pay+=happy?Math.ceil((4+SPECIES[s].value*0.4)*Math.min(D.n,4)):1;
+    v.say=happy?t('vHappy'+(1+Math.floor(Math.random()*3))):t('vSad');v.sayT=2.5;v.wait=2.5+Math.random()*1.5;if(happy)sfx.moo(s);return;}
+  // am Tor: bezahlen und gehen
+  const n=Math.max(1,Math.round(v.pay*sellMult()));S.coins+=n;sfx.coin();toast(t('visitorPaid',{n}),'#ffd23f');save();
+  scene.remove(v.mesh);visitors=visitors.filter(x=>x!==v);
+}
+let pony=null;
+function buildPony(){const outer=new THREE.Group(),g=new THREE.Group();outer.add(g);
+  g.add(part(G.box,'#a8743a',0.5,0.5,1.0,0,0.95,0),part(G.box,'#a8743a',0.26,0.55,0.3,0,1.35,0.45).rotateX(0.4),part(G.box,'#a8743a',0.28,0.28,0.45,0,1.6,0.7),
+    part(G.box,'#5a3a1a',0.08,0.5,0.3,0,1.45,0.35,false),part(G.box,'#5a3a1a',0.08,0.45,0.1,0,0.95,-0.55,false));eye(g,-0.15,1.65,0.85);eye(g,0.15,1.65,0.85);
+  const L=legsOf(g,'#8a5a2a',0.18,0.7,0.7);outer.userData={inner:g,legs:L};scene.add(outer);return {x:player.x+1,z:player.z+1,face:0,moving:0,mesh:outer};}
+const speed=()=>S.pony?9.5:6;
+
+/* ---------- Ton ---------- */
+let actx=null,soundOn=true;
+function audioInit(){try{if(!actx){const C=window.AudioContext||window.webkitAudioContext;if(C)actx=new C();}if(actx&&actx.state==='suspended')actx.resume();}catch(e){actx=null;}}
+function tone(type,f1,f2,start,dur,vol){
+  if(!actx||!soundOn)return;
+  const t0=actx.currentTime+start,o=actx.createOscillator(),g=actx.createGain();
+  o.type=type;o.frequency.setValueAtTime(f1,t0);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t0+dur);
+  g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+0.015);g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+dur+0.05);
+}
+const sfx={
+  pop(){tone('sine',600,900,0,0.08,0.05);},
+  pick(){tone('triangle',880,1320,0,0.08,0.1);},
+  coin(){tone('triangle',988,null,0,0.08,0.12);tone('triangle',1319,null,0.08,0.18,0.12);},
+  buy(){[523,659,784,1047].forEach((f,i)=>tone('triangle',f,null,i*0.07,0.14,0.1));},
+  splash(){tone('sine',500,200,0,0.25,0.1);tone('sine',700,300,0.05,0.2,0.06);},
+  no(){tone('square',200,140,0,0.18,0.07);},
+  moo(s){const f={chicken:[900,700],sheep:[420,380],pig:[260,180],goat:[480,420],cow:[180,140],unicorn:[1200,1600]}[s];tone(s==='cow'||s==='pig'?'sawtooth':'triangle',f[0],f[1],0,0.35,0.06);},
+  plant(){tone('sine',300,500,0,0.12,0.08);},
+  rooster(){tone('sawtooth',500,900,0,0.18,0.05);tone('sawtooth',900,700,0.18,0.35,0.05);}
+};
+
+/* ---------- UI ---------- */
+const toastBox=$('toasts');
+function toast(msg,c){const d=document.createElement('div');d.className='toast';d.style.setProperty('--c',c||'#ffd23f');d.textContent=msg;toastBox.appendChild(d);
+  while(toastBox.children.length>3)toastBox.firstChild.remove();setTimeout(()=>d.remove(),3400);}
+const labelsEl=$('labels'),pool=[];let used=0;
+function lab(html,x,y,z,color){
+  const v=new THREE.Vector3(x,y,z).project(camera);if(v.z>1||v.x<-1.2||v.x>1.2||v.y<-1.2||v.y>1.2)return;
+  let el=pool[used];if(!el){el=document.createElement('div');el.className='lb';labelsEl.appendChild(el);pool.push(el);}used++;
+  if(el._h!==html){el.innerHTML=html;el._h=html;}el.style.color=color||'#fff';el.style.display='block';
+  const w=stage.clientWidth,h=stage.clientHeight;el.style.transform=`translate(-50%,-100%) translate(${(v.x+1)/2*w}px,${(1-v.y)/2*h}px)`;
+}
+function tip(n){if(S.tips<n){S.tips=n;setTimeout(()=>toast(t('tip'+n),'#9be36a'),900);}}
+
+/* ---------- Laden ---------- */
+const shopEl=$('shop'),listEl=$('shopList');
+let shopOpen=false;
+function rowHTML(icon,title,desc,btn,id,disabled,cls){
+  return `<div class="row"><span class="ic" aria-hidden="true">${icon}</span><span class="tx"><b>${title}</b>${desc}</span><button type="button" id="${id}" ${disabled?'disabled':''} class="${cls||''}">${btn}</button></div>`;
+}
+function renderShop(){
+  let h=`<h4>${t('shopAnimals')}</h4>`;
+  ORDER.forEach(s=>{const sp=SPECIES[s],P=S.pens[s];
+    const desc=`${t('perItem',{item:t('i_'+sp.item),v:sp.value})}<br>${P.open?t('inPen',{n:P.n,c:P.cap}):t('locked')}`;
+    if(!P.open)h+=rowHTML(sp.icon,t('a_'+s),desc,t('build',{p:sp.unlock}),'b_'+s,false,'lock');
+    else if(P.n>=P.cap){if(P.cap<CAP_MAX)h+=rowHTML(sp.icon,t('a_'+s),desc,t('expand',{p:expandCost(s)}),'x_'+s,false,'lock');else h+=rowHTML(sp.icon,t('a_'+s),desc,t('full'),'x_'+s,true);}
+    else h+=rowHTML(sp.icon,t('a_'+s),desc,t('buy',{p:sp.price}),'a_'+s,false);
+  });
+  h+=`<h4>${t('shopSupplies')}</h4>`;
+  h+=rowHTML('🌾',t('feed10'),t('feedDesc',{m:FEED_MAX()}),t('buy',{p:5}),'f10',false);
+  h+=rowHTML('🌾',t('feed50'),t('feedDesc',{m:FEED_MAX()}),t('buy',{p:20}),'f50',false);
+  h+=`<h4>${t('shopExtras')}</h4>`;
+  const bl=S.basketLv;h+=rowHTML('🧺',t('basket'),bl<BASKET_COST.length?t('basketDesc',{a:BASKETS[bl],b:BASKETS[bl+1]}):'',bl<BASKET_COST.length?t('buy',{p:BASKET_COST[bl]}):t('maxed'),'u_basket',bl>=BASKET_COST.length);
+  const ul=S.bucketLv;h+=rowHTML('🪣',t('bucket'),ul<BUCKET_COST.length?t('bucketDesc',{a:BUCKETS[ul],b:BUCKETS[ul+1]}):'',ul<BUCKET_COST.length?t('buy',{p:BUCKET_COST[ul]}):t('maxed'),'u_bucket',ul>=BUCKET_COST.length);
+  h+=rowHTML('🐴',t('pony'),t('ponyDesc'),S.pony?t('owned'):t('buy',{p:PONY_COST}),'u_pony',S.pony);
+  h+=`<h4>${t('shopFarm')}</h4>`;
+  const lv=(a,c)=>a<c.length;
+  h+=rowHTML('🏪',t('upStand',{n:S.standLv+1}),lv(S.standLv,STAND_COST)?t('upStandDesc',{a:Math.round(sellMult()*100),b:Math.round((sellMult()+0.25)*100)}):t('upStandMax',{a:Math.round(sellMult()*100)}),lv(S.standLv,STAND_COST)?t('buy',{p:STAND_COST[S.standLv]}):t('maxed'),'h_stand',!lv(S.standLv,STAND_COST));
+  h+=rowHTML('🌾',t('upField'),lv(S.fieldLv,FIELD_COST)?t('upFieldDesc',{a:plotsOpen(),b:plotsOpen()+3}):t('upFieldMax',{a:plotsOpen()}),lv(S.fieldLv,FIELD_COST)?t('buy',{p:FIELD_COST[S.fieldLv]}):t('maxed'),'h_field',!lv(S.fieldLv,FIELD_COST));
+  h+=rowHTML('🏡',t('upHouse',{n:S.houseLv+1}),lv(S.houseLv,HOUSE_COST)?t('upHouseDesc',{a:morningBonus(),b:20*(S.houseLv+1)*(S.houseLv+1)}):t('upHouseMax',{a:morningBonus()}),lv(S.houseLv,HOUSE_COST)?t('buy',{p:HOUSE_COST[S.houseLv]}):t('maxed'),'h_house',!lv(S.houseLv,HOUSE_COST));
+  h+=rowHTML('🚰',t('upTap'),t('upTapDesc'),S.tap?t('owned'):t('buy',{p:TAP_COST}),'h_tap',S.tap);
+  listEl.innerHTML=h;
+}
+function pay(p){if(S.coins<p){sfx.no();toast(t('poor',{p}),'#ff8f80');return false;}S.coins-=p;return true;}
+function buyAnimal(s){const P=S.pens[s];if(!P.open||P.n>=P.cap)return false;if(!pay(SPECIES[s].price))return false;
+  P.n++;addAnimal(s);sfx.buy();sfx.moo(s);toast(t('bought',{a:t('a_'+s)}),'#9be36a');save();if(s==='chicken')tip(2);return true;}
+function buildPen(s){const P=S.pens[s];if(P.open)return false;if(!pay(SPECIES[s].unlock))return false;P.open=true;sfx.buy();toast(t('builtPen',{p:t('p_'+s)}),'#9be36a');save();return true;}
+function expandPen(s){const P=S.pens[s];if(!P.open||P.cap>=CAP_MAX)return false;if(!pay(expandCost(s)))return false;P.cap++;sfx.buy();toast(t('expanded',{p:t('p_'+s),c:P.cap}),'#9be36a');save();return true;}
+function buyFeed(n,p){if(S.feed>=FEED_MAX()){sfx.no();toast(t('feedFull'),'#ff8f80');return false;}if(!pay(p))return false;S.feed=Math.min(FEED_MAX(),S.feed+n);sfx.coin();toast(t('gotFeed',{n}),'#e8c060');save();return true;}
+listEl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;audioInit();const id=b.id,[k,s]=id.split('_');
+  if(k==='a')buyAnimal(s);else if(k==='b')buildPen(s);else if(k==='x')expandPen(s);
+  else if(id==='f10')buyFeed(10,5);else if(id==='f50')buyFeed(50,20);
+  else if(id==='u_basket'){if(pay(BASKET_COST[S.basketLv])){S.basketLv++;sfx.buy();toast(t('upBasket'),'#9be36a');save();}}
+  else if(id==='u_bucket'){if(pay(BUCKET_COST[S.bucketLv])){S.bucketLv++;sfx.buy();toast(t('upBucket'),'#9be36a');save();}}
+  else if(id==='h_stand')upgradeFarm('stand');else if(id==='h_field')upgradeFarm('field');else if(id==='h_house')upgradeFarm('house');else if(id==='h_tap')upgradeFarm('tap');
+  else if(id==='u_pony'){if(!S.pony&&pay(PONY_COST)){S.pony=true;pony=buildPony();sfx.buy();toast(t('upPony'),'#9be36a');save();}}
+  renderShop();const again=document.getElementById(id);if(again&&!again.disabled)again.focus();});
+function upgradeFarm(k){
+  if(k==='stand'){if(S.standLv>=STAND_COST.length||!pay(STAND_COST[S.standLv]))return false;S.standLv++;showStand();toast(t('didStand',{a:Math.round(sellMult()*100)}),'#9be36a');}
+  else if(k==='field'){if(S.fieldLv>=FIELD_COST.length||!pay(FIELD_COST[S.fieldLv]))return false;S.fieldLv++;toast(t('didField',{a:plotsOpen()}),'#9be36a');}
+  else if(k==='house'){if(S.houseLv>=HOUSE_COST.length||!pay(HOUSE_COST[S.houseLv]))return false;S.houseLv++;showHouse();toast(t('didHouse',{a:morningBonus()}),'#9be36a');}
+  else if(k==='tap'){if(S.tap||!pay(TAP_COST))return false;S.tap=true;toast(t('didTap'),'#4fb3ff');}
+  sfx.buy();save();return true;
+}
+function openShop(){shopOpen=true;renderShop();shopEl.hidden=false;const f=listEl.querySelector('button:not([disabled])');if(f)f.focus();}
+function closeShop(){shopOpen=false;shopEl.hidden=true;}
+$('shopClose').addEventListener('click',closeShop);
+
+/* ---------- Interaktion ---------- */
+function nearest(){
+  const d=(x,z)=>Math.hypot(x-player.x,z-player.z);
+  if(d(SHOP.x,SHOP.z+1.2)<2.6)return {k:'shop'};
+  if(d(WELL.x,WELL.z)<2.6)return {k:'well'};
+  for(const s of ORDER){const P=penObj[s];if(S.pens[s].open&&d(P.trough.x,P.trough.z)<1.9)return {k:'trough',s};}
+  for(let i=0;i<plotsOpen();i++)if(Math.abs(PLOTS[i].x-player.x)<1.8&&Math.abs(PLOTS[i].z-player.z)<1.8){const st=S.plots[i].st;return {k:st===0?'plant':st===2?'harvest':'grow',i};}
+  return null;
+}
+function use(){
+  if(!playing)return;audioInit();
+  if(shopOpen){closeShop();return;}
+  const n=nearest();if(!n)return;
+  if(n.k==='shop'){openShop();}
+  else if(n.k==='well'){S.water=bucketCap();sfx.splash();toast(t('gotWater'),'#4fb3ff');save();}
+  else if(n.k==='trough')fillTrough(n.s);
+  else if(n.k==='plant'){S.plots[n.i]={st:1,t:GROW};sfx.plant();toast(t('planted'),'#e8c060');save();}
+  else if(n.k==='harvest'){if(S.feed>=FEED_MAX()){sfx.no();toast(t('feedFull'),'#ff8f80');return;}S.plots[n.i]={st:0,t:0};S.feed=Math.min(FEED_MAX(),S.feed+HARVEST);sfx.pick();toast(t('harvested',{n:HARVEST}),'#e8c060');save();}
+}
+function fillTrough(s){
+  const P=S.pens[s];if(!P.open)return false;
+  const needF=TROUGH_MAX-P.food,needW=TROUGH_MAX-P.water;
+  if(needF<=0&&needW<=0){toast(t('troughFull'),'#ffd23f');return false;}
+  const f=Math.min(needF,S.feed),w=Math.min(needW,S.water);
+  if(f<=0&&w<=0){sfx.no();toast(t('noSupplies'),'#ff8f80');if(S.water<=0)tip(3);return false;}
+  P.food+=f;P.water+=w;S.feed-=f;S.water-=w;sfx.splash();toast(t('filled'),'#9be36a');save();return true;
+}
+function sellAll(){
+  if(!basket.length)return 0;
+  const sum=Math.round(basket.reduce((a,b)=>a+b.value,0)*sellMult()),n=basket.length;basket=[];S.coins+=sum;sfx.coin();toast(t('sold',{n,p:sum}),'#ffd23f');save();return sum;
+}
+
+/* ---------- Eingabe ---------- */
+const keys={};let playing=false;
+window.addEventListener('keydown',e=>{
+  const k=e.key.toLowerCase();
+  if(shopOpen&&k==='escape'){closeShop();return;}
+  if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)&&playing&&!shopOpen)e.preventDefault();
+  keys[k]=true;if(!playing)return;
+  if((k==='e'||k===' ')&&!(shopOpen&&k===' '))use();
+  if(k==='m')$('sound').click();
+});
+window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
+window.addEventListener('blur',()=>{for(const k in keys)keys[k]=false;});
+let joy=null;const joyEl=$('joy'),cv=renderer.domElement;cv.style.touchAction='none';
+cv.addEventListener('pointerdown',e=>{audioInit();const r=stage.getBoundingClientRect();joy={id:e.pointerId,ox:e.clientX-r.left,oy:e.clientY-r.top,x:e.clientX-r.left,y:e.clientY-r.top};
+  joyEl.style.left=joy.ox+'px';joyEl.style.top=joy.oy+'px';joyEl.hidden=false;cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{if(!joy||joy.id!==e.pointerId)return;const r=stage.getBoundingClientRect();joy.x=e.clientX-r.left;joy.y=e.clientY-r.top;
+  const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy),m=Math.min(d,40);joyEl.firstChild.style.transform=d?`translate(${dx/d*m}px,${dy/d*m}px)`:'';});
+const endJoy=e=>{if(joy&&joy.id===e.pointerId){joy=null;joyEl.hidden=true;joyEl.firstChild.style.transform='';}};
+cv.addEventListener('pointerup',endJoy);cv.addEventListener('pointercancel',endJoy);
+$('act').addEventListener('click',use);
+$('sound').addEventListener('click',()=>{soundOn=!soundOn;$('sound').textContent=t(soundOn?'soundOn':'soundOff');$('sound').setAttribute('aria-pressed',soundOn?'true':'false');});
+let resetArm=0;
+$('reset').addEventListener('click',()=>{if(resetArm<=0){resetArm=3;$('reset').textContent=t('resetSure');return;}
+  S=fresh();visitors.forEach(v=>scene.remove(v.mesh));visitors=[];showHouse();showStand();basket=[];items.slice().forEach(removeItem);restoreAnimals();if(pony){scene.remove(pony.mesh);pony=null;}
+  player.x=0;player.z=12;closeShop();save();toast(t('resetDone'),'#9be36a');resetArm=0;$('reset').textContent=t('reset');});
+
+/* ---------- Schleife ---------- */
+let time=0,saveT=0,wasNight=false;
+const isNight=()=>{const f=(S.time%DAY_LEN)/DAY_LEN;return f>0.78||f<0.04;};
+function clockStr(){const f=(S.time%DAY_LEN)/DAY_LEN,m=Math.floor(f*24*60)+6*60;const hh=Math.floor(m/60)%24,mm=Math.floor(m%60/10)*10;return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');}
+function update(dt){
+  time+=dt;resetArm=Math.max(0,resetArm-dt);if(resetArm<=0&&$('reset').textContent!==t('reset'))$('reset').textContent=t('reset');
+  // Tag und Nacht
+  const prevDay=Math.floor(S.time/DAY_LEN);S.time+=dt;const nd=Math.floor(S.time/DAY_LEN);
+  if(nd>prevDay){S.day++;sfx.rooster();toast(t('newDay',{d:S.day}),'#ffd23f');const b=morningBonus();if(b){S.coins+=b;setTimeout(()=>toast(t('bonus',{n:b}),'#ffd23f'),700);}save();}
+  const night=isNight();if(night&&!wasNight)toast(t('night'),'#9fb0ff');wasNight=night;
+  // Bewegung
+  let ix=0,iz=0;
+  if(!shopOpen){if(keys.a||keys.arrowleft)ix-=1;if(keys.d||keys.arrowright)ix+=1;if(keys.w||keys.arrowup)iz-=1;if(keys.s||keys.arrowdown)iz+=1;
+    if(joy){const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy);if(d>8){ix=dx/Math.max(d,46);iz=dy/Math.max(d,46);}}}
+  const il=Math.hypot(ix,iz);player.moving=0;
+  if(il>0.05){const n=Math.min(1,il);ix/=il;iz/=il;player.x+=ix*speed()*n*dt;player.z+=iz*speed()*n*dt;player.face=Math.atan2(ix,iz);player.moving=1;}
+  player.x=Math.max(-29,Math.min(29,player.x));player.z=Math.max(-21,Math.min(29,player.z));
+  // Haus, Stände und Brunnen sind fest
+  [[0,-25,5.4,3.4],[STAND.x,STAND.z,2.4,1],[SHOP.x,SHOP.z,2.4,1]].forEach(([cx,cz,hx,hz])=>{const dx=player.x-cx,dz=player.z-cz;if(Math.abs(dx)<hx&&Math.abs(dz)<hz){if(hx-Math.abs(dx)<hz-Math.abs(dz))player.x=cx+Math.sign(dx)*hx;else player.z=cz+Math.sign(dz)*hz;}});
+  {const dx=player.x-WELL.x,dz=player.z-WELL.z,d=Math.hypot(dx,dz);if(d<1.5&&d>0){player.x=WELL.x+dx/d*1.5;player.z=WELL.z+dz/d*1.5;}}
+  if(shopOpen&&Math.hypot(SHOP.x-player.x,SHOP.z+1.2-player.z)>3.5)closeShop();
+  // Pony folgt
+  if(pony){const dx=player.x-pony.x,dz=player.z-pony.z,d=Math.hypot(dx,dz);pony.moving=0;if(d>1.8){const st=Math.min(d-1.8,speed()*1.05*dt);pony.x+=dx/d*st;pony.z+=dz/d*st;pony.face=Math.atan2(dx,dz);pony.moving=1;}}
+  // Einsammeln
+  for(const it of items.slice()){if(Math.hypot(it.x-player.x,it.z-player.z)<1.2){
+    if(it.type==='coin'){S.coins+=it.value;removeItem(it);sfx.coin();toast(t('coinDrop',{n:it.value}),'#ffd23f');continue;}
+    if(basket.length>=basketCap()){if(!it.warned){it.warned=1;toast(t('basketFull'),'#ff8f80');}continue;}
+    basket.push({type:it.type,value:it.value});removeItem(it);sfx.pick();toast(t('picked',{i:t('i_'+it.type)}),'#ffd23f');tip(4);}}
+  // Verkaufen am Hofladen
+  if(basket.length&&Math.hypot(STAND.x-player.x,STAND.z+1.2-player.z)<2.8)sellAll();
+  // Tiere
+  ORDER.forEach(s=>{const P=penObj[s],D=S.pens[s];
+    P.animals.forEach(a=>{
+      if(a.pop!==undefined){a.pop=Math.min(1,a.pop+dt*2.5);a.mesh.scale.setScalar(0.1+0.9*a.pop);if(a.pop>=1)delete a.pop;}
+      a.moving=0;
+      if(night){/* schlafen */}
+      else{a.wait-=dt;if(a.wait<=0){a.tx=P.px+(Math.random()-0.5)*(PW-2.5);a.tz=P.pz+(Math.random()-0.5)*(PD-2.5);a.wait=3+Math.random()*5;}
+        const dx=a.tx-a.x,dz=a.tz-a.z,d=Math.hypot(dx,dz);if(d>0.2){const st=Math.min(d,1.2*dt);a.x+=dx/d*st;a.z+=dz/d*st;a.face=Math.atan2(dx,dz);a.moving=1;}}
+      // Produktion: braucht Futter und Wasser im Trog, nachts langsamer
+      if(!a.coin&&D.food>=1&&D.water>=1){a.ct-=dt*(night?0.4:1);if(a.ct<=0){dropCoin(a);a.ct=SPECIES[s].period*(1.5+Math.random());}}
+      if(!a.item&&D.food>=1&&D.water>=1){a.t-=dt*(night?0.4:1);if(a.t<=0){D.food-=1;D.water-=1;dropItem(a);a.t=SPECIES[s].period*(0.85+Math.random()*0.3);}}
+    });
+  });
+  if(S.tap)ORDER.forEach(s=>{const D=S.pens[s];if(D.open)D.water=Math.min(TROUGH_MAX,D.water+dt*0.5);});
+  // Besucher kommen tagsüber; je mehr Tiere, desto öfter
+  const nA=animalsTotal();
+  if(nA>0&&!night){visitT-=dt;if(visitT<=0&&visitors.length<Math.min(8,2+Math.floor(nA/3))){spawnVisitor();visitT=Math.max(5,26-nA*1.5)*(0.7+Math.random()*0.6);}}
+  visitors.slice().forEach(v=>{if(night&&v.step<v.plan.length&&v.wait<=0){v.step=v.plan.length;v.tgt={x:GATE.x,z:GATE.z+1};}visitorTick(v,dt);});
+  // Weizen
+  S.plots.forEach(p=>{if(p.st===1){p.t-=dt;if(p.t<=0){p.st=2;p.t=0;}}});
+  saveT+=dt;if(saveT>5){saveT=0;save();}
+}
+function animWalker(e,sp){
+  const m=e.mesh,u=m.userData;m.position.set(e.x,0,e.z);
+  let d=e.face-m.rotation.y;d=Math.atan2(Math.sin(d),Math.cos(d));m.rotation.y+=d*0.25;
+  const sw=e.moving?Math.sin(time*(sp||14))*0.6:0;
+  if(u.legs.length===2){u.legs[0].rotation.x=sw;u.legs[1].rotation.x=-sw;}else if(u.legs.length===4){u.legs[0].rotation.x=sw;u.legs[3].rotation.x=sw;u.legs[1].rotation.x=-sw;u.legs[2].rotation.x=-sw;}
+  if(u.arms){u.arms[0].rotation.x=-sw;u.arms[1].rotation.x=sw;}
+}
+const camPos=new THREE.Vector3(0,16,26),camLook=new THREE.Vector3();
+function render(){
+  animWalker(player);if(pony)animWalker(pony,12);visitors.forEach(v=>animWalker(v,11));
+  player.mesh.userData.basket.scale.setScalar(basket.length?1+Math.min(1,basket.length/basketCap())*0.5:1);
+  ORDER.forEach(s=>penObj[s].animals.forEach(a=>{animWalker(a,10);a.mesh.userData.inner.rotation.z=isNight()?0.25:0;}));
+  for(const it of items){it.mesh.position.y=Math.abs(Math.sin(time*3+it.bob))*0.12;it.mesh.rotation.y+=0.02;}
+  // Tröge
+  ORDER.forEach(s=>{const P=penObj[s],D=S.pens[s];P.tap.visible=S.tap&&D.open;P.food.scale.y=0.1+3*D.food/TROUGH_MAX;P.food.visible=D.food>0;P.water.scale.y=0.1+3*D.water/TROUGH_MAX;P.water.visible=D.water>0;});
+  // Weizen
+  plotMeshes.forEach((m,i)=>{m.visible=i<plotsOpen();const p=S.plots[i];const w=m.userData.wheat;w.visible=p.st>0;const k=p.st===2?1:p.st===1?0.15+0.85*(1-p.t/GROW):0;w.scale.set(1,Math.max(0.05,k),1);
+    w.children.forEach((c,j)=>{if(j%2)c.material=M(p.st===2?'#f0cf5a':'#8fcf4a');});});
+  // Tag und Nacht
+  const f=(S.time%DAY_LEN)/DAY_LEN;let dayK;
+  if(f<0.04)dayK=f/0.04*0.6+0.0;else if(f<0.7)dayK=1;else if(f<0.78)dayK=1-(f-0.7)/0.08;else dayK=0;
+  const sky=SKY_NIGHT.clone().lerp(SKY_DAY,dayK);if(f>0.66&&f<0.82)sky.lerp(SKY_EVE,0.35*Math.sin((f-0.66)/0.16*Math.PI));
+  scene.background.copy(sky);scene.fog.color.copy(sky);
+  hemi.intensity=0.3+0.45*dayK;sun.intensity=0.15+0.7*dayK;
+  // Kamera
+  camPos.lerp(new THREE.Vector3(player.x*0.85,16,player.z+15),0.1);camera.position.copy(camPos);
+  camLook.lerp(new THREE.Vector3(player.x*0.9,0,player.z-1),0.12);camera.lookAt(camLook);
+  sun.target.position.set(player.x,0,player.z);sun.target.updateMatrixWorld();sun.position.set(player.x-20,40,player.z+20);
+  renderer.render(scene,camera);
+  // Beschriftungen
+  used=0;
+  lab(t('shopSign'),SHOP.x,3.8,SHOP.z,'#ffd23f');lab(t('standSign'),STAND.x,3.8,STAND.z,'#9be36a');lab(t('wellSign'),WELL.x,4.0,WELL.z,'#9fd6ff');
+  lab(t('fieldSign'),0,2.2,-19.5,'#f0cf5a');if(S.standLv)lab(t('standLv',{n:S.standLv+1}),STAND.x,4.5,STAND.z,'#ffd23f');lab(t('houseSign'),0,10.2,-25,'#ffffff');
+  ORDER.forEach(s=>{const P=penObj[s],D=S.pens[s];
+    if(!D.open){lab(`${t('p_'+s)}<small>${t('lockedPen')} · ${t('coins',{n:SPECIES[s].unlock})}</small>`,P.px,2.6,P.pz,'#ffb35c');return;}
+    let sub=D.n?`${D.n}/${D.cap}`:t('emptyPen');
+    if(D.n&&D.food<1)sub+=' · '+t('hungry');else if(D.n&&D.water<1)sub+=' · '+t('thirsty');
+    lab(`${t('p_'+s)}<small>${sub}</small>`,P.px,3.4,P.pz-PD/2,(D.n&&(D.food<1||D.water<1))?'#ff8f80':'#ffffff');
+    if(Math.hypot(P.trough.x-player.x,P.trough.z-player.z)<9)lab(t('troughInfo',{f:Math.floor(D.food),w:Math.floor(D.water)}),P.trough.x,1.5,P.trough.z,'#ffe9a8');
+  });
+  const n=playing&&!shopOpen?nearest():null;let act='';
+  if(n){const map={shop:['eShop','actShop'],well:['eWell','actWell'],trough:['eTrough','actTrough'],plant:['ePlant','actPlant'],harvest:['eHarvest','actHarvest']};
+    if(n.k==='grow'){const p=PLOTS[n.i];lab(t('eGrow',{s:Math.ceil(S.plots[n.i].t)}),p.x,2,p.z,'#9be36a');}
+    else{const [lk,ak]=map[n.k];act=t(ak);lab(t(lk),player.x,2.6,player.z,'#ffd23f');}}
+  const ab=$('act');ab.hidden=!act;if(act&&ab.textContent!==act)ab.textContent=act;
+  for(let i=used;i<pool.length;i++)pool[i].style.display='none';
+  visitors.forEach(v=>{if(v.sayT>0)lab(v.say,v.x,2.3,v.z,v.say===t('vSad')?'#ff8f80':'#ffb0d8');});
+  for(let i=used;i<pool.length;i++)pool[i].style.display='none';
+  // HUD
+  $('hCoins').textContent=t('hCoins',{n:S.coins});$('hFeed').textContent=t('hFeed',{n:S.feed});$('hWater').textContent=t('hWater',{n:S.water,m:bucketCap()});
+  $('hBasket').textContent=t('hBasket',{n:basket.length,m:basketCap()});$('hClock').textContent=t('clock',{d:S.day,t:clockStr()});
+  $('sCoins').textContent=S.coins;$('sAnimals').textContent=animalsTotal();$('sDay').textContent=S.day;
+}
+let last=performance.now(),acc=0;
+function loop(now){
+  const dt=Math.min(0.1,(now-last)/1000);last=now;
+  if(playing){acc+=dt;let n=0;while(acc>=1/60&&n<6){update(1/60);acc-=1/60;n++;}if(n===6)acc=0;}
+  render();requestAnimationFrame(loop);
+}
+
+/* ---------- Start ---------- */
+function startGame(){audioInit();$('startScreen').hidden=true;playing=true;last=performance.now();if(animalsTotal()===0)tip(1);save();}
+$('go').addEventListener('click',startGame);
+restoreAnimals();if(S.pony)pony=buildPony();showHouse();showStand();resize();
+window.__bh={spawnVisitor,get visitors(){return visitors},get S(){return S},get player(){return player},get items(){return items},get basket(){return basket},penObj,PLOTS,SHOP,STAND,WELL,
+  buyAnimal,buildPen,upgradeFarm,expandPen,buyFeed,fillTrough,sellAll,use,openShop,closeShop,get shopOpen(){return shopOpen},
+  tick:sec=>{for(let i=0;i<sec*60;i++)update(1/60);},get playing(){return playing}};
+requestAnimationFrame(loop);
+})();
+</script>

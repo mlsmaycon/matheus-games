@@ -125,5 +125,22 @@ window.MW_GAMES = [
       de: 'Spannende Wellen mit Warnsirene, aber keine Gewalt. Wer von der Welle erwischt wird, landet nur wieder in seiner Basis.',
       en: 'Exciting waves with a warning siren, but no violence. Anyone caught by a wave just ends up back at their base.'
     }
+  },
+  {
+    slug: 'bauernhof',
+    fsk: 0,
+    added: '2026-11-08',
+    cover: 'games/bauernhof/cover.svg',
+    title: { de: 'Mein Bauernhof', en: 'My Farm' },
+    tagline: { de: 'Kauf Tiere, füttere sie und verkaufe, was sie machen!', en: 'Buy animals, feed them and sell what they make!' },
+    desc: {
+      de: 'Du hast einen eigenen Bauernhof, aber noch keine Tiere. Kauf beim Tierhändler Hühner, Schafe, Schweine, Ziegen, Kühe und sogar ein Einhorn. Füll ihre Tröge mit Futter und Wasser, sammle Eier, Wolle, Trüffel, Käse und Milch ein und verkaufe sie im Hofladen. Mit den Münzen baust du neue Gehege, säst Weizen und verbesserst deinen Hof: besserer Hofladen, größeres Feld, größeres Haus mit Morgen-Bonus und eine Wasserleitung. Besucher kommen auf deinen Hof, schauen sich die Tiere an und bezahlen dafür.',
+      en: 'You have your own farm, but no animals yet. Buy chickens, sheep, pigs, goats, cows and even a unicorn from the animal trader. Fill their troughs with food and water, collect eggs, wool, truffles, cheese and milk and sell them at the farm shop. Use your coins to build new pens, sow wheat and improve your farm: a better farm shop, a bigger field, a bigger house with a morning bonus and a water pipe. Visitors come to your farm, look at the animals and pay for it.'
+    },
+    tags: { de: ['3D', 'Tiere', 'Bauernhof', 'Ton an'], en: ['3D', 'Animals', 'Farm', 'Sound on'] },
+    fskReason: {
+      de: 'Friedliches Bauernhof-Spiel ohne Gewalt und ohne Zeitdruck.',
+      en: 'Peaceful farm game with no violence and no time pressure.'
+    }
   }
 ];

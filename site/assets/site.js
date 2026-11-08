@@ -4,7 +4,7 @@
 (function () {
   var CONSENT_VERSION = 1;
   var PARENT_AGE = 16; // below this, a parent must confirm
-  var KEYS = ['mw-consent', 'mw-lang', 'mcg-analytics', 'brainrot-raub-v1', 'brainrot-raub-v2', 'versteck-alarm-v1', 'kuerbisnacht-v1', 'huehnerchaos-v1', 'nachtburg-v1', 'sternen-einhorn-v1', 'tsunami-flucht-v1'];
+  var KEYS = ['mw-consent', 'mw-lang', 'mcg-analytics', 'brainrot-raub-v1', 'brainrot-raub-v2', 'versteck-alarm-v1', 'kuerbisnacht-v1', 'huehnerchaos-v1', 'nachtburg-v1', 'sternen-einhorn-v1', 'tsunami-flucht-v1', 'bauernhof-v1'];
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var store = null;
   try { store = window.localStorage; store.getItem('x'); } catch (e) { store = null; }

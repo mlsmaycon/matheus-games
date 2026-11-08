@@ -226,6 +226,7 @@ GAMES = [
     ('src/nachtburg.html', 'nachtburg', 6, {'de': 'Nachtburg', 'en': 'Night Fort'}, 'i18n', []),
     ('src/sternen-einhorn.html', 'sternen-einhorn', 0, {'de': 'Sternen-Einhorn', 'en': 'Star Unicorn'}, 'i18n', []),
     ('src/tsunami-flucht.html', 'tsunami-flucht', 6, {'de': 'Tsunami-Flucht', 'en': 'Tsunami Escape'}, 'i18n', []),
+    ('src/bauernhof.html', 'bauernhof', 0, {'de': 'Mein Bauernhof', 'en': 'My Farm'}, 'i18n', []),
 ]
 
 GERMAN = re.compile(r"[äöüÄÖÜß]|\b(und|oder|nicht|der|die|das|dich|deine?|Basis|Kinder?|Sucher|Versteck\w*|Geld|Schild|nochmal|gefunden|klauen|Spiel)\b")
