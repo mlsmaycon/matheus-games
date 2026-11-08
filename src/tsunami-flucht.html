@@ -132,7 +132,7 @@ const TXT={
     sold:'Basis voll – {name} verkauft für {m}.',swapped:'{name} ersetzt {old} (verkauft für {m}).',
     upSpeedDone:'Tempo Stufe {n}!',upCarryDone:'Du kannst jetzt {n} Brainrots tragen!',poor:'Dafür brauchst du {m}.',
     offline:'Während du weg warst, haben deine Brainrots {m} verdient!',
-    celestial:'Ein unendlicher Brainrot ist ganz am Ende aufgetaucht!',celestialGone:'Der unendliche Brainrot ist wieder verschwunden.',
+    celestial:'Ein ultimativer Brainrot ist ganz am Ende aufgetaucht!',celestialGone:'Der ultimative Brainrot ist wieder verschwunden.',
     newBest:'Neuer Rekord: {n} m!',shield:'Deine Basis hat einen Schutzschild: Niemand kann dir Brainrots stehlen.',
     botGrab:'{n} hat {b} geschnappt.',botHit:'{n} wurde weggespült!',
     tip1:'Lauf nach vorne und schnapp dir einen Brainrot mit E!',tip2:'Bring den Brainrot zurück in deine Basis!',
@@ -157,7 +157,7 @@ const TXT={
     sold:'Base full – {name} sold for {m}.',swapped:'{name} replaces {old} (sold for {m}).',
     upSpeedDone:'Speed level {n}!',upCarryDone:'You can now carry {n} brainrots!',poor:'You need {m} for that.',
     offline:'While you were away, your brainrots earned {m}!',
-    celestial:'An infinity brainrot has appeared at the very end!',celestialGone:'The infinity brainrot has vanished again.',
+    celestial:'An ultimate brainrot has appeared at the very end!',celestialGone:'The ultimate brainrot has vanished again.',
     newBest:'New record: {n} m!',shield:'Your base has a shield: nobody can steal your brainrots.',
     botGrab:'{n} grabbed {b}.',botHit:'{n} was washed away!',
     tip1:'Run forward and grab a brainrot with E!',tip2:'Bring the brainrot back to your base!',
@@ -171,9 +171,9 @@ document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data
 if(!window.THREE){$('hMoney').textContent=t('noload');return;}
 
 /* ---------- Welt (Meter): Basis bei z>0, Strecke Richtung -z ---------- */
-const W=18,HW=W/2,LEN=13400,BASE_D=24; // die Welt ist 13,4 km lang
+const W=18,HW=W/2,LEN=13900,BASE_D=24; // die Welt ist 13,9 km lang
 const RAR=['common','uncommon','rare','epic','legendary','mythic','cosmic','secret','celestial','divine','rainbow','galactic','fire','ice','thunder','jungle','lava','ocean','crystal','shadow','golden','diamond','candy','robot','magic','dragon','stardust','nebula','quantum','mega','ultra','omega','infinity'];
-const LAST=RAR[RAR.length-1]; // die letzte Zone: dort taucht nur ab und zu ein Brainrot auf
+const LAST='ultimate'; // die letzte und beste Zone: dort taucht nur ab und zu ein Brainrot auf
 const RINFO={
   common:{col:'#c7ced6',inc:2,from:12,to:120,want:9,resp:3},
   uncommon:{col:'#5fd35f',inc:6,from:120,to:224,want:8,resp:4},
@@ -213,13 +213,17 @@ const RINFO={
 const THEMES=['fire','ice','thunder','jungle','lava','ocean','crystal','shadow','golden','diamond','candy','robot','magic','dragon','stardust','nebula','quantum','mega','ultra','omega'];
 const TIERS=[['super','Super','Super'],['hyper','Hyper','Hyper'],['turbo','Turbo','Turbo'],['giga','Giga','Giga'],['max','Max','Max']];
 const TIER_ZONES=[];
+const BEYOND=[['eternal','#e0c3ff'],['transcendent','#aef9ff'],['absolute','#2a2a35'],['almighty','#ffb000'],['ultimate','#ff2a6d']];
 (()=>{let inc=RINFO.omega.inc,d=RINFO.omega.to;
   TIERS.forEach(([tk],ti)=>THEMES.forEach(th=>{
     const c=new THREE.Color(RINFO[th].col),h={};c.getHSL(h);c.setHSL((h.h+0.07*(ti+1))%1,Math.min(1,h.s+0.1),Math.min(0.8,Math.max(0.3,h.l+(ti%2?0.08:-0.06))));
     inc=Math.round(inc*1.6);const key=tk+'_'+th;
     RINFO[key]={col:'#'+c.getHexString(),inc,from:d,to:d+100,want:1,resp:40+ti*4,tier:ti,theme:th};d+=100;TIER_ZONES.push(key);}));
   RAR.splice(RAR.length-1,0,...TIER_ZONES);
-  RINFO.infinity.from=d;RINFO.infinity.to=d+96;RINFO.infinity.inc=Math.round(inc*2);
+  RINFO.infinity.from=d;RINFO.infinity.to=d+100;RINFO.infinity.inc=Math.round(inc*2);RINFO.infinity.want=1;RINFO.infinity.resp=60;d+=100;
+  // Noch besser als Unendlich!
+  let inc2=RINFO.infinity.inc;
+  BEYOND.forEach(([k,col],n)=>{inc2*=3;RINFO[k]={col,inc:Math.round(inc2),from:d,to:d+(k===LAST?96:100),want:k===LAST?0:1,resp:70+n*10};d+=100;RAR.push(k);});
 })();
 const TRENCHES=[];for(let d=34;d<LEN-6;d+=36)TRENCHES.push(d);
 const TR_HALF=1.6,TR_DEPTH=2.1;
@@ -274,6 +278,10 @@ const BRAIN=[ // [name, rarity, income factor, builder]
 function typesOf0(r){return BRAIN.filter(b=>b.r===r);}
 TIER_ZONES.forEach(key=>{const I=RINFO[key];typesOf0(I.theme).forEach((b,n)=>BRAIN.push({i:BRAIN.length,name:TIERS[I.tier][1]+' '+b.name,r:key,inc:Math.round(I.inc*(n?1.3:1))}));});
 TIER_ZONES.forEach(key=>{const I=RINFO[key],[,de,en]=TIERS[I.tier];TXT.de['r_'+key]=de+'-'+TXT.de['r_'+I.theme];TXT.en['r_'+key]=en+' '+TXT.en['r_'+I.theme];});
+[['Eternello','eternal'],['Orologino','eternal'],['Spiritello','transcendent'],['Auroretta','transcendent'],['Assolutino','absolute'],['Zeroblast','absolute'],
+ ['Onnipotente','almighty'],['Titanone','almighty'],['Ultimo Re','ultimate'],['Brainrot Supremo','ultimate']].forEach(([name,r],n)=>BRAIN.push({i:BRAIN.length,name,r,inc:Math.round(RINFO[r].inc*(n%2?1.3:1))}));
+Object.assign(TXT.de,{r_eternal:'Ewig',r_transcendent:'Überirdisch',r_absolute:'Absolut',r_almighty:'Allmächtig',r_ultimate:'Ultimativ'});
+Object.assign(TXT.en,{r_eternal:'Eternal',r_transcendent:'Transcendent',r_absolute:'Absolute',r_almighty:'Almighty',r_ultimate:'Ultimate'});
 const typesOf=r=>BRAIN.filter(b=>b.r===r);
 
 /* ---------- Geld ---------- */
@@ -489,7 +497,8 @@ function buildBrain(ty,scale){
   const L=(BUILD[ty.name]?BUILD[ty.name](g):genBuild(g,ty.i,RINFO[ty.r].col))||[];
   const ri=RAR.indexOf(ty.r);
   if(ri>=3){const gl=glow(2.4+Math.min(ri,12)*0.2,darkCol(RINFO[ty.r].col)?0x7a5aff:new THREE.Color(RINFO[ty.r].col).getHex(),0.55);gl.position.y=0.9;outer.add(gl);}
-  outer.scale.setScalar(scale||1);outer.userData={inner:g,legs:L,ty};scene.add(outer);return outer;
+  const big=BEYOND.some(([k])=>k===ty.r)?1.35:1;
+  outer.scale.setScalar((scale||1)*big);outer.userData={inner:g,legs:L,ty};scene.add(outer);return outer;
 }
 
 /* ---------- Spielfiguren ---------- */
