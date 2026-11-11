@@ -37,7 +37,7 @@ cd dist && python3 -m http.server 8000    # play at http://localhost:8000
 | Tsunami-Flucht / Tsunami Escape | [de](https://mycraftgames.com/games/tsunami-flucht/de/) | [en](https://mycraftgames.com/games/tsunami-flucht/en/) | 6 |
 | Mein Bauernhof / My Farm | [de](https://mycraftgames.com/games/bauernhof/de/) | [en](https://mycraftgames.com/games/bauernhof/en/) | 0 |
 
-**Brainrot-Raub:** buy creatures off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
+**Brainrot-Raub:** buy creatures (28 kinds, from common to secret) off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
 **Versteck-Alarm:** hide-and-seek in a house with garden and garage. Hide with three AI kids from a seeker with a flashlight, or seek four kids yourself using only giggle sounds as hints.
 

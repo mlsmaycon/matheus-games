@@ -69,7 +69,7 @@ h1 small{display:block;font-family:var(--body);font-weight:700;font-size:13px;co
     <div class="stats">
       <div class="stat money"><span>Geld</span><b id="money">$100</b></div>
       <div class="stat"><span>pro Sek.</span><b id="ips">$0</b></div>
-      <div class="stat"><span>Index</span><b id="idx">0/13</b></div>
+      <div class="stat"><span>Index</span><b id="idx">0/28</b></div>
     </div>
   </header>
 
@@ -129,6 +129,22 @@ const TYPES=[
   {n:'Wolkonzo Schnarchini',r:'legend',cost:15000,inc:480,body:'#e8f0ff',shape:'blob',acc:'tophat'},
   {n:'Kuhmelon Galaktika',r:'myth',cost:60000,inc:1700,body:'#ff8fb1',shape:'blob',acc:'horns',spots:'#3a8f4a'},
   {n:'Sockosaurus Rex Deluxe',r:'secret',cost:300000,inc:7500,body:'#7a5cff',shape:'drop',acc:'crown',spots:'#b8a6ff'},
+  // neue Brainrots (hinten anhängen, damit alte Spielstände passen)
+  {n:'Brokkolino Trampolino',r:'common',cost:55,inc:2,body:'#4fae3a',shape:'blob',acc:'leaf',spots:'#2f7a22'},
+  {n:'Zahnbursto Spazzolino',r:'common',cost:80,inc:3,body:'#eef4ff',shape:'pill',acc:'antenna',spots:'#4fb3ff'},
+  {n:'Ananasso Ballerina',r:'common',cost:110,inc:4,body:'#ffd23f',shape:'drop',acc:'bow',spots:'#d89a1a'},
+  {n:'Bubblini Saponetto',r:'common',cost:130,inc:5,body:'#a8e4ff',shape:'blob',acc:'none'},
+  {n:'Donutto Turbino',r:'rare',cost:320,inc:12,body:'#ff9fc8',shape:'blob',acc:'propeller',spots:'#ffe14d'},
+  {n:'Krokodillo Ombrello',r:'rare',cost:480,inc:19,body:'#3f9a4a',shape:'pill',acc:'tophat',spots:'#2a6f34'},
+  {n:'Tacoleone Fiesta',r:'rare',cost:750,inc:30,body:'#f2a03a',shape:'box',acc:'shades',spots:'#c8402c'},
+  {n:'Raketto Gelato',r:'epic',cost:2400,inc:85,body:'#f4f4f8',shape:'drop',acc:'helmet',spots:'#ff8fc8'},
+  {n:'Pizzarotti Elettrico',r:'epic',cost:4200,inc:140,body:'#ffd36b',shape:'box',acc:'antenna',spots:'#d8324a'},
+  {n:'Drago Cappuccino',r:'legend',cost:12000,inc:390,body:'#a8743a',shape:'blob',acc:'horns',spots:'#f2e2c4'},
+  {n:'Lama Lampadina',r:'legend',cost:20000,inc:620,body:'#fff3c8',shape:'pill',acc:'tophat',spots:'#ffd23f'},
+  {n:'Unicornio Arcobaleno',r:'myth',cost:90000,inc:2500,body:'#ffffff',shape:'drop',acc:'horns',spots:'#ff8fc8'},
+  {n:'Gorillo Astronauto',r:'myth',cost:130000,inc:3600,body:'#6c727c',shape:'box',acc:'helmet',spots:'#3a3f48'},
+  {n:'Fantasmino Galattico',r:'secret',cost:600000,inc:15000,body:'#c8b8ff',shape:'blob',acc:'crown',spots:'#7a5cff'},
+  {n:'Tralalero Supremo',r:'secret',cost:1200000,inc:30000,body:'#2f7fd6',shape:'drop',acc:'crown',spots:'#ffd23f'},
 ];
 TYPES.forEach((t,i)=>t.id=i);
 function shade(hex,a){

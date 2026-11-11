@@ -15,8 +15,8 @@ window.MW_GAMES = [
     title: { de: 'Brainrot-Raub', en: 'Brainrot Heist' },
     tagline: { de: 'Kaufen, kassieren, klauen.', en: 'Buy, cash in, steal.' },
     desc: {
-      de: 'Kauf verrückte Figuren vom Fließband, lass sie Geld verdienen und schnapp dir die besten aus den Basen deiner Rivalen. Aber pass auf: Die klauen zurück.',
-      en: 'Buy wacky creatures off the conveyor belt, let them earn money and grab the best ones from your rivals’ bases. But watch out: they steal back.'
+      de: 'Kauf verrückte Figuren vom Fließband, lass sie Geld verdienen und schnapp dir die besten aus den Basen deiner Rivalen. Es gibt 28 verschiedene Brainrots zu sammeln. Aber pass auf: Die klauen zurück.',
+      en: 'Buy wacky creatures off the conveyor belt, let them earn money and grab the best ones from your rivals’ bases. There are 28 different brainrots to collect. But watch out: they steal back.'
     },
     tags: { de: ['3D', 'Sammeln', 'Handy & PC'], en: ['3D', 'Collecting', 'Phone & PC'] },
     fskReason: {
