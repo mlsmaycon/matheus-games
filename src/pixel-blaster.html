@@ -101,7 +101,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
     <div id="hurt"></div>
     <div id="cross"></div>
     <div class="hud">
-      <div class="box hp"><span id="hHp">100</span><div class="bar"><i id="hHpBar" style="width:100%"></i></div></div>
+      <div class="box hp"><span id="hHp">200</span><div class="bar"><i id="hHpBar" style="width:100%"></i></div></div>
       <div class="box coins" id="hCoins">0</div>
       <div class="box" id="hWave">…</div>
     </div>
@@ -153,7 +153,7 @@ const TXT={
     title:'Pixel-Blaster',sub:'Pixel-Monster greifen an – halte so viele Wellen durch, wie du kannst!',statCoins:'Münzen',statBest:'Beste Welle',statWeapons:'Waffen',
     intro:'Die Pixel-Arena wird von Monstern überrannt: Schleime, Fledermäuse, Roboter und ab und zu ein riesiger Pixel-Golem! Triff sie mit deinem Blaster – dann zerfallen sie in Pixel und lassen Münzen fallen. Nach jeder Welle kaufst du im Shop neue Waffen und Verbesserungen.',
     go:'Los geht’s',soundOn:'Ton an · M',soundOff:'Ton aus · M',reset:'Alles zurücksetzen',resetSure:'Wirklich? Nochmal klicken',
-    help:'<b>Steuerung:</b> Ins Spielfeld klicken, dann mit der <b>Maus</b> umschauen und mit der <b>linken Maustaste</b> schießen. <b>WASD</b> / Pfeiltasten laufen, <b>Leertaste</b> springt (auch auf Kisten), <b>R</b> lädt nach, <b>1–6</b> oder das <b>Mausrad</b> wechseln die Waffe, <b>P</b> macht Pause, <b>M</b> schaltet den Ton um. Auf dem Handy oder Tablet: links ziehen zum Laufen, rechts ziehen zum Umschauen, Knöpfe zum Schießen, Springen, Nachladen und Waffe wechseln. Die Monster sind Pixel-Fantasiewesen und zerfallen in bunte Würfel – kein Blut.',
+    help:'<b>Steuerung:</b> Ins Spielfeld klicken, dann mit der <b>Maus</b> umschauen und mit der <b>linken Maustaste</b> schießen. <b>WASD</b> / Pfeiltasten laufen, <b>Leertaste</b> springt (auch auf Kisten), <b>R</b> lädt nach, <b>1–6</b> oder das <b>Mausrad</b> wechseln die Waffe, <b>P</b> macht Pause, <b>M</b> schaltet den Ton um. Auf dem Handy oder Tablet: links ziehen zum Laufen, rechts ziehen zum Umschauen, Knöpfe zum Schießen, Springen, Nachladen und Waffe wechseln. Du hast 200 Leben. Wirst du 4 Sekunden nicht getroffen, heilst du dich langsam. Die Monster sind Pixel-Fantasiewesen und zerfallen in bunte Würfel – kein Blut.',
     noload:'3D konnte nicht geladen werden.',
     tFire:'Feuer',tJump:'Hüpf',tSwap:'Waffe',tReload:'Laden',
     hp:'Leben {n}',wave:'Welle {w} · Monster {n}',waveBreak:'Welle {w} geschafft!',ammo:'{a} / {m}',reloading:'Lädt …',
@@ -163,17 +163,17 @@ const TXT={
     w_pistol:'Pixel-Pistole',w_shotgun:'Block-Schrotflinte',w_laser:'Laser-Gewehr',w_sniper:'Präzisions-Blaster',w_rocket:'Konfetti-Raketenwerfer',w_mini:'Regenbogen-Minigun',
     wd_pistol:'Zuverlässig, 12 Schuss.',wd_shotgun:'6 Pixel-Kugeln auf einmal – stark von nah.',wd_laser:'Dauerfeuer! Gedrückt halten.',wd_sniper:'Ein Schuss, viel Schaden – ideal gegen Roboter.',wd_rocket:'Explodiert in Konfetti und trifft alle in der Nähe.',wd_mini:'Riesiges Magazin, Regenbogen-Dauerfeuer!',
     stat:'Schaden {d} · Magazin {m}',
-    u_hp:'Mehr Leben',ud_hp:'+25 maximale Leben (jetzt {n}).',u_dmg:'Stärkere Blaster',ud_dmg:'+10 % Schaden für alle Waffen (jetzt +{n} %).',u_heal:'Heiltrank',ud_heal:'Füllt deine Leben ganz auf.',
+    u_hp:'Mehr Leben',ud_hp:'+50 maximale Leben (jetzt {n}).',u_dmg:'Stärkere Blaster',ud_dmg:'+10 % Schaden für alle Waffen (jetzt +{n} %).',u_heal:'Heiltrank',ud_heal:'Füllt deine Leben ganz auf.',
     e_slime:'Schleim',e_bat:'Fledermaus',e_robot:'Roboter',e_golem:'Pixel-Golem',
     paused:'Pause',resume:'Weiter',overTitle:'Besiegt!',overText:'Du hast bis Welle {w} durchgehalten. Deine Münzen und Waffen behältst du.',again:'Nochmal',
-    newBest:'Neuer Rekord: Welle {w}!',bought:'{x} gekauft!',poor:'Dafür brauchst du {p} Münzen.',heart:'+25 Leben',
+    newBest:'Neuer Rekord: Welle {w}!',bought:'{x} gekauft!',poor:'Dafür brauchst du {p} Münzen.',heart:'+50 Leben',
     resetDone:'Alles zurückgesetzt.',clickLook:'Klick ins Spielfeld, um mit der Maus zu zielen.',bossDown:'Der Pixel-Golem ist besiegt! +{c} Münzen'
   },
   en:{
     title:'Pixel Blaster',sub:'Pixel monsters are attacking – survive as many waves as you can!',statCoins:'Coins',statBest:'Best wave',statWeapons:'Weapons',
     intro:'The pixel arena is overrun by monsters: slimes, bats, robots and now and then a giant pixel golem! Hit them with your blaster – they break into pixels and drop coins. After every wave you buy new weapons and upgrades in the shop.',
     go:'Let’s go',soundOn:'Sound on · M',soundOff:'Sound off · M',reset:'Reset everything',resetSure:'Really? Click again',
-    help:'<b>Controls:</b> Click the playfield, then look around with the <b>mouse</b> and shoot with the <b>left mouse button</b>. <b>WASD</b> / arrow keys move, <b>Space</b> jumps (onto crates too), <b>R</b> reloads, <b>1–6</b> or the <b>mouse wheel</b> switch weapons, <b>P</b> pauses, <b>M</b> toggles sound. On a phone or tablet: drag on the left to move, drag on the right to look, buttons to shoot, jump, reload and switch weapons. The monsters are pixel fantasy creatures and break into colourful cubes – no blood.',
+    help:'<b>Controls:</b> Click the playfield, then look around with the <b>mouse</b> and shoot with the <b>left mouse button</b>. <b>WASD</b> / arrow keys move, <b>Space</b> jumps (onto crates too), <b>R</b> reloads, <b>1–6</b> or the <b>mouse wheel</b> switch weapons, <b>P</b> pauses, <b>M</b> toggles sound. On a phone or tablet: drag on the left to move, drag on the right to look, buttons to shoot, jump, reload and switch weapons. You have 200 health. If you are not hit for 4 seconds, you slowly heal. The monsters are pixel fantasy creatures and break into colourful cubes – no blood.',
     noload:'3D could not be loaded.',
     tFire:'Fire',tJump:'Jump',tSwap:'Swap',tReload:'Reload',
     hp:'Health {n}',wave:'Wave {w} · Monsters {n}',waveBreak:'Wave {w} cleared!',ammo:'{a} / {m}',reloading:'Reloading …',
@@ -183,10 +183,10 @@ const TXT={
     w_pistol:'Pixel Pistol',w_shotgun:'Block Shotgun',w_laser:'Laser Rifle',w_sniper:'Sniper Blaster',w_rocket:'Confetti Rocket Launcher',w_mini:'Rainbow Minigun',
     wd_pistol:'Reliable, 12 shots.',wd_shotgun:'6 pixel pellets at once – strong up close.',wd_laser:'Full auto! Hold to fire.',wd_sniper:'One shot, lots of damage – great against robots.',wd_rocket:'Explodes into confetti and hits everyone nearby.',wd_mini:'Huge magazine, rainbow full auto!',
     stat:'Damage {d} · Magazine {m}',
-    u_hp:'More health',ud_hp:'+25 max health (now {n}).',u_dmg:'Stronger blasters',ud_dmg:'+10 % damage for all weapons (now +{n} %).',u_heal:'Healing potion',ud_heal:'Fills your health all the way up.',
+    u_hp:'More health',ud_hp:'+50 max health (now {n}).',u_dmg:'Stronger blasters',ud_dmg:'+10 % damage for all weapons (now +{n} %).',u_heal:'Healing potion',ud_heal:'Fills your health all the way up.',
     e_slime:'Slime',e_bat:'Bat',e_robot:'Robot',e_golem:'Pixel Golem',
     paused:'Paused',resume:'Resume',overTitle:'Defeated!',overText:'You made it to wave {w}. You keep your coins and weapons.',again:'Play again',
-    newBest:'New record: wave {w}!',bought:'{x} bought!',poor:'You need {p} coins for that.',heart:'+25 health',
+    newBest:'New record: wave {w}!',bought:'{x} bought!',poor:'You need {p} coins for that.',heart:'+50 health',
     resetDone:'Everything reset.',clickLook:'Click the playfield to aim with the mouse.',bossDown:'The pixel golem is defeated! +{c} coins'
   }
 };
@@ -220,7 +220,7 @@ function fresh(){return {coins:0,owned:['pistol'],cur:'pistol',hpLv:0,dmgLv:0,be
 let S=fresh();
 try{const s=store&&JSON.parse(store.getItem(KEY)||'null');if(s&&typeof s.coins==='number'){S=Object.assign(fresh(),s);S.owned=(S.owned||[]).filter(id=>W_BY[id]);if(!S.owned.includes('pistol'))S.owned.unshift('pistol');if(!W_BY[S.cur])S.cur='pistol';}}catch(e){S=fresh();}
 function save(){try{store&&store.setItem(KEY,JSON.stringify(S));}catch(e){}}
-const maxHp=()=>100+S.hpLv*25;
+const maxHp=()=>200+S.hpLv*50; // doppelt so viel Leben wie vorher
 const dmgMul=()=>1+S.dmgLv*0.1;
 const upCost=k=>k==='hp'?200*(S.hpLv+1):k==='dmg'?250*(S.dmgLv+1):30;
 
@@ -303,7 +303,7 @@ const PORTALS=[[-A+3,0],[A-3,0],[0,-A+3],[0,A-3]].map(([x,z])=>{const g=new THRE
   const glow=cube(new THREE.MeshBasicMaterial({color:'#b06aff',transparent:true,opacity:.65}),2.2,3,0.2,0,1.5,0);g.add(glow);g.userData.glow=glow;scene.add(g);return {x,z,g};});
 
 /* ---------- Spieler ---------- */
-const player={x:0,z:10,y:0,vy:0,yaw:0,pitch:0,hp:100,onGround:true,hurtT:0};
+const player={x:0,z:10,y:0,vy:0,yaw:0,pitch:0,hp:200,calm:0,onGround:true,hurtT:0};
 const EYE=1.6,PR=0.4;
 function groundAt(x,z,y){let gtop=0;for(const s of solids){if(x>s.x0-PR&&x<s.x1+PR&&z>s.z0-PR&&z<s.z1+PR&&y>=s.top-0.45)gtop=Math.max(gtop,s.top);}return gtop;}
 function blockedAt(x,z,y){for(const s of solids){if(x>s.x0-PR&&x<s.x1+PR&&z>s.z0-PR&&z<s.z1+PR&&y<s.top-0.45)return true;}return false;}
@@ -456,7 +456,7 @@ function renderShop(){
 function buyWeapon(id){const w=W_BY[id];if(!w||S.owned.includes(id))return false;if(S.coins<w.price){sfx.no();toast(t('poor',{p:w.price}),'#ff3d8b');return false;}
   S.coins-=w.price;S.owned.push(id);S.cur=id;ammo[id]=w.mag;equipGun();sfx.buy();toast(t('bought',{x:t('w_'+id)}),'#9cff3a');save();return true;}
 function buyUp(k){const c=upCost(k);if(S.coins<c){sfx.no();return false;}if(k==='heal'&&player.hp>=maxHp())return false;S.coins-=c;
-  if(k==='hp'){S.hpLv++;player.hp+=25;}else if(k==='dmg')S.dmgLv++;else{player.hp=maxHp();sfx.heal();}sfx.buy();toast(t('bought',{x:t('u_'+k)}),'#9cff3a');save();return true;}
+  if(k==='hp'){S.hpLv++;player.hp+=50;}else if(k==='dmg')S.dmgLv++;else{player.hp=maxHp();sfx.heal();}sfx.buy();toast(t('bought',{x:t('u_'+k)}),'#9cff3a');save();return true;}
 $('shop').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;audioInit();
   if(b.dataset.buy)buyWeapon(b.dataset.buy);else if(b.dataset.eq)switchWeapon(b.dataset.eq);else if(b.dataset.up)buyUp(b.dataset.up);else return;renderShop();});
 $('nextWave').addEventListener('click',()=>{audioInit();startWave();});
@@ -572,9 +572,10 @@ function update(dt){
     if(hitE||hitW||r.life<=0){explode(r.p);scene.remove(r.m);rockets.splice(rockets.indexOf(r),1);}}
   // Herzen
   for(const p of pickups.slice()){p.life-=dt;p.g.rotation.y+=dt*2;p.g.position.y=Math.sin(time*3)*0.15;
-    if(Math.hypot(p.x-px,p.z-pz)<1.2&&player.hp<maxHp()){player.hp=Math.min(maxHp(),player.hp+25);sfx.heal();toast(t('heart'),'#ff3d8b');p.life=0;}
+    if(Math.hypot(p.x-px,p.z-pz)<1.2&&player.hp<maxHp()){player.hp=Math.min(maxHp(),player.hp+50);sfx.heal();toast(t('heart'),'#ff3d8b');p.life=0;}
     if(p.life<=0){scene.remove(p.g);pickups.splice(pickups.indexOf(p),1);}}
   player.hurtT=Math.max(0,player.hurtT-dt);
+  player.calm=(player.calm||0)+dt;if(player.calm>4&&player.hp<maxHp())player.hp=Math.min(maxHp(),player.hp+6*dt);
   effects(dt);
 }
 function effects(dt){
@@ -589,7 +590,7 @@ function enemyShot(e){
   const m=cube(e.type==='golem'?col:new THREE.MeshBasicMaterial({color:col}),e.type==='golem'?0.7:0.3,e.type==='golem'?0.7:0.3,e.type==='golem'?0.7:0.3,from.x,from.y,from.z);scene.add(m);
   shots.push({p:from,v,m,life:4,dmg:e.type==='golem'?18:ENEMY[e.type].dmg,col});tone('square',e.type==='golem'?200:700,e.type==='golem'?100:400,0,0.12,0.04);
 }
-function hurt(d){if(state!=='fight')return;player.hp-=d;player.hurtT=0.35;sfx.hurt();if(player.hp<=0){player.hp=0;gameOver();}}
+function hurt(d){if(state!=='fight')return;player.hp-=d;player.calm=0;player.hurtT=0.35;sfx.hurt();if(player.hp<=0){player.hp=0;gameOver();}}
 
 /* ---------- Zeichnen ---------- */
 function render(){

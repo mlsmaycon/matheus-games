@@ -296,7 +296,8 @@ def test_farm_animals_have_babies(page, lang):
 @pytest.mark.parametrize('lang', LANGS)
 def test_pixel_blaster_shoot_wave_shop(page, lang):
     """Pixel-Blaster: a shot hurts the monster it aims at, defeated monsters give coins, a cleared wave opens the shop,
-    weapons can be bought and equipped, the next wave starts, and getting hit lowers health."""
+    weapons can be bought and equipped, the next wave starts, getting hit lowers health
+    (200 at the start) and you slowly heal after 4 seconds without being hit."""
     page.set_storage(age=30)
     pg = page.goto(f'games/pixel-blaster/{lang}/index.html', 1200)
     start_game(pg)
@@ -313,10 +314,12 @@ def test_pixel_blaster_shoot_wave_shop(page, lang):
         B.S.coins = 1000; o.bought = B.buyWeapon('shotgun'); o.cur = B.S.cur;
         document.getElementById('nextWave').click(); o.wave2 = B.state === 'fight' && B.wave === 2;
         const hp = B.player.hp; B.hurt(10); o.hurt = B.player.hp === hp - 10;
+        o.maxHp = B.player.hp + 10; B.clearQueue(); B.killAll(); const far = B.spawn('slime'); far.x = -30; far.z = -30; const h1 = B.player.hp; B.tick(6); o.healed = B.state === 'fight' && B.player.hp > h1;
         o.saved = JSON.parse(localStorage.getItem('pixel-blaster-v1')).owned.includes('shotgun');
         return o;
     }""")
     assert r['fight'] and r['hit'] and r['ammoUsed'] == 1 and r['coins'], r
     assert r['shop'] and r['bought'] and r['cur'] == 'shotgun' and r['wave2'], r
     assert r['hurt'] and r['saved'], r
+    assert r['maxHp'] == 200 and r['healed'], r
     assert not page.errors, page.errors
