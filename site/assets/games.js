@@ -159,5 +159,22 @@ window.MW_GAMES = [
       de: 'Comic-Kämpfe gegen Pixel-Fantasiemonster mit Spielzeug-Blastern. Kein Blut: Getroffene Monster zerfallen in bunte Würfel. Keine Kämpfe gegen Menschen.',
       en: 'Cartoon fights against pixel fantasy monsters with toy blasters. No blood: monsters break into colourful cubes. No fighting against people.'
     }
+  },
+  {
+    slug: 'boese-katze',
+    fsk: 0,
+    added: '2026-11-11',
+    cover: 'games/boese-katze/cover.svg',
+    title: { de: 'Böse Katze', en: 'Bad Cat' },
+    tagline: { de: 'Schubs alles runter – aber lass dich nicht erwischen!', en: 'Knock everything down – but don’t get caught!' },
+    desc: {
+      de: 'Du bist eine freche Katze in einem 3D-Haus mit Wohnzimmer und Küche. Spring aufs Sofa, ins Bücherregal, auf die Küchentheke und sogar auf den Kühlschrank und schubs mit der Pfote Tassen, Vasen, Teller, Eier und Blumentöpfe runter – je mehr schnell hintereinander kaputtgeht, desto größer die Combo. Aber das Herrchen kommt immer wieder ins Zimmer: Sieht es dich beim Schubsen oder auf dem Tisch, ruft es „Böse Katze!“ und du verlierst ein Herz. Ein gelber Fleck auf dem Boden zeigt, wohin es schaut. Versteck dich geduckt unter dem Tisch oder im Karton!',
+      en: 'You are a cheeky cat in a 3D house with a living room and kitchen. Jump onto the sofa, the bookshelf, the kitchen counter and even the fridge and swat cups, vases, plates, eggs and flower pots down with your paw – the more you break in a row, the bigger the combo. But your owner keeps coming into the room: if they see you swatting things or standing on the table, they shout “Bad cat!” and you lose a heart. A yellow patch on the floor shows where they are looking. Crouch under the table or in the box to hide!'
+    },
+    tags: { de: ['3D', 'Katze', 'Schleichen', 'Ton an'], en: ['3D', 'Cat', 'Sneaking', 'Sound on'] },
+    fskReason: {
+      de: 'Lustiges Katzen-Chaos ohne Gewalt: Nur Geschirr geht kaputt, und das Herrchen schimpft bloß.',
+      en: 'Funny cat chaos without violence: only dishes break, and the owner just tells the cat off.'
+    }
   }
 ];

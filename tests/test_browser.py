@@ -323,3 +323,25 @@ def test_pixel_blaster_shoot_wave_shop(page, lang):
     assert r['hurt'] and r['saved'], r
     assert r['maxHp'] == 200 and r['healed'], r
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_bad_cat_swats_a_cup_off_the_table(page, lang):
+    """Böse Katze (3D): start, run to the coffee table, swat – something falls, breaks and scores points."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/boese-katze/{lang}/index.html', 1200)
+    data = lambda k: pg.evaluate(f"document.getElementById('stage').dataset.{k}")
+    pg.click('#go')
+    pg.wait_for_timeout(400)
+    assert data('state') == 'play'
+    pg.keyboard.down('ArrowUp')
+    for _ in range(200):
+        if float(data('catz')) <= 3.3:
+            break
+        pg.wait_for_timeout(20)
+    pg.keyboard.up('ArrowUp')
+    assert float(data('catz')) <= 3.3, 'the cat did not run'
+    pg.keyboard.press('e')
+    pg.wait_for_timeout(1200)
+    assert int(data('knocked')) >= 1 and int(data('score')) > 0
+    assert not page.errors, page.errors
