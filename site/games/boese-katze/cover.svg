@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ec8ff"/><stop offset="1" stop-color="#d6f0ff"/></linearGradient>
+  </defs>
+  <!-- wall with stripes -->
+  <rect width="640" height="400" fill="#cfe3f5"/>
+  <g fill="#fff" fill-opacity=".35"><rect x="20" width="22" height="300"/><rect x="92" width="22" height="300"/><rect x="164" width="22" height="300"/><rect x="236" width="22" height="300"/><rect x="308" width="22" height="300"/><rect x="380" width="22" height="300"/><rect x="452" width="22" height="300"/><rect x="524" width="22" height="300"/><rect x="596" width="22" height="300"/></g>
+  <!-- window -->
+  <rect x="402" y="34" width="186" height="156" rx="6" fill="#fff"/>
+  <rect x="410" y="42" width="170" height="140" fill="url(#win)"/>
+  <rect x="410" y="152" width="170" height="30" fill="#7bd389"/>
+  <g fill="#fff"><circle cx="452" cy="80" r="14"/><circle cx="470" cy="74" r="18"/><circle cx="490" cy="82" r="12"/></g>
+  <rect x="492" y="42" width="6" height="140" fill="#fff"/><rect x="410" y="109" width="170" height="6" fill="#fff"/>
+  <rect x="384" y="28" width="20" height="186" fill="#ff9fb8"/><rect x="586" y="28" width="20" height="186" fill="#ff9fb8"/>
+  <!-- floor -->
+  <rect y="300" width="640" height="100" fill="#c08a5a"/>
+  <g stroke="#a8744a" stroke-width="2"><path d="M0 325H640M0 350H640M0 375H640"/></g>
+  <rect y="292" width="640" height="8" fill="#8a6a4a"/>
+  <!-- table -->
+  <rect x="60" y="204" width="330" height="14" fill="#a0704a"/>
+  <rect x="78" y="218" width="14" height="82" fill="#8a5a3a"/><rect x="358" y="218" width="14" height="82" fill="#8a5a3a"/>
+  <!-- vase still on the table -->
+  <g transform="translate(110 204)"><path d="M-7-48H7Q19-24 10 0H-10Q-19-24-7-48Z" fill="#5aa9e6"/><circle cx="-4" cy="-56" r="7" fill="#ff6b8b"/><circle cx="6" cy="-60" r="7" fill="#ff6b8b"/></g>
+  <!-- plate on the table -->
+  <ellipse cx="300" cy="200" rx="26" ry="5" fill="#c8d0e8"/><ellipse cx="300" cy="198" rx="22" ry="3.5" fill="#f4f7ff"/>
+  <!-- falling cup -->
+  <g transform="translate(430 236) rotate(35)"><rect x="-14" y="-28" width="28" height="28" rx="5" fill="#ff6b6b"/><path d="M15-20a8 8 0 0 1 0 12" fill="none" stroke="#ff6b6b" stroke-width="5"/><circle cy="-14" r="4.5" fill="#fff"/></g>
+  <g stroke="#2a1d3a" stroke-width="4" stroke-linecap="round" opacity=".5"><path d="M400 214l-14-10M404 236h-18M404 256l-14 8"/></g>
+  <!-- shards on the floor -->
+  <g fill="#ffb3b3"><path d="M520 316l14-8 4 10z"/><path d="M560 322l10-12 8 8z"/><path d="M500 330l12 2-6 8z"/></g>
+  <!-- the cat on the table, swatting -->
+  <g transform="translate(250 204) scale(3)">
+    <path d="M-22-24C-40-28-38-56-28-66" fill="none" stroke="#f39c4a" stroke-width="7" stroke-linecap="round"/>
+    <path d="M-31-62l3-4" stroke="#cf6f22" stroke-width="7" stroke-linecap="round"/>
+    <g stroke-width="7" stroke-linecap="round"><path d="M-16-16v16" stroke="#e08a3a"/><path d="M-8-16v16" stroke="#f39c4a"/><path d="M12-16v16" stroke="#e08a3a"/><path d="M20-16L42-30" stroke="#f39c4a"/></g>
+    <g fill="#fff1e0"><circle cx="-16" cy="1" r="4"/><circle cx="-8" cy="1" r="4"/><circle cx="12" cy="1" r="4"/><circle cx="42" cy="-30" r="4"/></g>
+    <ellipse cy="-22" rx="26" ry="14" fill="#f39c4a"/>
+    <ellipse cx="2" cy="-16" rx="16" ry="6" fill="#ffe2c2"/>
+    <g stroke="#cf6f22" stroke-width="3.5"><path d="M-14-34l3 10M-5-34l3 10M4-34l3 10"/></g>
+    <path d="M13-42l2-16 8 12zM25-46l8-12 2 16z" fill="#f39c4a"/>
+    <path d="M16-45v-8l5 7zM27-46l5-7v8z" fill="#ffb3c8"/>
+    <circle cx="24" cy="-36" r="13" fill="#f39c4a"/>
+    <ellipse cx="29" cy="-31" rx="7" ry="5" fill="#ffe2c2"/>
+    <ellipse cx="28" cy="-38" rx="3.2" ry="4" fill="#9be36b"/><ellipse cx="35" cy="-38" rx="2.6" ry="3.6" fill="#9be36b"/>
+    <ellipse cx="29" cy="-38" rx="1.2" ry="3.2" fill="#4a2a14"/><ellipse cx="35.5" cy="-38" rx="1" ry="2.8" fill="#4a2a14"/>
+    <path d="M25-43l6 1.5M33-41.5l5-1.5" stroke="#4a2a14" stroke-width="1.6"/>
+    <path d="M35-33h4l-2 3z" fill="#ff7aa2"/>
+    <path d="M37-30q-2 3-4 1" fill="none" stroke="#4a2a14" stroke-width="1.2"/>
+  </g>
+  <!-- owner's speech bubble peeking in -->
+  <g transform="translate(470 252)">
+    <rect x="0" y="0" width="160" height="46" rx="16" fill="#fff"/>
+    <path d="M128 44l14 18 4-18z" fill="#fff"/>
+    <text x="80" y="31" font-family="Arial Rounded MT Bold, Trebuchet MS, sans-serif" font-size="24" font-weight="bold" fill="#d6336c" text-anchor="middle">!?!</text>
+  </g>
+</svg>
