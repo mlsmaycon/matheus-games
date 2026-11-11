@@ -142,5 +142,22 @@ window.MW_GAMES = [
       de: 'Friedliches Bauernhof-Spiel ohne Gewalt und ohne Zeitdruck.',
       en: 'Peaceful farm game with no violence and no time pressure.'
     }
+  },
+  {
+    slug: 'pixel-blaster',
+    fsk: 6,
+    added: '2026-11-11',
+    cover: 'games/pixel-blaster/cover.svg',
+    title: { de: 'Pixel-Blaster', en: 'Pixel Blaster' },
+    tagline: { de: 'Pixel-Monster greifen an – halte die Wellen auf!', en: 'Pixel monsters attack – hold off the waves!' },
+    desc: {
+      de: 'Ein Pixel-Abenteuer aus der Ich-Sicht, inspiriert von Pixel Gun 3D: In einer Arena aus Pixel-Blöcken kommen Welle für Welle Schleime, Fledermäuse, Roboter und ab und zu ein riesiger Pixel-Golem aus den Portalen. Triff sie mit deinem Blaster, dann zerfallen sie in bunte Würfel und lassen Münzen fallen. Spring auf Kisten und Türme, sammle Herzen ein und kauf nach jeder Welle im Shop neue Waffen – von der Block-Schrotflinte bis zur Regenbogen-Minigun – und Verbesserungen.',
+      en: 'A first-person pixel adventure inspired by Pixel Gun 3D: in an arena made of pixel blocks, wave after wave of slimes, bats, robots and now and then a giant pixel golem come out of the portals. Hit them with your blaster and they break into colourful cubes and drop coins. Jump onto crates and towers, pick up hearts and after every wave buy new weapons in the shop – from the block shotgun to the rainbow minigun – and upgrades.'
+    },
+    tags: { de: ['3D', 'Pixel', 'Action', 'Ton an'], en: ['3D', 'Pixel', 'Action', 'Sound on'] },
+    fskReason: {
+      de: 'Comic-Kämpfe gegen Pixel-Fantasiemonster mit Spielzeug-Blastern. Kein Blut: Getroffene Monster zerfallen in bunte Würfel. Keine Kämpfe gegen Menschen.',
+      en: 'Cartoon fights against pixel fantasy monsters with toy blasters. No blood: monsters break into colourful cubes. No fighting against people.'
+    }
   }
 ];

@@ -291,3 +291,32 @@ def test_farm_animals_have_babies(page, lang):
     assert r['n'] == 3 and r['small'], r
     assert r['grown'] and r['full'] == 3, r
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_pixel_blaster_shoot_wave_shop(page, lang):
+    """Pixel-Blaster: a shot hurts the monster it aims at, defeated monsters give coins, a cleared wave opens the shop,
+    weapons can be bought and equipped, the next wave starts, and getting hit lowers health."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/pixel-blaster/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(500)
+    r = pg.evaluate("""async () => {
+        const B = window.__pb, o = {}, wait = ms => new Promise(r => setTimeout(r, ms));
+        o.fight = B.state === 'fight';
+        B.clearQueue(); B.killAll();
+        B.player.x = 4; B.player.z = 28; B.player.y = 0;
+        const e = B.spawn('robot'); e.x = 4; e.z = 18; B.aimAt(e);
+        const hp0 = e.hp, a0 = B.ammo.pistol; B.fire(); o.hit = e.hp < hp0; o.ammoUsed = a0 - B.ammo.pistol;
+        const c0 = B.S.coins; B.killAll(); o.coins = B.S.coins > c0;
+        B.tick(0.2); await wait(1300); o.shop = B.state === 'shop' && !document.getElementById('shop').hidden;
+        B.S.coins = 1000; o.bought = B.buyWeapon('shotgun'); o.cur = B.S.cur;
+        document.getElementById('nextWave').click(); o.wave2 = B.state === 'fight' && B.wave === 2;
+        const hp = B.player.hp; B.hurt(10); o.hurt = B.player.hp === hp - 10;
+        o.saved = JSON.parse(localStorage.getItem('pixel-blaster-v1')).owned.includes('shotgun');
+        return o;
+    }""")
+    assert r['fight'] and r['hit'] and r['ammoUsed'] == 1 and r['coins'], r
+    assert r['shop'] and r['bought'] and r['cur'] == 'shotgun' and r['wave2'], r
+    assert r['hurt'] and r['saved'], r
+    assert not page.errors, page.errors
