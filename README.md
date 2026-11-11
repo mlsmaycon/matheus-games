@@ -39,7 +39,7 @@ cd dist && python3 -m http.server 8000    # play at http://localhost:8000
 | Pixel-Blaster / Pixel Blaster | [de](https://mycraftgames.com/games/pixel-blaster/de/) | [en](https://mycraftgames.com/games/pixel-blaster/en/) | 6 |
 | Böse Katze / Bad Cat | [de](https://mycraftgames.com/games/boese-katze/de/) | [en](https://mycraftgames.com/games/boese-katze/en/) | 0 |
 
-**Brainrot-Raub:** buy creatures (28 kinds, from common to secret) off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
+**Brainrot-Raub:** buy creatures (1028 kinds from common to secret: 28 hand-made, 1000 assembled from name parts, colours, shapes and hats with a fixed seed so saves stay valid) off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
 **Versteck-Alarm:** hide-and-seek in a house with garden and garage. Hide with three AI kids from a seeker with a flashlight, or seek four kids yourself using only giggle sounds as hints.
 

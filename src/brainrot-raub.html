@@ -69,7 +69,7 @@ h1 small{display:block;font-family:var(--body);font-weight:700;font-size:13px;co
     <div class="stats">
       <div class="stat money"><span>Geld</span><b id="money">$100</b></div>
       <div class="stat"><span>pro Sek.</span><b id="ips">$0</b></div>
-      <div class="stat"><span>Index</span><b id="idx">0/28</b></div>
+      <div class="stat"><span>Index</span><b id="idx">0/1028</b></div>
     </div>
   </header>
 
@@ -146,6 +146,28 @@ const TYPES=[
   {n:'Fantasmino Galattico',r:'secret',cost:600000,inc:15000,body:'#c8b8ff',shape:'blob',acc:'crown',spots:'#7a5cff'},
   {n:'Tralalero Supremo',r:'secret',cost:1200000,inc:30000,body:'#2f7fd6',shape:'drop',acc:'crown',spots:'#ffd23f'},
 ];
+// 1000 weitere Brainrots, aus Bausteinen zusammengesetzt. Fester Startwert: jeder Brainrot sieht bei jedem Laden gleich aus,
+// und weil sie hinten angehängt werden, passen alte Spielstände weiter.
+(()=>{
+  let seed=20261111;const rnd=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let x=Math.imul(seed^seed>>>15,1|seed);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};
+  const pick=a=>a[(rnd()*a.length)|0];
+  const HEAD=['Bombar','Tralla','Cappu','Spaghet','Frulli','Banan','Gorill','Pinguin','Tortel','Brr','Ziga','Matte','Burbal','Gelat','Panin','Raviol','Lasagn','Mozzar','Pizz','Tung',
+    'Crocod','Elefant','Giraff','Pomod','Limon','Cocc','Maccher','Bisc','Turb','Ciocc','Ananas','Fragol','Mangost','Patat','Carot','Salam','Cannol','Tiram','Pandor','Zucch'];
+  const END=['ini','ino','ello','etto','ussi','ona','occo','iro','ano','ella','ito','ucci','azzo','umba','ilo','ero'];
+  const TAIL=['Volante','Supremo','Turbino','Galattico','Fantastico','Dorato','Rombino','Spaziale','Notturno','Furioso','Magico','Gigante','Piccolo','Elettrico','Ballerino',
+    'Pazzesco','Lunare','Solare','Tropicale','Ghiacciato','Infernale','Brillante','Velocissimo','Misterioso','Cosmico'];
+  const SHAPES=['blob','pill','box','drop'],ACC=['none','antenna','bow','chef','helmet','horns','leaf','propeller','shades','tophat'];
+  const PLAN=[['common',380,30,250],['rare',280,300,1200],['epic',170,1500,6000],['legend',100,8000,40000],['myth',50,50000,250000],['secret',20,300000,3000000]];
+  const used=new Set(TYPES.map(t=>t.n));
+  const hex=(h,s,l)=>'#'+new THREE.Color().setHSL(h,s,l).getHexString();
+  PLAN.forEach(([r,n,lo,hi])=>{for(let i=0;i<n;i++){
+    let name;do{name=pick(HEAD)+pick(END)+' '+pick(TAIL);}while(used.has(name));used.add(name);
+    const cost=Math.round(lo*Math.pow(hi/lo,rnd())),h=rnd();
+    const t={n:name,r,cost,inc:Math.max(1,Math.round(cost/(24+rnd()*8))),body:hex(h,0.55+rnd()*0.35,0.45+rnd()*0.25),shape:pick(SHAPES),
+      acc:(r==='myth'||r==='secret')&&rnd()<0.5?'crown':pick(ACC)};
+    if(rnd()<0.55)t.spots=hex((h+0.3+rnd()*0.4)%1,0.7,0.55);
+    TYPES.push(t);}});
+})();
 TYPES.forEach((t,i)=>t.id=i);
 function shade(hex,a){
   const n=parseInt(hex.slice(1),16);
