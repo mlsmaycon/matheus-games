@@ -61,7 +61,7 @@ h1 small { display: block; font-size: 14px; color: #f2d9c0; text-shadow: none; m
     <div class="hud" id="hud" hidden>
       <div class="bar" id="hLeft"><span id="hearts">♥♥♥</span><span id="score">0</span></div>
       <div class="bar" id="hMid"><span id="dayLbl"></span><div class="goal"><i id="goalBar"></i><span id="goalTxt"></span></div></div>
-      <div class="bar" id="hRight"><span id="timer">2:30</span></div>
+      <div class="bar" id="hRight"><span id="timer">4:00</span></div>
       <div id="warn" hidden></div>
       <div id="bubble" hidden></div>
       <div id="banner"></div>
@@ -394,7 +394,8 @@ h1 small { display: block; font-size: 14px; color: #f2d9c0; text-shadow: none; m
   const owner = { x: -5, z: 5.6, yaw: Math.PI / 2, state: 'away', t: 6, tx: 0, tz: 5.6, lookYaw: 0, lookAt: null, stops: 0, door: 0, speech: '', speechT: 0, warned: false, walk: 0 };
 
   // ---------- game state ----------
-  let state = 'title', stateT = 0, day = 1, score = 0, hearts = 3, knocked = 0, goal = 12, timer = 150;
+  const DAY_TIME = 240;   // seconds per day (4 minutes)
+  let state = 'title', stateT = 0, day = 1, score = 0, hearts = 3, knocked = 0, goal = 12, timer = 240;
   let combo = 0, lastBreak = -9, newBest = false, time = 0, shake = 0;
   let camYaw = 0, camPitch = 0.38;
   const keys = {}; let jumpQ = false, pawQ = false;
@@ -412,7 +413,7 @@ h1 small { display: block; font-size: 14px; color: #f2d9c0; text-shadow: none; m
       return { type, ...TYPES[type], x, y, z, surf: surfaceAt(x, z, y), state: 'rest', vx: 0, vy: 0, vz: 0, spin: new THREE.Vector3(), mesh };
     });
     goal = Math.min(10 + (day - 1) * 4, objs.length - 3);
-    knocked = 0; timer = 150; combo = 0; lastBreak = -9;
+    knocked = 0; timer = DAY_TIME; combo = 0; lastBreak = -9;
     Object.assign(cat, { x: 2.2, y: 0, z: 4.4, vx: 0, vz: 0, vy: 0, yaw: Math.PI, ground: true, surf: null, dropT: 0, pawT: 0, mischief: 0, invuln: 0, scoldT: 0 });
     Object.assign(owner, { x: -5, z: 5.6, state: 'away', t: day > 1 ? 2 : 3, speech: '', speechT: 0, warned: false, lookAt: null });
     camYaw = 0; camPitch = 0.38;
