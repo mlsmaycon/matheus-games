@@ -345,3 +345,19 @@ def test_bad_cat_swats_a_cup_off_the_table(page, lang):
     pg.wait_for_timeout(1200)
     assert int(data('knocked')) >= 1 and int(data('score')) > 0
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_brainrot_endless_brainrots_load_from_code(page, lang):
+    """Brainrot-Raub: a brainrot from the 10 quadrillion is stored as its 16-digit code and comes back after reloading."""
+    page.set_storage(age=30)
+    page.pg.evaluate("""() => localStorage.setItem('brainrot-raub-v2', JSON.stringify({money: 50, up: {speed: 0, slots: 4, shield: 0},
+        slots: ['g1234567890123456', 3, -1, -1, -1, -1, -1, -1, -1, -1], disc: ['g1234567890123456']}))""")
+    pg = page.goto(f'games/brainrot-raub/{lang}/index.html', 1500)
+    start_game(pg)
+    pg.wait_for_timeout(1500)
+    r = pg.evaluate("""() => ({idx: document.getElementById('idx').textContent,
+        slots: JSON.parse(localStorage.getItem('brainrot-raub-v2')).slots.slice(0, 2)})""")
+    assert r['idx'].startswith('1/10 '), r
+    assert r['slots'] == ['g1234567890123456', 3], r
+    assert not page.errors, page.errors

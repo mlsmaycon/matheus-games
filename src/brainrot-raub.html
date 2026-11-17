@@ -69,7 +69,7 @@ h1 small{display:block;font-family:var(--body);font-weight:700;font-size:13px;co
     <div class="stats">
       <div class="stat money"><span>Geld</span><b id="money">$100</b></div>
       <div class="stat"><span>pro Sek.</span><b id="ips">$0</b></div>
-      <div class="stat"><span>Index</span><b id="idx">0/1028</b></div>
+      <div class="stat"><span>Index</span><b id="idx">0/10 Billiarden</b></div>
     </div>
   </header>
 
@@ -148,16 +148,17 @@ const TYPES=[
 ];
 // 1000 weitere Brainrots, aus Bausteinen zusammengesetzt. Fester Startwert: jeder Brainrot sieht bei jedem Laden gleich aus,
 // und weil sie hinten angehängt werden, passen alte Spielstände weiter.
+let HEAD,END,TAIL,SHAPES,ACC,PLAN;
 (()=>{
   let seed=20261111;const rnd=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let x=Math.imul(seed^seed>>>15,1|seed);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};
   const pick=a=>a[(rnd()*a.length)|0];
-  const HEAD=['Bombar','Tralla','Cappu','Spaghet','Frulli','Banan','Gorill','Pinguin','Tortel','Brr','Ziga','Matte','Burbal','Gelat','Panin','Raviol','Lasagn','Mozzar','Pizz','Tung',
+  HEAD=['Bombar','Tralla','Cappu','Spaghet','Frulli','Banan','Gorill','Pinguin','Tortel','Brr','Ziga','Matte','Burbal','Gelat','Panin','Raviol','Lasagn','Mozzar','Pizz','Tung',
     'Crocod','Elefant','Giraff','Pomod','Limon','Cocc','Maccher','Bisc','Turb','Ciocc','Ananas','Fragol','Mangost','Patat','Carot','Salam','Cannol','Tiram','Pandor','Zucch'];
-  const END=['ini','ino','ello','etto','ussi','ona','occo','iro','ano','ella','ito','ucci','azzo','umba','ilo','ero'];
-  const TAIL=['Volante','Supremo','Turbino','Galattico','Fantastico','Dorato','Rombino','Spaziale','Notturno','Furioso','Magico','Gigante','Piccolo','Elettrico','Ballerino',
+  END=['ini','ino','ello','etto','ussi','ona','occo','iro','ano','ella','ito','ucci','azzo','umba','ilo','ero'];
+  TAIL=['Volante','Supremo','Turbino','Galattico','Fantastico','Dorato','Rombino','Spaziale','Notturno','Furioso','Magico','Gigante','Piccolo','Elettrico','Ballerino',
     'Pazzesco','Lunare','Solare','Tropicale','Ghiacciato','Infernale','Brillante','Velocissimo','Misterioso','Cosmico'];
-  const SHAPES=['blob','pill','box','drop'],ACC=['none','antenna','bow','chef','helmet','horns','leaf','propeller','shades','tophat'];
-  const PLAN=[['common',380,30,250],['rare',280,300,1200],['epic',170,1500,6000],['legend',100,8000,40000],['myth',50,50000,250000],['secret',20,300000,3000000]];
+  SHAPES=['blob','pill','box','drop'];ACC=['none','antenna','bow','chef','helmet','horns','leaf','propeller','shades','tophat'];
+  PLAN=[['common',380,30,250],['rare',280,300,1200],['epic',170,1500,6000],['legend',100,8000,40000],['myth',50,50000,250000],['secret',20,300000,3000000]];
   const used=new Set(TYPES.map(t=>t.n));
   const hex=(h,s,l)=>'#'+new THREE.Color().setHSL(h,s,l).getHexString();
   PLAN.forEach(([r,n,lo,hi])=>{for(let i=0;i<n;i++){
@@ -169,6 +170,25 @@ const TYPES=[
     TYPES.push(t);}});
 })();
 TYPES.forEach((t,i)=>t.id=i);
+// Dazu 10 Billiarden (10.000.000.000.000.000) Brainrots ohne Liste: Jeder hat eine 16-stellige Nummer,
+// und aus der Nummer wird er erst gebaut, wenn er gebraucht wird – dieselbe Nummer ergibt immer denselben Brainrot.
+const IDX_TOTAL='10 Billiarden';
+const gCache=new Map();
+function codeRnd(code){let h=2166136261;for(let i=0;i<code.length;i++){h^=code.charCodeAt(i);h=Math.imul(h,16777619);}let sd=h>>>0;
+  return ()=>{sd|=0;sd=sd+0x6D2B79F5|0;let x=Math.imul(sd^sd>>>15,1|sd);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};}
+function codeRarity(rnd){const keys=Object.keys(RAR);let v=rnd()*keys.reduce((a,k)=>a+RAR[k].w,0);for(const k of keys){v-=RAR[k].w;if(v<=0)return k;}return keys[0];}
+function gType(code){
+  if(gCache.has(code))return gCache.get(code);
+  const rnd=codeRnd(code),pk=a=>a[(rnd()*a.length)|0],r=codeRarity(rnd),[,,lo,hi]=PLAN.find(p=>p[0]===r),h=rnd();
+  const cost=Math.round(lo*Math.pow(hi/lo,rnd()));
+  const t={id:'g'+code,code,n:pk(HEAD)+pk(END)+' '+pk(TAIL),r,cost,inc:Math.max(1,Math.round(cost/(24+rnd()*8))),
+    body:'#'+new THREE.Color().setHSL(h,0.55+rnd()*0.35,0.45+rnd()*0.25).getHexString(),shape:pk(SHAPES),acc:(r==='myth'||r==='secret')&&rnd()<0.5?'crown':pk(ACC)};
+  if(rnd()<0.55)t.spots='#'+new THREE.Color().setHSL((h+0.3+rnd()*0.4)%1,0.7,0.55).getHexString();
+  gCache.set(code,t);return t;
+}
+function randomCode(){let c='';for(let i=0;i<16;i++)c+=(Math.random()*10)|0;return c;}
+function gTypeOfRarity(rk){for(let k=0;k<5000;k++){const c=randomCode();if(codeRarity(codeRnd(c))===rk)return gType(c);}return null;}
+function typeById(id){if(typeof id==='number')return TYPES[id]||null;if(typeof id==='string'&&/^g\d{16}$/.test(id))return gType(id.slice(1));return null;}
 function shade(hex,a){
   const n=parseInt(hex.slice(1),16);
   const c=v=>Math.max(0,Math.min(255,v));
@@ -445,7 +465,7 @@ function newWorld(saved){
   if(saved){
     money=saved.money||100;up=Object.assign(up,saved.up||{});
     playerBase.unlocked=[6,8,10][up.slots]||6;
-    (saved.slots||[]).forEach((ti,i)=>{if(ti>=0&&TYPES[ti]&&i<10)playerBase.slots[i].c=TYPES[ti];});
+    (saved.slots||[]).forEach((ti,i)=>{const ty=typeById(ti);if(ty&&i<10)playerBase.slots[i].c=ty;});
     (saved.disc||[]).forEach(d=>discovered.add(d));
   }
   for(let x=60;x<1000;x+=120)spawnItem(x);
@@ -455,6 +475,7 @@ function rollType(){
   const keys=Object.keys(RAR);
   let r=Math.random()*keys.reduce((s,k)=>s+RAR[k].w,0),rk=keys[0];
   for(const k of keys){r-=RAR[k].w;if(r<=0){rk=k;break;}}
+  if(Math.random()<0.7){const g=gTypeOfRarity(rk);if(g)return g;} // meistens einer aus den 10 Billiarden
   const pool=TYPES.filter(t=>t.r===rk);return pool[(Math.random()*pool.length)|0];
 }
 let itemId=0;
@@ -850,7 +871,7 @@ function hud(){
   $('money').textContent=fmt(money);
   let ips=0;playerBase.slots.forEach(s=>{if(s.c)ips+=s.c.inc;});
   $('ips').textContent=fmt(ips);
-  $('idx').textContent=`${discovered.size}/${TYPES.length}`;
+  $('idx').textContent=`${discovered.size}/${IDX_TOTAL}`;
   $('upSpeedTxt').textContent=`Stufe ${up.speed}/${SPEED_MAX} · +12 % Tempo`;
   $('upSpeedCost').textContent=up.speed>=SPEED_MAX?'Maximal':fmt(speedCost());
   $('upSpeed').disabled=up.speed>=SPEED_MAX||money<speedCost();

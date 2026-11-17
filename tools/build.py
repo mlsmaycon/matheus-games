@@ -109,6 +109,8 @@ BR_EN = [
     ("`${bot.name} hat dich erwischt!`", "`${bot.name} caught you!`"),
     ("`${t.n} gehört jetzt dir!`", "`${t.n} is yours now!`"),
     ("`Neu im Index: ${t.n}`", "`New in your index: ${t.n}`"),
+    ("const IDX_TOTAL='10 Billiarden';", "const IDX_TOTAL='10 quadrillion';"),
+    ('<b id="idx">0/10 Billiarden</b>', '<b id="idx">0/10 quadrillion</b>'),
     ("`Laserschild an: ${shieldDur()} Sekunden`", "`Laser shield on: ${shieldDur()} seconds`"),
     ("`Zurückerobert: ${bot.carry.t.n}`", "`Recovered: ${bot.carry.t.n}`"),
     ("'Betäubt …'", "'Stunned …'"),
