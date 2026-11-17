@@ -15,8 +15,8 @@ window.MW_GAMES = [
     title: { de: 'Brainrot-Raub', en: 'Brainrot Heist' },
     tagline: { de: 'Kaufen, kassieren, klauen.', en: 'Buy, cash in, steal.' },
     desc: {
-      de: 'Kauf verrückte Figuren vom Fließband, lass sie Geld verdienen und schnapp dir die besten aus den Basen deiner Rivalen. Es gibt über 10 Billiarden verschiedene Brainrots zu sammeln – jeder hat seine eigene Nummer. Aber pass auf: Die klauen zurück.',
-      en: 'Buy wacky creatures off the conveyor belt, let them earn money and grab the best ones from your rivals’ bases. There are more than 10 quadrillion different brainrots to collect – each one has its own number. But watch out: they steal back.'
+      de: 'Kauf verrückte Figuren vom Fließband, lass sie Geld verdienen und schnapp dir die besten aus den Basen deiner Rivalen. Es gibt über 10 Septilliarden (eine 1 mit 46 Stellen) verschiedene Brainrots zu sammeln – jeder hat seine eigene Nummer. Aber pass auf: Die klauen zurück.',
+      en: 'Buy wacky creatures off the conveyor belt, let them earn money and grab the best ones from your rivals’ bases. There are more than 10 quattuordecillion (a 1 followed by 46 digits) different brainrots to collect – each one has its own number. But watch out: they steal back.'
     },
     tags: { de: ['3D', 'Sammeln', 'Handy & PC'], en: ['3D', 'Collecting', 'Phone & PC'] },
     fskReason: {
