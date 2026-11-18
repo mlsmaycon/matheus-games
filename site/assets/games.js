@@ -176,5 +176,22 @@ window.MW_GAMES = [
       de: 'Lustiges Katzen-Chaos ohne Gewalt: Nur Geschirr geht kaputt, und das Herrchen schimpft bloß.',
       en: 'Funny cat chaos without violence: only dishes break, and the owner just tells the cat off.'
     }
+  },
+  {
+    slug: 'futter-werfen',
+    fsk: 0,
+    added: '2026-11-18',
+    cover: 'games/futter-werfen/cover.svg',
+    title: { de: 'Futter werfen', en: 'Throw Food for Animals' },
+    tagline: { de: 'Wirf jedem Tier sein Lieblingsfutter zu!', en: 'Throw every animal its favourite food!' },
+    desc: {
+      de: 'Du stehst auf einer Plattform über einem riesigen Tiertal und wirfst Futter: Körner für die Hühner, Karotten für die Kaninchen, Fisch für die Pinguine, Bananen für die Affen, Bambus für die Pandas und Regenbogen-Kekse für das Einhorn und den Drachen. Jedes Tier frisst nur, was es mag. Satte Tiere wachsen und bringen Münzen. Damit kaufst du neues Futter, einen größeren Futtersack und mehr Wurfweite, bis du die Regenbogeninsel ganz hinten erreichst.',
+      en: 'You stand on a platform above a huge animal valley and throw food: seeds for the chickens, carrots for the rabbits, fish for the penguins, bananas for the monkeys, bamboo for the pandas and rainbow cookies for the unicorn and the dragon. Every animal only eats what it likes. Full animals grow and bring coins. Use them to buy new food, a bigger food bag and more throw range until you reach the rainbow island at the very back.'
+    },
+    tags: { de: ['3D', 'Tiere', 'Zielen', 'Ton an'], en: ['3D', 'Animals', 'Aiming', 'Sound on'] },
+    fskReason: {
+      de: 'Friedliches Tierspiel ohne Gewalt: Du wirfst nur Futter, und die Tiere freuen sich.',
+      en: 'Peaceful animal game without violence: you only throw food, and the animals are happy.'
+    }
   }
 ];

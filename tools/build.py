@@ -231,6 +231,7 @@ GAMES = [
     ('src/bauernhof.html', 'bauernhof', 0, {'de': 'Mein Bauernhof', 'en': 'My Farm'}, 'i18n', []),
     ('src/pixel-blaster.html', 'pixel-blaster', 6, {'de': 'Pixel-Blaster', 'en': 'Pixel Blaster'}, 'i18n', []),
     ('src/boese-katze.html', 'boese-katze', 0, {'de': 'Böse Katze', 'en': 'Bad Cat'}, 'i18n', []),
+    ('src/futter-werfen.html', 'futter-werfen', 0, {'de': 'Futter werfen', 'en': 'Throw Food for Animals'}, 'i18n', []),
 ]
 
 GERMAN = re.compile(r"[äöüÄÖÜß]|\b(und|oder|nicht|der|die|das|dich|deine?|Basis|Kinder?|Sucher|Versteck\w*|Geld|Schild|nochmal|gefunden|klauen|Spiel)\b")

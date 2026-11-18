@@ -38,6 +38,7 @@ cd dist && python3 -m http.server 8000    # play at http://localhost:8000
 | Mein Bauernhof / My Farm | [de](https://mycraftgames.com/games/bauernhof/de/) | [en](https://mycraftgames.com/games/bauernhof/en/) | 0 |
 | Pixel-Blaster / Pixel Blaster | [de](https://mycraftgames.com/games/pixel-blaster/de/) | [en](https://mycraftgames.com/games/pixel-blaster/en/) | 6 |
 | Böse Katze / Bad Cat | [de](https://mycraftgames.com/games/boese-katze/de/) | [en](https://mycraftgames.com/games/boese-katze/en/) | 0 |
+| Futter werfen / Throw Food for Animals | [de](https://mycraftgames.com/games/futter-werfen/de/) | [en](https://mycraftgames.com/games/futter-werfen/en/) | 0 |
 
 **Brainrot-Raub:** buy creatures (14 body shapes: blob, pill, box, drop, star, donut, mushroom, snowman, diamond, cat, UFO, cupcake, banana, pyramid; 28 hand-made, 1000 assembled with a fixed seed, plus 10^46 more generated on demand from a 46-digit code (older saves may still hold 16-digit codes, which keep working) – the code is hashed into name, rarity, price, colours, shape and hat, so the same code always gives the same brainrot and saves store just the code) off a conveyor belt, collect the money they earn, steal from three rival bases and defend yours with a laser shield.
 
@@ -58,6 +59,8 @@ cd dist && python3 -m http.server 8000    # play at http://localhost:8000
 **Pixel-Blaster:** first-person pixel arena inspired by Pixel Gun 3D. Waves of slimes, bats, robots and (every 5th wave) a pixel golem come out of four portals; monsters break into cubes and drop coins, sometimes hearts. You start with 200 health, heal slowly after 4 s without being hit, and hearts give +50. Six weapons (pistol, shotgun, laser rifle, sniper blaster, confetti rocket launcher, rainbow minigun) and upgrades are bought in the shop between waves. Mouse look with pointer lock (drag fallback), touch controls on phones. Saved in `pixel-blaster-v1`.
 
 **Böse Katze:** a 3D third-person game (three.js). The cat runs and jumps through a living room and kitchen (cat tree, sofa, wall shelves, coffee table, bookshelf, stool, counter, fridge, dining table) and swats or pushes cups, vases, plates, eggs, plants and more onto the floor, where breakable things shatter; quick breaks build a combo. The owner enters through the side doors (warning shown first), walks around with a yellow view patch on the floor and comes running when something breaks; being seen swatting or on a forbidden surface costs one of three hearts. Crouching under the tables or in the box hides the cat. Each day has a goal and a timer; the remaining time becomes a bonus. Mouse drag turns the camera; joystick and buttons on touch devices. Best score saved in `boese-katze-v1`.
+
+**Futter werfen:** inspired by the Roblox idea "Throw Food for Animals". From a platform you aim with the mouse (a ring and arc show the landing spot) and throw food into a valley with five zones by distance. 13 animal kinds each eat only their favourite foods (8 foods); every bite gives coins, 5 bites make the animal kind full, grow a level and pay a bonus. The shop sells foods, throw range, a bigger food bag, faster refill and a double throw. Touch: drag to aim, release to throw. Saved in `futter-werfen-v1`.
 
 ## How the site works
 

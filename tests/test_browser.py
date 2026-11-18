@@ -361,3 +361,33 @@ def test_brainrot_endless_brainrots_load_from_code(page, lang):
     assert r['idx'].startswith('1/10 '), r
     assert r['slots'] == ['g1234567890123456', 3, 'g1234567890123456789012345678901234567890123456'], r
     assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize('lang', LANGS)
+def test_throw_food_feed_animals(page, lang):
+    """Futter werfen: thrown food lands, an animal that likes it eats it and pays coins, animals ignore food they don't like,
+    throws beyond the range fail, 5 bites make the animal kind grow a level, and the shop sells food and range."""
+    page.set_storage(age=30)
+    pg = page.goto(f'games/futter-werfen/{lang}/index.html', 1200)
+    start_game(pg)
+    pg.wait_for_timeout(500)
+    r = pg.evaluate("""() => {
+        const F = window.__ff, S = F.S, o = {};
+        const ch = F.animals.find(a => a.s === 'chicken'); ch.x = 0; ch.z = -15; ch.target = null;
+        F.player.x = 0; F.aim.x = 0; F.aim.z = -14;
+        o.thrown = F.throwFood(); F.tick(6); o.coins = S.coins; o.fed = S.fed;
+        F.aim.z = -60; o.tooFar = !F.throwFood();
+        const rb = F.animals.find(a => a.s === 'rabbit'); rb.x = 6; rb.z = -15; rb.target = null;
+        F.aim.x = 6; F.aim.z = -14.5; F.tick(2); const fed0 = S.fed, rbFull0 = rb.full; F.throwFood(); F.tick(6);
+        o.rabbitIgnored = rb.full === rbFull0;
+        S.coins = 100000; o.carrot = F.buyFood('carrot'); o.range = F.buyUp('range') && F.range() > 34;
+        const lv0 = S.levels.chicken; ch.full = F.FULL_AT - 1; ch.x = 0; ch.z = -15; ch.target = null;
+        F.selectFood('seeds'); F.aim.x = 0; F.aim.z = -14; F.tick(2); F.throwFood(); F.tick(6);
+        o.levelUp = S.levels.chicken === lv0 + 1;
+        o.saved = JSON.parse(localStorage.getItem('futter-werfen-v1')).foods.includes('carrot');
+        return o;
+    }""")
+    assert r['thrown'] and r['coins'] > 0 and r['fed'] == 1, r
+    assert r['tooFar'] and r['rabbitIgnored'], r
+    assert r['carrot'] and r['range'] and r['levelUp'] and r['saved'], r
+    assert not page.errors, page.errors

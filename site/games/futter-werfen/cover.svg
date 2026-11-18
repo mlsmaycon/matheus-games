@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd6ff"/><stop offset="1" stop-color="#dff4ff"/></linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#sky)"/>
+  <!-- rainbow and mountains far back -->
+  <g fill="none" stroke-width="7"><path d="M400 150 A90 90 0 0 1 580 150" stroke="#ff4d4d"/><path d="M407 150 A83 83 0 0 1 573 150" stroke="#ffa53d"/><path d="M414 150 A76 76 0 0 1 566 150" stroke="#ffe14d"/><path d="M421 150 A69 69 0 0 1 559 150" stroke="#5fd35f"/><path d="M428 150 A62 62 0 0 1 552 150" stroke="#4fb3ff"/></g>
+  <path d="M0 160 L80 90 L160 160 L240 100 L330 160 Z" fill="#9aaab8"/>
+  <!-- zones -->
+  <path d="M0 160 H640 V200 H0 Z" fill="#c9a8ff"/>
+  <path d="M0 200 H640 V240 H0 Z" fill="#e3cf7a"/>
+  <path d="M0 240 H640 V285 H0 Z" fill="#5fb84a"/>
+  <path d="M0 285 H640 V335 H0 Z" fill="#b7d878"/>
+  <path d="M0 335 H640 V400 H0 Z" fill="#8fd65f"/>
+  <!-- giraffe -->
+  <g transform="translate(500 200)"><rect x="-6" y="-60" width="10" height="60" fill="#f2c060"/><rect x="-10" y="-70" width="20" height="12" fill="#f2c060"/><rect x="-20" y="-6" width="34" height="18" fill="#f2c060"/><rect x="-18" y="12" width="4" height="12" fill="#e0a84a"/><rect x="8" y="12" width="4" height="12" fill="#e0a84a"/><circle cx="4" cy="-65" r="2" fill="#111"/></g>
+  <!-- elephant -->
+  <g transform="translate(140 262)"><ellipse rx="34" ry="22" fill="#9aa0ab"/><circle cx="30" cy="-12" r="15" fill="#9aa0ab"/><rect x="38" y="-6" width="7" height="26" rx="3" fill="#9aa0ab"/><ellipse cx="22" cy="-12" rx="9" ry="12" fill="#b8bec8"/><circle cx="35" cy="-15" r="2" fill="#111"/></g>
+  <!-- penguin -->
+  <g transform="translate(420 305)"><ellipse rx="14" ry="20" fill="#1d1d24"/><ellipse cy="4" rx="9" ry="14" fill="#fff"/><polygon points="-3,-8 3,-8 0,-2" fill="#ffa32e"/><circle cx="-4" cy="-12" r="2" fill="#fff"/><circle cx="4" cy="-12" r="2" fill="#fff"/></g>
+  <!-- chicken happy -->
+  <g transform="translate(250 360)"><ellipse rx="22" ry="18" fill="#fff"/><circle cx="16" cy="-16" r="11" fill="#fff"/><rect x="13" y="-31" width="6" height="8" fill="#e8322e"/><polygon points="26,-17 34,-14 26,-12" fill="#ffa32e"/><circle cx="19" cy="-18" r="2" fill="#111"/></g>
+  <text x="270" y="330" font-family="Arial Rounded MT Bold,Trebuchet MS,sans-serif" font-size="20" font-weight="800" fill="#ff4d7a">♥</text>
+  <!-- flying food arc -->
+  <path d="M110 380 Q300 120 470 300" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="4 12" stroke-linecap="round"/>
+  <g transform="translate(300 175) rotate(-30)"><polygon points="0,-10 6,24 -6,24" fill="#ff8a2a"/><polygon points="-4,-10 0,-20 4,-10" fill="#3faa4a"/></g>
+  <circle cx="380" cy="180" r="10" fill="#e8324a"/>
+  <path d="M220 230 q8 -14 20 0" fill="none" stroke="#ffe14d" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="470" cy="300" rx="26" ry="8" fill="none" stroke="#fff" stroke-width="4"/>
+  <!-- thrower -->
+  <g transform="translate(90 345)"><rect x="-16" y="0" width="32" height="34" rx="6" fill="#ff8a2a"/><circle cy="-14" r="15" fill="#f2c9a0"/><rect x="-16" y="-30" width="32" height="8" rx="3" fill="#3faa4a"/><rect x="14" y="-26" width="10" height="30" rx="5" fill="#ff8a2a" transform="rotate(-40 19 4)"/></g>
+</svg>
