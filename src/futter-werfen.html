@@ -88,7 +88,7 @@ h1 small{display:block;font-family:var(--body);font-weight:800;font-size:13px;co
       <span class="pill" id="hFood">…</span>
       <span class="pill" id="hDist">…</span>
     </div>
-    <div id="move"><button id="mLeft" type="button" aria-label="links">◀</button><button id="mRight" type="button" aria-label="rechts">▶</button></div>
+    <div id="move"><button id="mLeft" type="button" aria-label="links">◀</button><button id="mRight" type="button" aria-label="rechts">▶</button><button id="vFar" type="button" aria-label="weiter schauen">▲</button><button id="vNear" type="button" aria-label="näher schauen">▼</button></div>
     <button id="shopBtn" type="button" data-t="shopBtn">Shop · B</button>
     <div id="toasts" aria-live="polite"></div>
     <div class="screen" id="shop" hidden>
@@ -125,7 +125,7 @@ const TXT={
     title:'Futter werfen',sub:'Wirf jedem Tier sein Lieblingsfutter zu – so weit du kannst!',statCoins:'Münzen',statFed:'Gefüttert',statRange:'Wurfweite',
     intro:'Vor dir liegt ein riesiges Tiertal. Ganz vorne picken Hühner, weiter hinten laufen Ziegen, Pinguine, Affen und Elefanten herum – und ganz am Ende warten Giraffen, Pandas, ein Einhorn und ein kleiner Drache. Wirf jedem Tier das Futter zu, das es mag. Jedes satte Tier bringt Münzen. Kauf damit neues Futter und wirf immer weiter!',
     go:'Los geht’s',soundOn:'Ton an · M',soundOff:'Ton aus · M',reset:'Neu anfangen',resetSure:'Wirklich? Nochmal klicken',shopBtn:'Shop · B',
-    help:'<b>Steuerung:</b> Mit der <b>Maus</b> zielst du – der Ring zeigt, wo das Futter landet. <b>Klicken</b> oder <b>Leertaste</b> wirft. <b>A/D</b> oder die Pfeile ◀ ▶ laufen auf der Plattform hin und her. <b>1–8</b> wählt das Futter, <b>B</b> öffnet den Shop, <b>M</b> schaltet den Ton um. Am Handy oder Tablet: auf die Wiese tippen und ziehen zum Zielen, loslassen zum Werfen. Jedes Tier frisst nur, was es mag – über jedem Tier steht sein Lieblingsfutter. Nach 5 Happen ist es satt und gibt einen großen Bonus.',
+    help:'<b>Steuerung:</b> Mit der <b>Maus</b> zielst du – der Ring zeigt, wo das Futter landet. <b>Klicken</b> oder <b>Leertaste</b> wirft. <b>A/D</b> oder die Pfeile ◀ ▶ laufen auf der Plattform hin und her. Mit dem <b>Mausrad</b>, <b>W/S</b> oder ▲ ▼ schaust du weiter ins Tal oder wieder näher – auch wenn du ganz oben an den Rand zielst. <b>1–8</b> wählt das Futter, <b>B</b> öffnet den Shop, <b>M</b> schaltet den Ton um. Am Handy oder Tablet: auf die Wiese tippen und ziehen zum Zielen, loslassen zum Werfen. Jedes Tier frisst nur, was es mag – über jedem Tier steht sein Lieblingsfutter. Nach 5 Happen ist es satt und gibt einen großen Bonus.',
     noload:'3D konnte nicht geladen werden.',
     coins:'{n} Münzen',bag:'Futter {n}/{m}',dist:'{d} m / {r} m',tooFar:'Zu weit! Kauf mehr Wurfweite.',empty:'Dein Futtersack ist leer – er füllt sich gleich wieder.',
     f_seeds:'Körner',f_carrot:'Karotte',f_apple:'Apfel',f_fish:'Fisch',f_banana:'Banane',f_leaves:'Blätter',f_bamboo:'Bambus',f_cookie:'Regenbogen-Keks',
@@ -143,7 +143,7 @@ const TXT={
     title:'Throw Food for Animals',sub:'Throw every animal its favourite food – as far as you can!',statCoins:'Coins',statFed:'Fed',statRange:'Throw range',
     intro:'In front of you lies a huge animal valley. Chickens peck right at the front, further back goats, penguins, monkeys and elephants roam – and at the very end giraffes, pandas, a unicorn and a little dragon are waiting. Throw every animal the food it likes. Every full animal brings coins. Use them to buy new food and throw further and further!',
     go:'Let’s go',soundOn:'Sound on · M',soundOff:'Sound off · M',reset:'Start over',resetSure:'Really? Click again',shopBtn:'Shop · B',
-    help:'<b>Controls:</b> Aim with the <b>mouse</b> – the ring shows where the food lands. <b>Click</b> or <b>Space</b> throws. <b>A/D</b> or the arrows ◀ ▶ walk along the platform. <b>1–8</b> picks the food, <b>B</b> opens the shop, <b>M</b> toggles sound. On a phone or tablet: tap the meadow and drag to aim, let go to throw. Every animal only eats what it likes – its favourite food is shown above it. After 5 bites it is full and gives a big bonus.',
+    help:'<b>Controls:</b> Aim with the <b>mouse</b> – the ring shows where the food lands. <b>Click</b> or <b>Space</b> throws. <b>A/D</b> or the arrows ◀ ▶ walk along the platform. The <b>mouse wheel</b>, <b>W/S</b> or ▲ ▼ look further into the valley or closer again – so does aiming at the very top edge. <b>1–8</b> picks the food, <b>B</b> opens the shop, <b>M</b> toggles sound. On a phone or tablet: tap the meadow and drag to aim, let go to throw. Every animal only eats what it likes – its favourite food is shown above it. After 5 bites it is full and gives a big bonus.',
     noload:'3D could not be loaded.',
     coins:'{n} coins',bag:'Food {n}/{m}',dist:'{d} m / {r} m',tooFar:'Too far! Buy more throw range.',empty:'Your food bag is empty – it refills in a moment.',
     f_seeds:'Seeds',f_carrot:'Carrot',f_apple:'Apple',f_fish:'Fish',f_banana:'Banana',f_leaves:'Leaves',f_bamboo:'Bamboo',f_cookie:'Rainbow cookie',
@@ -315,6 +315,7 @@ function landed(f){
 
 /* ---------- Werfen ---------- */
 let bag=bagOf(S.bagLv),refillT=0,throwCd=0;
+const view={d:30}; // wie weit die Kamera ins Tal schaut
 const aim={x:0,z:-20,ok:true};
 function throwFood(){
   if(!playing||shopOpen)return false;audioInit();
@@ -396,9 +397,13 @@ function aimAtScreen(cx,cy){const r=stage.getBoundingClientRect();mouse.set((cx-
   const p=new THREE.Vector3();if(ray.ray.intersectPlane(plane,p)&&p.z<-1){aim.x=Math.max(-HALF,Math.min(HALF,p.x));aim.z=Math.max(-168,p.z);}}
 const cv=renderer.domElement;
 let touchAim=null;
-cv.addEventListener('pointermove',e=>{if(!playing||shopOpen)return;if(e.pointerType==='mouse'||touchAim===e.pointerId)aimAtScreen(e.clientX,e.clientY);});
-cv.addEventListener('pointerdown',e=>{if(!playing||shopOpen)return;audioInit();aimAtScreen(e.clientX,e.clientY);if(e.pointerType==='mouse')throwFood();else{touchAim=e.pointerId;try{cv.setPointerCapture(e.pointerId);}catch(_){}}});
-cv.addEventListener('pointerup',e=>{if(touchAim===e.pointerId){touchAim=null;aimAtScreen(e.clientX,e.clientY);throwFood();}});
+// Wo die Maus (oder der Finger) gerade ist – der Zielring bleibt in jedem Bild genau darunter
+const ptr={x:0,y:0,on:false};
+cv.addEventListener('pointermove',e=>{if(!playing||shopOpen)return;if(e.pointerType==='mouse'||touchAim===e.pointerId){ptr.x=e.clientX;ptr.y=e.clientY;ptr.on=true;aimAtScreen(e.clientX,e.clientY);}});
+cv.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')ptr.on=false;});
+cv.addEventListener('pointerdown',e=>{if(!playing||shopOpen)return;audioInit();ptr.x=e.clientX;ptr.y=e.clientY;ptr.on=true;aimAtScreen(e.clientX,e.clientY);if(e.pointerType==='mouse')throwFood();else{touchAim=e.pointerId;try{cv.setPointerCapture(e.pointerId);}catch(_){}}});
+cv.addEventListener('pointerup',e=>{if(touchAim===e.pointerId){touchAim=null;aimAtScreen(e.clientX,e.clientY);throwFood();ptr.on=false;}});
+cv.addEventListener('wheel',e=>{if(!playing||shopOpen)return;e.preventDefault();view.d=Math.max(20,Math.min(165,view.d-e.deltaY*0.06));},{passive:false});
 cv.addEventListener('pointercancel',e=>{if(touchAim===e.pointerId)touchAim=null;});
 window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(!playing)return;
   if([' ','arrowleft','arrowright','arrowup','arrowdown'].includes(k)&&!shopOpen)e.preventDefault();
@@ -413,6 +418,8 @@ window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(!playing)re
 window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
 window.addEventListener('blur',()=>{for(const k in keys)keys[k]=false;});
 let moveBtn=0;
+let viewBtn=0;
+[['vFar',1],['vNear',-1]].forEach(([id,d])=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();viewBtn=d;});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>{if(viewBtn===d)viewBtn=0;}));});
 [['mLeft',-1],['mRight',1]].forEach(([id,d])=>{const b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();moveBtn=d;});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>{if(moveBtn===d)moveBtn=0;}));});
 
 /* ---------- Schleife ---------- */
@@ -422,7 +429,10 @@ function update(dt){
   // Spieler läuft auf der Plattform
   let mv=moveBtn;if(keys.a||keys.arrowleft)mv-=1;if(keys.d||keys.arrowright)mv+=1;
   if(!shopOpen&&mv){player.x=Math.max(-HALF+1,Math.min(HALF-1,player.x+mv*8*dt));}
-  if(!shopOpen){if(keys.arrowup)aim.z=Math.max(-168,aim.z-30*dt);if(keys.arrowdown)aim.z=Math.min(-2,aim.z+30*dt);}
+  if(!shopOpen){let vd=viewBtn;if(keys.w||keys.arrowup)vd+=1;if(keys.s||keys.arrowdown)vd-=1;
+    if(ptr.on){const r=stage.getBoundingClientRect(),yn=(ptr.y-r.top)/r.height;if(yn<0.12)vd+=1;else if(yn>0.9&&yn<=1)vd-=0.6;}
+    view.d=Math.max(20,Math.min(165,view.d+vd*45*dt));
+    if(!ptr.on&&(keys.w||keys.s||keys.arrowup||keys.arrowdown||viewBtn)){aim.z=-view.d;}}
   throwCd=Math.max(0,throwCd-dt);throwAnim=Math.max(0,throwAnim-dt);
   if(bag<bagOf(S.bagLv)){refillT+=dt;if(refillT>=refillOf(S.refillLv)){refillT=0;bag++;}}else refillT=0;
   // Futter fliegt
@@ -469,11 +479,11 @@ function render(){
   const from=new THREE.Vector3(player.x+0.4,3,player.z-0.6),T=0.7+Math.hypot(aim.x-from.x,aim.z-from.z)/55,vy=(0.1-3+0.5*20*T*T)/T;
   dots.forEach((dt,i)=>{const s=(i+1)/(dots.length+1)*T;dt.position.set(from.x+(aim.x-from.x)*s/T,3+vy*s-10*s*s,from.z+(aim.z-from.z)*s/T);dt.visible=playing&&!shopOpen;dt.material.color.set(ok?'#ffffff':'#ff6a6a');});
   // Kamera folgt dem Ziel ein Stück
-  const far=Math.min(1,-aim.z/170);
-  // nahe Würfe: Kamera bleibt bei dir; weite Würfe: Kamera fliegt über das Tal mit
-  const out=Math.min(0,aim.z+30)*0.68;
-  camPos.lerp(new THREE.Vector3(player.x*0.5+aim.x*0.35,12+far*9,16+out),0.06);camera.position.copy(camPos);
-  camLook.lerp(new THREE.Vector3(aim.x*0.7+player.x*0.3,0,Math.min(-18,aim.z-4)),0.08);camera.lookAt(camLook);
+    // Die Kamera folgt nur der Blickweite (nicht dem Ziel), damit der Ring nicht wegrutscht
+  const vf=Math.min(1,view.d/170),out=Math.min(0,30-view.d)*0.68;
+  camPos.lerp(new THREE.Vector3(player.x*0.5,12+vf*9,16+out),0.08);camera.position.copy(camPos);
+  camLook.lerp(new THREE.Vector3(player.x*0.5,0,Math.min(-18,-view.d-4)),0.1);camera.lookAt(camLook);
+  if(ptr.on&&!shopOpen)aimAtScreen(ptr.x,ptr.y);
   sun.position.set(camLook.x-30,60,camLook.z+30);sun.target.position.copy(camLook);
   renderer.render(scene,camera);
   // Beschriftungen
@@ -496,7 +506,7 @@ function loop(now){const dt=Math.min(0.1,(now-last)/1000);last=now;if(playing){a
 /* ---------- Start ---------- */
 $('go').addEventListener('click',()=>{audioInit();$('startScreen').hidden=true;playing=true;last=performance.now();if(S.fed===0)setTimeout(()=>toast(t('tip1'),'#9fd6ff'),700);save();});
 renderFoods();resize();
-window.__ff={get S(){return S},get animals(){return animals},get ground(){return ground},get flying(){return flying},get bag(){return bag},aim,player,
+window.__ff={view,get S(){return S},get animals(){return animals},get ground(){return ground},get flying(){return flying},get bag(){return bag},aim,player,
   throwFood,buyFood,buyUp,selectFood,openShop,closeShop,tick:sec=>{for(let i=0;i<sec*60;i++)update(1/60);},FULL_AT,range};
 requestAnimationFrame(loop);
 })();
